@@ -516,6 +516,9 @@ const getEventsContent = () => {
   return eventsContent;
 };
 
-const renderElement = (container, element) => {
-  container.insertAdjacentHTML(`beforeend`, element);
+const renderElement = (container, element, position = `beforeend`) => {
+  container.insertAdjacentHTML(position, element);
 };
+
+const tripInfo = document.querySelector(`.trip-main__trip-info`);
+renderElement(tripInfo, getTripInfo(), `afterbegin`);
