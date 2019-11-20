@@ -516,3 +516,7 @@ renderElement(tripInfo, getTripInfo(), `afterbegin`);
 const tripControls = document.querySelector(".trip-main__trip-controls");
 renderElement(tripControls, getMenu());
 renderElement(tripControls, getFilters());
+
+const tripEvents = document.querySelector(".trip-events");
+renderElement(tripEvents, getEventsSorting());
+renderElement(tripEvents, getEventsContent());
