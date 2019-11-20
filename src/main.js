@@ -512,3 +512,7 @@ const renderElement = (container, element, position = `beforeend`) => {
 
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 renderElement(tripInfo, getTripInfo(), `afterbegin`);
+
+const tripControls = document.querySelector(".trip-main__trip-controls");
+renderElement(tripControls, getMenu());
+renderElement(tripControls, getFilters());
