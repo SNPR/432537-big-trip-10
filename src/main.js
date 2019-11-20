@@ -1,29 +1,25 @@
 "use strict";
 
 const getTripInfo = () => {
-  const tripInfo = `
+  return `
     <div class="trip-info__main">
       <h1 class="trip-info__title">Amsterdam &mdash; ... &mdash; Amsterdam</h1>
       <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
     </div>
   `;
-
-  return tripInfo;
 };
 
 const getMenu = () => {
-  const menu = `
+  return `
     <nav class="trip-controls__trip-tabs  trip-tabs">
       <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
       <a class="trip-tabs__btn" href="#">Stats</a>
     </nav>
   `;
-
-  return menu;
 };
 
 const getFilters = () => {
-  const filters = `
+  return `
     <form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
         <input
@@ -66,12 +62,10 @@ const getFilters = () => {
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>
   `;
-
-  return filters;
 };
 
 const getEventsSorting = () => {
-  const eventsSorting = `
+  return `
     <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       <span class="trip-sort__item  trip-sort__item--day">Day</span>
 
@@ -136,12 +130,10 @@ const getEventsSorting = () => {
       <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
     </form>
   `;
-
-  return eventsSorting;
 };
 
 const getEventsContent = () => {
-  const eventsContent = `
+  return `
     <form
       class="trip-events__item  event  event--edit"
       action="#"
@@ -512,8 +504,6 @@ const getEventsContent = () => {
       </section>
     </form>
   `;
-
-  return eventsContent;
 };
 
 const renderElement = (container, element, position = `beforeend`) => {
