@@ -13,3 +13,9 @@ node_modules/
 
 # Папка с собранными файлами проекта
 build/
+
+# JS-bundle
+public/bundle.js
+
+# Source map
+public/bundle.js.map
