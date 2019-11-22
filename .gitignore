@@ -16,3 +16,6 @@ build/
 
 # JS-bundle
 public/bundle.js
+
+# Source map
+public/bundle.js.map
