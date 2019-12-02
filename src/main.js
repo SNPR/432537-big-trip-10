@@ -10,12 +10,13 @@ import {
 } from "./components";
 import {renderElement} from "./utils";
 import {filters} from "./mock/filter";
+import {menuItems} from "./mock/menu";
 
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 renderElement(tripInfo, getTripInfo(), `afterbegin`);
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
-renderElement(tripControls, getMenu());
+renderElement(tripControls, getMenu(menuItems));
 renderElement(tripControls, getFilters(filters));
 
 const tripEvents = document.querySelector(`.trip-events`);
