@@ -9,13 +9,14 @@ import {
   getTripEventsItem
 } from "./components";
 import {renderElement} from "./utils";
+import {filters} from "./mock/filter";
 
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 renderElement(tripInfo, getTripInfo(), `afterbegin`);
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 renderElement(tripControls, getMenu());
-renderElement(tripControls, getFilters());
+renderElement(tripControls, getFilters(filters));
 
 const tripEvents = document.querySelector(`.trip-events`);
 renderElement(tripEvents, getEventsSorting());
