@@ -8,10 +8,10 @@ import {
   getTripInfo,
   getCard
 } from "./components";
-import {renderElement} from "./utils";
-import {filters} from "./mock/filter";
-import {menuItems} from "./mock/menu";
-import {card} from "./mock/card";
+import { renderElement } from "./utils";
+import { filters } from "./mock/filter";
+import { menuItems } from "./mock/menu";
+import { card, cards } from "./mock/cards";
 
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 renderElement(tripInfo, getTripInfo(), `afterbegin`);
@@ -32,4 +32,4 @@ const eventsList = document.querySelector(`.trip-events__list`);
 
 Array(3)
   .fill(``)
-  .forEach((_) => renderElement(eventsList, getCard()));
+  .forEach(_ => renderElement(eventsList, getCard()));

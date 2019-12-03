@@ -1,3 +1,5 @@
+const CARDS_AMOUNT = 4;
+
 const offers = [
   {
     name: `Add luggage`,
@@ -117,4 +119,11 @@ const generateCard = () => {
   };
 };
 
-export const card = generateCard();
+const generateCards = (amount) =>
+  Array(amount)
+    .fill(``)
+    .map((_) => generateCard());
+
+const card = generateCard();
+const cards = generateCards(CARDS_AMOUNT);
+export {card, cards};
