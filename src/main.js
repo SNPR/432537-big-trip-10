@@ -29,5 +29,8 @@ const tripDays = document.querySelector(`.trip-days`);
 renderElement(tripDays, getTripDayItem());
 const eventsList = document.querySelector(`.trip-events__list`);
 renderElement(eventsList, getCardEdit(card));
-
 cards.forEach((cardData) => renderElement(eventsList, getCard(cardData)));
+
+const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
+
+document.querySelector(`.trip-info__cost-value`).textContent = getFullPrice;
