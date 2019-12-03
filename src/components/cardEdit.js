@@ -1,4 +1,4 @@
-export const getCardEdit = (card) => {
+export const getCardEdit = card => {
   return `
     <form
       class="trip-events__item  event  event--edit"
@@ -13,7 +13,7 @@ export const getCardEdit = (card) => {
               class="event__type-icon"
               width="17"
               height="17"
-              src="img/icons/flight.png"
+              src="img/icons/${card.type}.png"
               alt="Event type icon"
             />
           </label>
@@ -34,6 +34,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="taxi"
+                  ${card.type === `taxi` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--taxi"
@@ -49,6 +50,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="bus"
+                  ${card.type === `bus` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--bus"
@@ -64,6 +66,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="train"
+                  ${card.type === `train` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--train"
@@ -79,6 +82,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="ship"
+                  ${card.type === `ship` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--ship"
@@ -94,6 +98,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="transport"
+                  ${card.type === `transport` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--transport"
@@ -109,6 +114,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="drive"
+                  ${card.type === `drive` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--drive"
@@ -124,7 +130,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="flight"
-                  checked
+                  ${card.type === `flight` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--flight"
@@ -144,6 +150,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="check-in"
+                  ${card.type === `check-in` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--check-in"
@@ -159,6 +166,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="sightseeing"
+                  ${card.type === `sightseeing` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--sightseeing"
@@ -174,6 +182,7 @@ export const getCardEdit = (card) => {
                   type="radio"
                   name="event-type"
                   value="restaurant"
+                  ${card.type === `restaurant` && `checked`}
                 />
                 <label
                   class="event__type-label  event__type-label--restaurant"
@@ -259,7 +268,7 @@ export const getCardEdit = (card) => {
 
           <div class="event__available-offers">
           ${card.offers
-            .map((offer) => {
+            .map(offer => {
               return `
       <div class="event__offer-selector">
         <input
@@ -292,7 +301,7 @@ export const getCardEdit = (card) => {
           <div class="event__photos-container">
             <div class="event__photos-tape">
             ${card.photos
-              .map((photo) => {
+              .map(photo => {
                 return `
                   <img
                     class="event__photo"
