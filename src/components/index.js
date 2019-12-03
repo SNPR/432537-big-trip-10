@@ -1,4 +1,4 @@
-import {getEventsContent} from "./events-content";
+import {getCardEdit} from "./cardEdit";
 import {getEventsSorting} from "./events-sorting";
 import {getFilters} from "./filters";
 import {getMenu} from "./menu";
@@ -8,7 +8,7 @@ import {getTripInfo} from "./trip-info";
 import {getCard} from "./card";
 
 export {
-  getEventsContent,
+  getCardEdit,
   getEventsSorting,
   getFilters,
   getMenu,

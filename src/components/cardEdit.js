@@ -1,4 +1,4 @@
-export const getEventsContent = (card) => {
+export const getCardEdit = (card) => {
   return `
     <form
       class="trip-events__item  event  event--edit"

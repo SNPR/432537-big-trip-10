@@ -1,5 +1,5 @@
 import {
-  getEventsContent,
+  getCardEdit,
   getEventsSorting,
   getFilters,
   getMenu,
@@ -22,7 +22,7 @@ renderElement(tripControls, getFilters(filters));
 
 const tripEvents = document.querySelector(`.trip-events`);
 renderElement(tripEvents, getEventsSorting());
-renderElement(tripEvents, getEventsContent(card));
+renderElement(tripEvents, getCardEdit(card));
 renderElement(tripEvents, getTripDays());
 
 const tripDays = document.querySelector(`.trip-days`);
