@@ -26,7 +26,7 @@ renderElement(tripEvents, getTripDays());
 
 const tripDays = document.querySelector(`.trip-days`);
 
-renderElement(tripDays, getTripDayItem());
+renderElement(tripDays, getTripDayItem(card));
 const eventsList = document.querySelector(`.trip-events__list`);
 renderElement(eventsList, getCardEdit(card));
 cards.forEach((cardData) => renderElement(eventsList, getCard(cardData)));
