@@ -43,7 +43,6 @@ export const getCard = (card) => {
             `;
           })
           .join(``)}
-
         </ul>
 
         <button class="event__rollup-btn" type="button">
