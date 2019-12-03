@@ -1,4 +1,4 @@
-const CARDS_AMOUNT = 4;
+const CARDS_AMOUNT = 20;
 const OFFERS_AMOUNT = 3;
 
 const offers = [
@@ -108,10 +108,14 @@ const generateCard = () => {
   };
 };
 
-const generateCards = (amount) =>
-  Array(amount)
+const generateCards = (amount) => {
+  return Array(amount)
     .fill(``)
-    .map((_) => generateCard());
+    .map((_) => generateCard())
+    .sort(
+        (currentCard, nextCard) => currentCard.startDate - nextCard.startDate
+    );
+};
 
 const card = generateCard();
 const cards = generateCards(CARDS_AMOUNT);
