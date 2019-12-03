@@ -42,15 +42,15 @@ const tripDays = document.querySelector(`.trip-days`);
   );
 
   renderElement(tripDays, getTripDayItem(currentDateCard, datesIndex + 1));
-  const eventsList = document.querySelectorAll(`.trip-events__list`)[
+  const tripDayItem = document.querySelectorAll(`.trip-events__list`)[
     datesIndex
   ];
 
   currentDayEvents.forEach((cardData, eventsIndex) => {
     if (datesIndex === 0 && eventsIndex === 0) {
-      renderElement(eventsList, getCardEdit(cardData));
+      renderElement(tripDayItem, getCardEdit(cardData));
     } else {
-      renderElement(eventsList, getCard(cardData));
+      renderElement(tripDayItem, getCard(cardData));
     }
   });
 });
