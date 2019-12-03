@@ -8,10 +8,10 @@ import {
   getTripInfo,
   getCard
 } from "./components";
-import { renderElement } from "./utils";
-import { filters } from "./mock/filter";
-import { menuItems } from "./mock/menu";
-import { card, cards } from "./mock/cards";
+import {renderElement} from "./utils";
+import {filters} from "./mock/filter";
+import {menuItems} from "./mock/menu";
+import {card, cards} from "./mock/cards";
 
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 renderElement(tripInfo, getTripInfo(), `afterbegin`);
@@ -22,14 +22,12 @@ renderElement(tripControls, getFilters(filters));
 
 const tripEvents = document.querySelector(`.trip-events`);
 renderElement(tripEvents, getEventsSorting());
-renderElement(tripEvents, getCardEdit(card));
 renderElement(tripEvents, getTripDays());
 
 const tripDays = document.querySelector(`.trip-days`);
 
 renderElement(tripDays, getTripDayItem());
 const eventsList = document.querySelector(`.trip-events__list`);
+renderElement(eventsList, getCardEdit(card));
 
-Array(3)
-  .fill(``)
-  .forEach(_ => renderElement(eventsList, getCard()));
+cards.forEach((cardData) => renderElement(eventsList, getCard(cardData)));
