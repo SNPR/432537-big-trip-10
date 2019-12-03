@@ -4,7 +4,10 @@ export const getTripDayItem = (card) => {
     <div class="day__info">
       <span class="day__counter">1</span>
       <time class="day__date" datetime="${card.startDate}">
-      ${new Date(card.startDate).toLocaleString(`default`, {month: `short`})}
+      ${new Date(card.startDate).toLocaleString(`default`, {
+    month: `short`
+  })}
+      ${new Date(card.startDate).getDate()}
       </time>
     </div>
     <ul class="trip-events__list">
