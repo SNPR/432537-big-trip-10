@@ -1,3 +1,10 @@
+const parseDate = (UTCTimestamp) => {
+  const date = new Date(UTCTimestamp);
+  return `${date.getDate()}/${date.getMonth()}/${String(
+      date.getFullYear()
+  ).slice(2)}`;
+};
+
 export const getCardEdit = (card) => {
   return `
     <form
@@ -226,7 +233,7 @@ export const getCardEdit = (card) => {
             id="event-start-time-1"
             type="text"
             name="event-start-time"
-            value="${card.startDate}"
+            value="${parseDate(card.startDate)}"
           />
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
@@ -237,7 +244,7 @@ export const getCardEdit = (card) => {
             id="event-end-time-1"
             type="text"
             name="event-end-time"
-            value="${card.endDate}"
+            value="${parseDate(card.endDate)}"
           />
         </div>
 

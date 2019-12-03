@@ -83,38 +83,22 @@ const getRandomNumber = (min, max) => {
 
 const getRandomArrayItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-const addZero = (number) => {
-  if (number === 0) {
-    return `01`;
-  }
-  return number < 10 ? `0${number}` : number;
-};
-
 const getRandomDate = () => {
-  const date = new Date(
-      getRandomNumber(2016, 2021),
-      getRandomNumber(0, 12),
-      getRandomNumber(0, 28)
+  return (
+    Date.now() +
+    1 +
+    Math.floor(Math.random() * 7) * 24 * getRandomNumber(0, 60) * 60 * 1000
   );
-
-  return `${addZero(date.getDate())}/${addZero(date.getMonth())}/${String(
-      date.getFullYear()
-  ).slice(2)}`;
 };
-
-const getRandomTime = () =>
-  `${addZero(getRandomNumber(0, 13))}:${addZero(getRandomNumber(0, 60))}`;
 
 const generateCard = () => {
-  const startTime = getRandomTime();
-  const endTime = getRandomTime();
+  const startDate = getRandomDate();
+  const endDate = getRandomDate();
   return {
     type: getRandomArrayItem(types),
     city: getRandomArrayItem(cities),
-    startTime,
-    endTime,
-    startDate: `${getRandomDate()} ${startTime}`,
-    endDate: `${getRandomDate()} ${endTime}`,
+    startDate: Math.min(startDate, endDate),
+    endDate: Math.max(startDate, endDate),
     offers: shuffleArray(offers).slice(0, OFFERS_AMOUNT),
     photos: Array(5)
       .fill(``)
