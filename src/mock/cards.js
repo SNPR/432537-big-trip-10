@@ -1,4 +1,5 @@
 const CARDS_AMOUNT = 4;
+const OFFERS_AMOUNT = 3;
 
 const offers = [
   {
@@ -105,12 +106,16 @@ const getRandomTime = () =>
   `${addZero(getRandomNumber(0, 13))}:${addZero(getRandomNumber(0, 60))}`;
 
 const generateCard = () => {
+  const startTime = getRandomTime();
+  const endTime = getRandomTime();
   return {
     type: getRandomArrayItem(types),
     city: getRandomArrayItem(cities),
-    startDate: `${getRandomDate()} ${getRandomTime()}`,
-    endDate: `${getRandomDate()} ${getRandomTime()}`,
-    offers,
+    startTime,
+    endTime,
+    startDate: `${getRandomDate()} ${startTime}`,
+    endDate: `${getRandomDate()} ${endTime}`,
+    offers: shuffleArray(offers).slice(0, OFFERS_AMOUNT),
     photos: Array(5)
       .fill(``)
       .map(getRandomPhoto),
