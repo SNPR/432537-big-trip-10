@@ -6,7 +6,7 @@ import {
   getTripDayItem,
   getTripDays,
   getTripInfo,
-  getTripEventsItem
+  getCard
 } from "./components";
 import {renderElement} from "./utils";
 import {filters} from "./mock/filter";
@@ -32,4 +32,4 @@ const eventsList = document.querySelector(`.trip-events__list`);
 
 Array(3)
   .fill(``)
-  .forEach((_) => renderElement(eventsList, getTripEventsItem()));
+  .forEach((_) => renderElement(eventsList, getCard()));

@@ -1,4 +1,4 @@
-export const getTripEventsItem = () => {
+export const getCard = () => {
   return `
       <li class="trip-events__item">
       <div class="event">

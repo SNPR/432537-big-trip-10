@@ -5,7 +5,7 @@ import {getMenu} from "./menu";
 import {getTripDayItem} from "./trip-day-item";
 import {getTripDays} from "./trip-days";
 import {getTripInfo} from "./trip-info";
-import {getTripEventsItem} from "./trip-events-item";
+import {getCard} from "./card";
 
 export {
   getEventsContent,
@@ -15,5 +15,5 @@ export {
   getTripDayItem,
   getTripDays,
   getTripInfo,
-  getTripEventsItem
+  getCard
 };
