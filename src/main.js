@@ -14,7 +14,7 @@ import {menuItems} from "./mock/menu";
 import {card, cards} from "./mock/cards";
 
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
-renderElement(tripInfo, getTripInfo(), `afterbegin`);
+renderElement(tripInfo, getTripInfo(cards), `afterbegin`);
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 renderElement(tripControls, getMenu(menuItems));
