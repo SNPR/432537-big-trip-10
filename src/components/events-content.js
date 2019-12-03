@@ -271,9 +271,8 @@ export const getEventsContent = (card) => {
         />
         <label class="event__offer-label" for="event-offer-${offer.type}-1">
           <span class="event__offer-title">${offer.name}</span>
-          &plus; &euro;&nbsp;<span class="event__offer-price">${
-  offer.price
-}</span>
+          &plus; &euro;&nbsp;<span class="event__offer-price">${offer.price}
+          </span>
         </label>
       </div>
     `;
@@ -295,12 +294,12 @@ export const getEventsContent = (card) => {
             ${card.photos
               .map((photo) => {
                 return `
-      <img
-        class="event__photo"
-        src="${photo}"
-        alt="Event photo"
-      />
-    `;
+                  <img
+                    class="event__photo"
+                    src="${photo}"
+                    alt="Event photo"
+                  />
+                `;
               })
               .join(``)}
             </div>
