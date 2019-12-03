@@ -1,8 +1,8 @@
-export const getTripDayItem = (card) => {
+export const getTripDayItem = (card, day) => {
   return `
     <li class="trip-days__item  day">
     <div class="day__info">
-      <span class="day__counter">1</span>
+      <span class="day__counter">${day}</span>
       <time class="day__date" datetime="${card.startDate}">
       ${new Date(card.startDate).toLocaleString(`default`, {
     month: `short`

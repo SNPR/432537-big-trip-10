@@ -117,6 +117,4 @@ const generateCards = (amount) => {
     );
 };
 
-const card = generateCard();
-const cards = generateCards(CARDS_AMOUNT);
-export {card, cards};
+export const cards = generateCards(CARDS_AMOUNT);

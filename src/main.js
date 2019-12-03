@@ -11,9 +11,9 @@ import {
 import {renderElement} from "./utils";
 import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
-import {card, cards} from "./mock/cards";
+import {cards} from "./mock/cards";
 
-const uniqueDates = new Set(
+const dates = new Set(
     cards.map((item) => new Date(item.startDate).toDateString())
 );
 
@@ -30,10 +30,30 @@ renderElement(tripEvents, getTripDays());
 
 const tripDays = document.querySelector(`.trip-days`);
 
-renderElement(tripDays, getTripDayItem(card));
-const eventsList = document.querySelector(`.trip-events__list`);
-renderElement(eventsList, getCardEdit(card));
-cards.forEach((cardData) => renderElement(eventsList, getCard(cardData)));
+[...dates].forEach((date, datesIndex) => {
+  const currentDateCard = cards.find(
+      (_card) => new Date(date).getDate() === new Date(_card.startDate).getDate()
+  );
+
+  const currentDayEvents = cards.filter(
+      (_card) =>
+        new Date(_card.startDate).getDate() ===
+      new Date(currentDateCard.startDate).getDate()
+  );
+
+  renderElement(tripDays, getTripDayItem(currentDateCard, datesIndex + 1));
+  const eventsList = document.querySelectorAll(`.trip-events__list`)[
+    datesIndex
+  ];
+
+  currentDayEvents.forEach((cardData, eventsIndex) => {
+    if (datesIndex === 0 && eventsIndex === 0) {
+      renderElement(eventsList, getCardEdit(cardData));
+    } else {
+      renderElement(eventsList, getCard(cardData));
+    }
+  });
+});
 
 const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
 
