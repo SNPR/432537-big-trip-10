@@ -1,4 +1,4 @@
-export const getCardEdit = card => {
+export const getCardEdit = (card) => {
   return `
     <form
       class="trip-events__item  event  event--edit"
@@ -268,7 +268,7 @@ export const getCardEdit = card => {
 
           <div class="event__available-offers">
           ${card.offers
-            .map(offer => {
+            .map((offer) => {
               return `
       <div class="event__offer-selector">
         <input
@@ -301,7 +301,7 @@ export const getCardEdit = card => {
           <div class="event__photos-container">
             <div class="event__photos-tape">
             ${card.photos
-              .map(photo => {
+              .map((photo) => {
                 return `
                   <img
                     class="event__photo"
