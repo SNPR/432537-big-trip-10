@@ -13,6 +13,10 @@ import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
 import {card, cards} from "./mock/cards";
 
+const uniqueDates = new Set(
+    cards.map((item) => new Date(item.startDate).toDateString())
+);
+
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 renderElement(tripInfo, getTripInfo(cards), `afterbegin`);
 
