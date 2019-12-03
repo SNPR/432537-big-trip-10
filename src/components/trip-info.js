@@ -1,3 +1,15 @@
+const getDuration = (startDateUTCTimestamp, endDateUTCTimestamp) => {
+  const startDate = new Date(startDateUTCTimestamp);
+
+  const monthName = startDate.toLocaleString(`default`, {
+    month: `short`
+  });
+  const startDay = startDate.getDate();
+  const endDay = new Date(endDateUTCTimestamp).getDay();
+
+  return `${monthName} ${startDay}&nbsp;&mdash;&nbsp;${endDay}`;
+};
+
 export const getTripInfo = (cards) => {
   return `
     <div class="trip-info__main">
@@ -5,7 +17,9 @@ export const getTripInfo = (cards) => {
       ${cards.length > 2 ? `&mdash; ... &mdash;` : `&mdash;`}
       ${cards[cards.length - 1].city}
       </h1>
-      <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
+      <p class="trip-info__dates">
+      ${getDuration(cards[0].startDate, cards[cards.length - 1].endDate)}
+      </p>
     </div>
   `;
 };
