@@ -60,7 +60,7 @@ const getRandomDescriprion = () =>
     .slice(0, getRandomNumber(1, 4))
     .join(` `);
 
-const events = [
+const types = [
   `taxi`,
   `bus`,
   `train`,
@@ -104,7 +104,7 @@ const getRandomTime = () =>
 
 const generateCard = () => {
   return {
-    event: getRandomArrayItem(events),
+    type: getRandomArrayItem(types),
     city: getRandomArrayItem(cities),
     startDate: `${getRandomDate()} ${getRandomTime()}`,
     endDate: `${getRandomDate()} ${getRandomTime()}`,

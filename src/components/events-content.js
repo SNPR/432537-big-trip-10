@@ -190,7 +190,7 @@ export const getEventsContent = (card) => {
             class="event__label  event__type-output"
             for="event-destination-1"
           >
-            ${card.event} at
+            ${card.type} at
           </label>
           <input
             class="event__input  event__input--destination"
