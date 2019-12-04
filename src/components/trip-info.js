@@ -1,7 +1,7 @@
 const getDuration = (startDateUTCTimestamp, endDateUTCTimestamp) => {
   const startDate = new Date(startDateUTCTimestamp);
 
-  const monthName = startDate.toLocaleString(`default`, {
+  const monthName = startDate.toLocaleString(`en-US`, {
     month: `short`
   });
   const startDay = startDate.getDate();
