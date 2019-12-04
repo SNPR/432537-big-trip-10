@@ -46,7 +46,7 @@ dates.forEach((date, dateIndex) => {
       renderElement(day.querySelector(`.trip-events__list`), getCard(_card));
     });
 
-  renderElement(tripDays, day.innerHTML);
+  renderElement(tripDays, day.parentElement.innerHTML);
 });
 
 const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
