@@ -1,32 +1,50 @@
 import {
-  getEventsContent,
+  getCardEdit,
   getEventsSorting,
   getFilters,
   getMenu,
   getTripDayItem,
   getTripDays,
   getTripInfo,
-  getTripEventsItem
+  getCard
 } from "./components";
-import {renderElement} from "./utils";
+import {renderElement, createElement} from "./utils";
+import {filters} from "./mock/filter";
+import {menuItems} from "./mock/menu";
+import {cards} from "./mock/cards";
+
+const dates = [
+  ...new Set(cards.map((item) => new Date(item.startDate).toDateString()))
+];
 
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
-renderElement(tripInfo, getTripInfo(), `afterbegin`);
+renderElement(tripInfo, getTripInfo(cards), `afterbegin`);
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
-renderElement(tripControls, getMenu());
-renderElement(tripControls, getFilters());
+renderElement(tripControls, getMenu(menuItems));
+renderElement(tripControls, getFilters(filters));
 
 const tripEvents = document.querySelector(`.trip-events`);
 renderElement(tripEvents, getEventsSorting());
-renderElement(tripEvents, getEventsContent());
 renderElement(tripEvents, getTripDays());
 
 const tripDays = document.querySelector(`.trip-days`);
 
-renderElement(tripDays, getTripDayItem());
-const eventsList = document.querySelector(`.trip-events__list`);
+dates.forEach((date, dateIndex) => {
+  const day = createElement(getTripDayItem(new Date(date), dateIndex + 1));
 
-Array(3)
-  .fill(``)
-  .forEach((_) => renderElement(eventsList, getTripEventsItem()));
+  cards
+    .filter((_card) => new Date(_card.startDate).toDateString() === date)
+    .forEach((_card, cardIndex) => {
+      renderElement(
+          day.querySelector(`.trip-events__list`),
+          cardIndex === 0 && dateIndex === 0 ? getCardEdit(_card) : getCard(_card)
+      );
+    });
+
+  renderElement(tripDays, day.parentElement.innerHTML);
+});
+
+const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
+
+document.querySelector(`.trip-info__cost-value`).textContent = getFullPrice;

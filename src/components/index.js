@@ -1,19 +1,19 @@
-import {getEventsContent} from "./events-content";
+import {getCardEdit} from "./card-edit";
 import {getEventsSorting} from "./events-sorting";
 import {getFilters} from "./filters";
 import {getMenu} from "./menu";
 import {getTripDayItem} from "./trip-day-item";
 import {getTripDays} from "./trip-days";
 import {getTripInfo} from "./trip-info";
-import {getTripEventsItem} from "./trip-events-item";
+import {getCard} from "./card";
 
 export {
-  getEventsContent,
+  getCardEdit,
   getEventsSorting,
   getFilters,
   getMenu,
   getTripDayItem,
   getTripDays,
   getTripInfo,
-  getTripEventsItem
+  getCard
 };
