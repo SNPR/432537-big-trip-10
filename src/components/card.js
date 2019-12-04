@@ -1,7 +1,4 @@
-const parseTime = (UTCTimestamp) => {
-  const date = new Date(UTCTimestamp);
-  return `${date.getHours()}:${date.getMinutes()}`;
-};
+import {parseTime} from "../utils";
 
 export const getCard = (card) => {
   return `

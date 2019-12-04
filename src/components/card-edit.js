@@ -1,9 +1,4 @@
-const parseDate = (UTCTimestamp) => {
-  const date = new Date(UTCTimestamp);
-  return `${date.getDate()}/${date.getMonth()}/${String(
-      date.getFullYear()
-  ).slice(2)}`;
-};
+import {parseDate} from "../utils";
 
 export const getCardEdit = (card) => {
   return `
