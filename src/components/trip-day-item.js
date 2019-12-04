@@ -4,7 +4,7 @@ export const getTripDayItem = (card, day) => {
     <div class="day__info">
       <span class="day__counter">${day}</span>
       <time class="day__date" datetime="${card.startDate}">
-      ${new Date(card.startDate).toLocaleString(`default`, {
+      ${new Date(card.startDate).toLocaleString(`en-US`, {
     month: `short`
   })}
       ${new Date(card.startDate).getDate()}
