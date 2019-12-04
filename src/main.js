@@ -8,7 +8,7 @@ import {
   getTripInfo,
   getCard
 } from "./components";
-import {renderElement} from "./utils";
+import {renderElement, createElement} from "./utils";
 import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
@@ -31,28 +31,18 @@ renderElement(tripEvents, getTripDays());
 const tripDays = document.querySelector(`.trip-days`);
 
 dates.forEach((date, dateIndex) => {
-  const currentDateCard = cards.find(
-      (_card) => new Date(date).getDate() === new Date(_card.startDate).getDate()
-  );
-  const currentDayEvents = cards.filter(
-      (_card) =>
-        new Date(_card.startDate).getDate() ===
-      new Date(currentDateCard.startDate).getDate()
-  );
-  renderElement(
-      tripDays,
-      getTripDayItem(currentDateCard.startDate, dateIndex + 1)
-  );
-  const tripDayItem = document.querySelectorAll(`.trip-events__list`)[
-    dateIndex
-  ];
-  currentDayEvents.forEach((cardData, eventsIndex) => {
-    if (dateIndex === 0 && eventsIndex === 0) {
-      renderElement(tripDayItem, getCardEdit(cardData));
-    } else {
-      renderElement(tripDayItem, getCard(cardData));
-    }
-  });
+  const day = createElement(getTripDayItem(new Date(date), dateIndex + 1));
+
+  cards
+    .filter((_card) => new Date(_card.startDate).toDateString() === date)
+    .forEach((_card, cardIndex) =>
+      renderElement(
+          day.querySelector(`.trip-events__list`),
+          dateIndex === 0 && cardIndex === 0 ? getCardEdit(_card) : getCard(_card)
+      )
+    );
+
+  renderElement(tripDays, day.innerHTML);
 });
 
 const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);

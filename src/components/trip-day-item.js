@@ -1,6 +1,5 @@
 export const getTripDayItem = (date, day) => {
-  return `
-    <li class="trip-days__item  day">
+  return `<li class="trip-days__item  day">
     <div class="day__info">
       <span class="day__counter">${day}</span>
       <time class="day__date" datetime="${date}">
