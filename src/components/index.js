@@ -1,4 +1,4 @@
-import {getCardEdit} from "./cardEdit";
+import {getCardEdit} from "./card-edit";
 import {getEventsSorting} from "./events-sorting";
 import {getFilters} from "./filters";
 import {getMenu} from "./menu";
