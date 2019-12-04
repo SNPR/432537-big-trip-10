@@ -1,19 +1,19 @@
-import {getCardEdit} from "./card-edit";
-import {getEventsSorting} from "./events-sorting";
-import {getFilters} from "./filters";
-import {getMenu} from "./menu";
-import {getTripDayItem} from "./trip-day-item";
-import {getTripDays} from "./trip-days";
-import {getTripInfo} from "./trip-info";
-import {getCard} from "./card";
+import CardEditComponent from "./card-edit";
+import EventsSortingComponent from "./events-sorting";
+import FiltersComponent from "./filters";
+import MenuComponent from "./menu";
+import TripDayItemComponent from "./trip-day-item";
+import TripDaysComponent from "./trip-days";
+import TripInfoComponent from "./trip-info";
+import CardComponent from "./card";
 
 export {
-  getCardEdit,
-  getEventsSorting,
-  getFilters,
-  getMenu,
-  getTripDayItem,
-  getTripDays,
-  getTripInfo,
-  getCard
+  CardEditComponent,
+  EventsSortingComponent,
+  FiltersComponent,
+  MenuComponent,
+  TripDayItemComponent,
+  TripDaysComponent,
+  TripInfoComponent,
+  CardComponent
 };

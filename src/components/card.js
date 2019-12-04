@@ -1,8 +1,7 @@
-import {parseTime} from "../utils";
+import {createElement, parseTime} from "../utils.js";
 
-export const getCard = (card) => {
-  return `
-      <li class="trip-events__item">
+const getCardTemplate = (card) => {
+  return `<li class="trip-events__item">
       <div class="event">
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42"
@@ -49,3 +48,26 @@ export const getCard = (card) => {
     </li>
   `;
 };
+
+export default class Card {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return getCardTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

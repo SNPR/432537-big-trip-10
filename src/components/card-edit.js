@@ -1,8 +1,7 @@
-import {parseDate} from "../utils";
+import {createElement, parseDate} from "../utils.js";
 
-export const getCardEdit = (card) => {
-  return `
-    <form
+const getCardEditTemplate = (card) => {
+  return `<form
       class="trip-events__item  event  event--edit"
       action="#"
       method="post"
@@ -322,3 +321,26 @@ export const getCardEdit = (card) => {
     </form>
   `;
 };
+
+export default class CardEdit {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return getCardEditTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
