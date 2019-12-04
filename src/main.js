@@ -35,12 +35,16 @@ dates.forEach((date, dateIndex) => {
 
   cards
     .filter((_card) => new Date(_card.startDate).toDateString() === date)
-    .forEach((_card, cardIndex) =>
-      renderElement(
-          day.querySelector(`.trip-events__list`),
-          dateIndex === 0 && cardIndex === 0 ? getCardEdit(_card) : getCard(_card)
-      )
-    );
+    .forEach((_card, cardIndex) => {
+      if (cardIndex === 0 && dateIndex === 0) {
+        renderElement(
+            document.querySelector(`.trip-events__trip-sort`),
+            getCardEdit(_card),
+            `afterend`
+        );
+      }
+      renderElement(day.querySelector(`.trip-events__list`), getCard(_card));
+    });
 
   renderElement(tripDays, day.innerHTML);
 });
