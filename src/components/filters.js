@@ -1,7 +1,13 @@
 import {createElement} from "../utils.js";
 
-const getFiltersTemplate = (filters) => {
-  return `<form class="trip-filters" action="#" method="get">
+export default class Filters {
+  constructor(filters) {
+    this._filters = filters;
+    this._element = null;
+  }
+
+  getTemplate(filters) {
+    return `<form class="trip-filters" action="#" method="get">
     ${filters
       .map((filter) => {
         return `
@@ -26,21 +32,11 @@ const getFiltersTemplate = (filters) => {
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>
   `;
-};
-
-export default class Filters {
-  constructor(filters) {
-    this._filters = filters;
-    this._element = null;
-  }
-
-  getTemplate() {
-    return getFiltersTemplate(this._filters);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate());
+      this._element = createElement(this.getTemplate(this._filters));
     }
 
     return this._element;

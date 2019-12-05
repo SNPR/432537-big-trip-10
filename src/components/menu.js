@@ -1,7 +1,13 @@
 import {createElement} from "../utils.js";
 
-const getMenuTemplate = (menuItems) => {
-  return `<nav class="trip-controls__trip-tabs  trip-tabs">
+export default class Menu {
+  constructor(menuItems) {
+    this._menuItems = menuItems;
+    this._element = null;
+  }
+
+  getTemplate(menuItems) {
+    return `<nav class="trip-controls__trip-tabs  trip-tabs">
     ${menuItems
       .map(
           (item) =>
@@ -11,21 +17,11 @@ const getMenuTemplate = (menuItems) => {
       .join(``)}
     </nav>
   `;
-};
-
-export default class Menu {
-  constructor(menuItems) {
-    this._menuItems = menuItems;
-    this._element = null;
-  }
-
-  getTemplate() {
-    return getMenuTemplate(this._menuItems);
   }
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate());
+      this._element = createElement(this.getTemplate(this._menuItems));
     }
 
     return this._element;
