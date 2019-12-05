@@ -1,5 +1,17 @@
-export const renderElement = (container, element, position = `beforeend`) => {
-  container.insertAdjacentHTML(position, element);
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
+export const renderElement = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };
 
 export const createElement = (template) => {
@@ -9,9 +21,14 @@ export const createElement = (template) => {
   return element.firstChild;
 };
 
-export const parseTime = (UTCTimestamp) => {
-  const date = new Date(UTCTimestamp);
-  return `${date.getHours()}:${date.getMinutes()}`;
+const addZero = (value) => {
+  if (value === 0) {
+    return `00`;
+  } else if (value < 10) {
+    return `0${value}`;
+  }
+
+  return value;
 };
 
 export const parseDate = (UTCTimestamp) => {
@@ -19,4 +36,21 @@ export const parseDate = (UTCTimestamp) => {
   return `${date.getDate()}/${date.getMonth()}/${String(
       date.getFullYear()
   ).slice(2)}`;
+};
+
+export const parseTime = (UTCTimestamp) => {
+  const date = new Date(UTCTimestamp);
+  return `${addZero(date.getHours())}:${addZero(date.getMinutes())}`;
+};
+
+export const getDuration = (startDateUTCTimestamp, endDateUTCTimestamp) => {
+  const startDate = new Date(startDateUTCTimestamp);
+
+  const monthName = startDate.toLocaleString(`en-US`, {
+    month: `short`
+  });
+  const startDay = startDate.getDate();
+  const endDay = new Date(endDateUTCTimestamp).getDate();
+
+  return `${monthName} ${startDay}&nbsp;&mdash;&nbsp;${endDay}`;
 };
