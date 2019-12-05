@@ -6,6 +6,7 @@ import TripDayItemComponent from "./trip-day-item";
 import TripDaysComponent from "./trip-days";
 import TripInfoComponent from "./trip-info";
 import CardComponent from "./card";
+import NoEventsMessageComponent from "./no-events-message";
 
 export {
   CardEditComponent,
@@ -15,5 +16,6 @@ export {
   TripDayItemComponent,
   TripDaysComponent,
   TripInfoComponent,
-  CardComponent
+  CardComponent,
+  NoEventsMessageComponent
 };

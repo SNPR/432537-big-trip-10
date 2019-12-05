@@ -6,25 +6,17 @@ import {
   TripDayItemComponent,
   TripDaysComponent,
   TripInfoComponent,
-  CardComponent
+  CardComponent,
+  NoEventsMessageComponent
 } from "./components";
 import {renderElement, RenderPosition} from "./utils";
 import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
 
-const dates = [
-  ...new Set(cards.map((item) => new Date(item.startDate).toDateString()))
-];
-
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
-renderElement(
-    tripInfo,
-    new TripInfoComponent(cards).getElement(),
-    RenderPosition.AFTERBEGIN
-);
-
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
+const tripEvents = document.querySelector(`.trip-events`);
 
 renderElement(
     tripControls,
@@ -38,62 +30,97 @@ renderElement(
     RenderPosition.BEFOREEND
 );
 
-const tripEvents = document.querySelector(`.trip-events`);
-renderElement(
-    tripEvents,
-    new EventsSortingComponent().getElement(),
-    RenderPosition.BEFOREEND
-);
-renderElement(
-    tripEvents,
-    new TripDaysComponent().getElement(),
-    RenderPosition.BEFOREEND
-);
+if (cards.length === 0) {
+  renderElement(
+      tripEvents,
+      new NoEventsMessageComponent().getElement(),
+      RenderPosition.BEFOREEND
+  );
+} else {
+  const dates = [
+    ...new Set(cards.map((item) => new Date(item.startDate).toDateString()))
+  ];
+  renderElement(
+      tripInfo,
+      new TripInfoComponent(cards).getElement(),
+      RenderPosition.AFTERBEGIN
+  );
 
-const tripDays = document.querySelector(`.trip-days`);
+  renderElement(
+      tripEvents,
+      new EventsSortingComponent().getElement(),
+      RenderPosition.BEFOREEND
+  );
 
-dates.forEach((date, dateIndex) => {
-  const day = new TripDayItemComponent(
-      new Date(date),
-      dateIndex + 1
-  ).getElement();
+  renderElement(
+      tripEvents,
+      new TripDaysComponent().getElement(),
+      RenderPosition.BEFOREEND
+  );
 
-  cards
-    .filter((_card) => new Date(_card.startDate).toDateString() === date)
-    .forEach((_card) => {
-      const eventsList = day.querySelector(`.trip-events__list`);
+  const tripDays = document.querySelector(`.trip-days`);
 
-      const cardComponent = new CardComponent(_card);
-      const cardEditComponent = new CardEditComponent(_card);
+  dates.forEach((date, dateIndex) => {
+    const day = new TripDayItemComponent(
+        new Date(date),
+        dateIndex + 1
+    ).getElement();
 
-      renderElement(
-          eventsList,
-          cardComponent.getElement(),
-          RenderPosition.BEFOREEND
-      );
+    cards
+      .filter((_card) => new Date(_card.startDate).toDateString() === date)
+      .forEach((_card) => {
+        const eventsList = day.querySelector(`.trip-events__list`);
 
-      cardComponent
-        .getElement()
-        .querySelector(`.event__rollup-btn`)
-        .addEventListener(`click`, () => {
+        const cardComponent = new CardComponent(_card);
+        const cardEditComponent = new CardEditComponent(_card);
+
+        const replaceCardToCardEdit = () => {
           eventsList.replaceChild(
               cardEditComponent.getElement(),
               cardComponent.getElement()
           );
-        });
+        };
 
-      cardEditComponent.getElement().addEventListener(`submit`, (evt) => {
-        evt.preventDefault();
-        eventsList.replaceChild(
+        const replaceCardEditToCard = () => {
+          eventsList.replaceChild(
+              cardComponent.getElement(),
+              cardEditComponent.getElement()
+          );
+        };
+
+        const onEscKeyDown = (evt) => {
+          const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+          if (isEscKey) {
+            replaceCardEditToCard();
+            document.removeEventListener(`keydown`, onEscKeyDown);
+          }
+        };
+
+        renderElement(
+            eventsList,
             cardComponent.getElement(),
-            cardEditComponent.getElement()
+            RenderPosition.BEFOREEND
         );
+
+        cardComponent
+          .getElement()
+          .querySelector(`.event__rollup-btn`)
+          .addEventListener(`click`, () => {
+            replaceCardToCardEdit();
+            document.addEventListener(`keydown`, onEscKeyDown);
+          });
+
+        cardEditComponent.getElement().addEventListener(`submit`, (evt) => {
+          evt.preventDefault();
+          replaceCardEditToCard();
+        });
       });
-    });
 
-  renderElement(tripDays, day, RenderPosition.BEFOREEND);
-});
+    renderElement(tripDays, day, RenderPosition.BEFOREEND);
+  });
 
-const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
+  const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
 
-document.querySelector(`.trip-info__cost-value`).textContent = getFullPrice;
+  document.querySelector(`.trip-info__cost-value`).textContent = getFullPrice;
+}
