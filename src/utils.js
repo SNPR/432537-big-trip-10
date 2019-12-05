@@ -42,3 +42,15 @@ export const parseTime = (UTCTimestamp) => {
   const date = new Date(UTCTimestamp);
   return `${addZero(date.getHours())}:${addZero(date.getMinutes())}`;
 };
+
+export const getDuration = (startDateUTCTimestamp, endDateUTCTimestamp) => {
+  const startDate = new Date(startDateUTCTimestamp);
+
+  const monthName = startDate.toLocaleString(`en-US`, {
+    month: `short`
+  });
+  const startDay = startDate.getDate();
+  const endDay = new Date(endDateUTCTimestamp).getDate();
+
+  return `${monthName} ${startDay}&nbsp;&mdash;&nbsp;${endDay}`;
+};
