@@ -64,21 +64,30 @@ dates.forEach((date, dateIndex) => {
       const eventsList = day.querySelector(`.trip-events__list`);
 
       const cardComponent = new CardComponent(_card);
-      const cardElement = cardComponent.getElement();
       const cardEditComponent = new CardEditComponent(_card);
-      const cardEditElement = cardEditComponent.getElement();
 
-      renderElement(eventsList, cardElement, RenderPosition.BEFOREEND);
+      renderElement(
+          eventsList,
+          cardComponent.getElement(),
+          RenderPosition.BEFOREEND
+      );
 
-      cardElement
+      cardComponent
+        .getElement()
         .querySelector(`.event__rollup-btn`)
         .addEventListener(`click`, () => {
-          eventsList.replaceChild(cardEditElement, cardElement);
+          eventsList.replaceChild(
+              cardEditComponent.getElement(),
+              cardComponent.getElement()
+          );
         });
 
-      cardEditElement.addEventListener(`submit`, (evt) => {
+      cardEditComponent.getElement().addEventListener(`submit`, (evt) => {
         evt.preventDefault();
-        eventsList.replaceChild(cardElement, cardEditElement);
+        eventsList.replaceChild(
+            cardComponent.getElement(),
+            cardEditComponent.getElement()
+        );
       });
     });
 
