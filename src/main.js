@@ -9,7 +9,7 @@ import {
   CardComponent,
   NoEventsMessageComponent
 } from "./components";
-import {renderElement, RenderPosition} from "./utils/render";
+import {renderElement, RenderPosition, replace} from "./utils/render";
 import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
@@ -68,25 +68,11 @@ if (cards.length === 0) {
         const cardComponent = new CardComponent(_card);
         const cardEditComponent = new CardEditComponent(_card);
 
-        const replaceCardToCardEdit = () => {
-          eventsList.replaceChild(
-              cardEditComponent.getElement(),
-              cardComponent.getElement()
-          );
-        };
-
-        const replaceCardEditToCard = () => {
-          eventsList.replaceChild(
-              cardComponent.getElement(),
-              cardEditComponent.getElement()
-          );
-        };
-
         const onEscKeyDown = (evt) => {
           const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
           if (isEscKey) {
-            replaceCardEditToCard();
+            replace(cardComponent, cardEditComponent);
             document.removeEventListener(`keydown`, onEscKeyDown);
           }
         };
@@ -97,13 +83,13 @@ if (cards.length === 0) {
           .getElement()
           .querySelector(`.event__rollup-btn`)
           .addEventListener(`click`, () => {
-            replaceCardToCardEdit();
+            replace(cardEditComponent, cardComponent);
             document.addEventListener(`keydown`, onEscKeyDown);
           });
 
         cardEditComponent.getElement().addEventListener(`submit`, (evt) => {
           evt.preventDefault();
-          replaceCardEditToCard();
+          replace(cardComponent, cardEditComponent);
         });
       });
 
