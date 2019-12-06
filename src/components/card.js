@@ -1,40 +1,41 @@
-import {createElement, parseTime} from "../utils.js";
+import AbstractComponent from "./abstract-component";
+import {parseTime} from "../utils/common";
 
-export default class Card {
+export default class Card extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
-  getTemplate(card) {
+  getTemplate() {
     return `<li class="trip-events__item">
     <div class="event">
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42"
-        src="img/icons/${card.type}.png" alt="Event type icon">
+        src="img/icons/${this._card.type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${card.type} to airport</h3>
+      <h3 class="event__title">${this._card.type} to airport</h3>
 
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="2019-03-18T10:30">
-          ${parseTime(card.startDate)}
+          ${parseTime(this._card.startDate)}
           </time>
           &mdash;
           <time class="event__end-time" datetime="2019-03-18T11:00">
-          ${parseTime(card.endDate)}
+          ${parseTime(this._card.endDate)}
           </time>
         </p>
         <p class="event__duration">1H 30M</p>
       </div>
 
       <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${card.price}</span>
+        &euro;&nbsp;<span class="event__price-value">${this._card.price}</span>
       </p>
 
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-      ${card.offers
+      ${this._card.offers
         .map((offer) => {
           return `
             <li class="event__offer">
@@ -55,15 +56,9 @@ export default class Card {
 `;
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate(this._card));
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
   }
 }

@@ -1,33 +1,25 @@
-import {createElement, getDuration} from "../utils.js";
+import AbstractComponent from "./abstract-component";
+import {getDuration} from "../utils/common.js";
 
-export default class TripInfo {
+export default class TripInfo extends AbstractComponent {
   constructor(cards) {
+    super();
     this._cards = cards;
-    this._element = null;
   }
 
-  getTemplate(cards) {
+  getTemplate() {
     return `<div class="trip-info__main">
-    <h1 class="trip-info__title">${cards[0].city}
-    ${cards.length > 2 ? `&mdash; ... &mdash;` : `&mdash;`}
-    ${cards[cards.length - 1].city}
+    <h1 class="trip-info__title">${this._cards[0].city}
+    ${this._cards.length > 2 ? `&mdash; ... &mdash;` : `&mdash;`}
+    ${this._cards[this._cards.length - 1].city}
     </h1>
     <p class="trip-info__dates">
-    ${getDuration(cards[0].startDate, cards[cards.length - 1].endDate)}
+    ${getDuration(
+      this._cards[0].startDate,
+      this._cards[this._cards.length - 1].endDate
+  )}
     </p>
   </div>
 `;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate(this._cards));
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
