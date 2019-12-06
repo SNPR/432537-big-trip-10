@@ -1,12 +1,13 @@
-import {createElement, parseDate} from "../utils.js";
+import AbstractComponent from "./abstract-component";
+import {parseDate} from "../utils.js";
 
-export default class CardEdit {
+export default class CardEdit extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
-  getTemplate(card) {
+  getTemplate() {
     return `<li class="trip-events__item">
     <form class="event  event--edit" action="#" method="post">
         <header class="event__header">
@@ -17,7 +18,7 @@ export default class CardEdit {
                 class="event__type-icon"
                 width="17"
                 height="17"
-                src="img/icons/${card.type}.png"
+                src="img/icons/${this._card.type}.png"
                 alt="Event type icon"
               />
             </label>
@@ -38,7 +39,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="taxi"
-                    ${card.type === `taxi` && `checked`}
+                    ${this._card.type === `taxi` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--taxi"
@@ -54,7 +55,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="bus"
-                    ${card.type === `bus` && `checked`}
+                    ${this._card.type === `bus` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--bus"
@@ -70,7 +71,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="train"
-                    ${card.type === `train` && `checked`}
+                    ${this._card.type === `train` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--train"
@@ -86,7 +87,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="ship"
-                    ${card.type === `ship` && `checked`}
+                    ${this._card.type === `ship` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--ship"
@@ -102,7 +103,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="transport"
-                    ${card.type === `transport` && `checked`}
+                    ${this._card.type === `transport` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--transport"
@@ -118,7 +119,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="drive"
-                    ${card.type === `drive` && `checked`}
+                    ${this._card.type === `drive` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--drive"
@@ -134,7 +135,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="flight"
-                    ${card.type === `flight` && `checked`}
+                    ${this._card.type === `flight` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--flight"
@@ -154,7 +155,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="check-in"
-                    ${card.type === `check-in` && `checked`}
+                    ${this._card.type === `check-in` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--check-in"
@@ -170,7 +171,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="sightseeing"
-                    ${card.type === `sightseeing` && `checked`}
+                    ${this._card.type === `sightseeing` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--sightseeing"
@@ -186,7 +187,7 @@ export default class CardEdit {
                     type="radio"
                     name="event-type"
                     value="restaurant"
-                    ${card.type === `restaurant` && `checked`}
+                    ${this._card.type === `restaurant` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--restaurant"
@@ -203,14 +204,14 @@ export default class CardEdit {
               class="event__label  event__type-output"
               for="event-destination-1"
             >
-            ${card.type} at
+            ${this._card.type} at
             </label>
             <input
               class="event__input  event__input--destination"
               id="event-destination-1"
               type="text"
               name="event-destination"
-              value="${card.city}"
+              value="${this._card.city}"
               list="destination-list-1"
             />
             <datalist id="destination-list-1">
@@ -229,7 +230,7 @@ export default class CardEdit {
               id="event-start-time-1"
               type="text"
               name="event-start-time"
-              value="${parseDate(card.startDate)}"
+              value="${parseDate(this._card.startDate)}"
             />
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">
@@ -240,7 +241,7 @@ export default class CardEdit {
               id="event-end-time-1"
               type="text"
               name="event-end-time"
-              value="${parseDate(card.endDate)}"
+              value="${parseDate(this._card.endDate)}"
             />
           </div>
 
@@ -254,7 +255,7 @@ export default class CardEdit {
               id="event-price-1"
               type="text"
               name="event-price"
-              value="${card.price}"
+              value="${this._card.price}"
             />
           </div>
 
@@ -296,7 +297,7 @@ export default class CardEdit {
             </h3>
 
             <div class="event__available-offers">
-            ${card.offers
+            ${this._card.offers
               .map((offer) => {
                 return `
                   <div class="event__offer-selector">
@@ -326,12 +327,12 @@ export default class CardEdit {
               Destination
             </h3>
             <p class="event__destination-description">
-            ${card.description}
+            ${this._card.description}
             </p>
 
             <div class="event__photos-container">
               <div class="event__photos-tape">
-              ${card.photos
+              ${this._card.photos
                 .map((photo) => {
                   return `
                     <img
@@ -349,17 +350,5 @@ export default class CardEdit {
       </form>
     </li>
   `;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate(this._card));
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

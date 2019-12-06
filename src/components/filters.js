@@ -1,14 +1,14 @@
-import {createElement} from "../utils.js";
+import AbstractComponent from "./abstract-component";
 
-export default class Filters {
+export default class Filters extends AbstractComponent {
   constructor(filters) {
+    super();
     this._filters = filters;
-    this._element = null;
   }
 
-  getTemplate(filters) {
+  getTemplate() {
     return `<form class="trip-filters" action="#" method="get">
-    ${filters
+    ${this._filters
       .map((filter) => {
         return `
           <div class="trip-filters__filter">
@@ -32,17 +32,5 @@ export default class Filters {
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>
   `;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate(this._filters));
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
