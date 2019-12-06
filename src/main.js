@@ -79,15 +79,12 @@ if (cards.length === 0) {
 
         renderElement(eventsList, cardComponent, RenderPosition.BEFOREEND);
 
-        cardComponent
-          .getElement()
-          .querySelector(`.event__rollup-btn`)
-          .addEventListener(`click`, () => {
-            replace(cardEditComponent, cardComponent);
-            document.addEventListener(`keydown`, onEscKeyDown);
-          });
+        cardComponent.setClickHandler(() => {
+          replace(cardEditComponent, cardComponent);
+          document.addEventListener(`keydown`, onEscKeyDown);
+        });
 
-        cardEditComponent.getElement().addEventListener(`submit`, (evt) => {
+        cardEditComponent.setSubmitHandler((evt) => {
           evt.preventDefault();
           replace(cardComponent, cardEditComponent);
         });
