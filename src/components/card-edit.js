@@ -351,4 +351,8 @@ export default class CardEdit extends AbstractComponent {
     </li>
   `;
   }
+
+  setSubmitHandler(handler) {
+    this.getElement().addEventListener(`submit`, handler);
+  }
 }
