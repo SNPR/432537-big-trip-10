@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component";
-import {parseTime} from "../utils.js";
+import {parseTime} from "../utils/common";
 
 export default class Card extends AbstractComponent {
   constructor(card) {

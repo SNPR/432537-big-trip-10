@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component";
-import {parseDate} from "../utils.js";
+import {parseDate} from "../utils/common.js";
 
 export default class CardEdit extends AbstractComponent {
   constructor(card) {

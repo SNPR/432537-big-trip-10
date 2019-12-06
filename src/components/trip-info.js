@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component";
-import {getDuration} from "../utils.js";
+import {getDuration} from "../utils/common.js";
 
 export default class TripInfo extends AbstractComponent {
   constructor(cards) {

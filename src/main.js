@@ -9,7 +9,7 @@ import {
   CardComponent,
   NoEventsMessageComponent
 } from "./components";
-import {renderElement, RenderPosition} from "./utils";
+import {renderElement, RenderPosition} from "./utils/render";
 import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
