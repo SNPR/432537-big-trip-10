@@ -55,4 +55,10 @@ export default class Card extends AbstractComponent {
   </li>
 `;
   }
+
+  setClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
+  }
 }
