@@ -20,20 +20,20 @@ const tripEvents = document.querySelector(`.trip-events`);
 
 renderElement(
     tripControls,
-    new MenuComponent(menuItems).getElement(),
+    new MenuComponent(menuItems),
     RenderPosition.BEFOREEND
 );
 
 renderElement(
     tripControls,
-    new FiltersComponent(filters).getElement(),
+    new FiltersComponent(filters),
     RenderPosition.BEFOREEND
 );
 
 if (cards.length === 0) {
   renderElement(
       tripEvents,
-      new NoEventsMessageComponent().getElement(),
+      new NoEventsMessageComponent(),
       RenderPosition.BEFOREEND
   );
 } else {
@@ -42,34 +42,28 @@ if (cards.length === 0) {
   ];
   renderElement(
       tripInfo,
-      new TripInfoComponent(cards).getElement(),
+      new TripInfoComponent(cards),
       RenderPosition.AFTERBEGIN
   );
 
   renderElement(
       tripEvents,
-      new EventsSortingComponent().getElement(),
+      new EventsSortingComponent(),
       RenderPosition.BEFOREEND
   );
 
-  renderElement(
-      tripEvents,
-      new TripDaysComponent().getElement(),
-      RenderPosition.BEFOREEND
-  );
+  renderElement(tripEvents, new TripDaysComponent(), RenderPosition.BEFOREEND);
 
   const tripDays = document.querySelector(`.trip-days`);
 
   dates.forEach((date, dateIndex) => {
-    const day = new TripDayItemComponent(
-        new Date(date),
-        dateIndex + 1
-    ).getElement();
+    const day = new TripDayItemComponent(new Date(date), dateIndex + 1);
+    const dayElement = day.getElement();
 
     cards
       .filter((_card) => new Date(_card.startDate).toDateString() === date)
       .forEach((_card) => {
-        const eventsList = day.querySelector(`.trip-events__list`);
+        const eventsList = dayElement.querySelector(`.trip-events__list`);
 
         const cardComponent = new CardComponent(_card);
         const cardEditComponent = new CardEditComponent(_card);
@@ -97,11 +91,7 @@ if (cards.length === 0) {
           }
         };
 
-        renderElement(
-            eventsList,
-            cardComponent.getElement(),
-            RenderPosition.BEFOREEND
-        );
+        renderElement(eventsList, cardComponent, RenderPosition.BEFOREEND);
 
         cardComponent
           .getElement()
