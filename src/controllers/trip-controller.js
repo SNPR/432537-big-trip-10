@@ -10,17 +10,23 @@ import {SortType} from "../utils/constants";
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 
-const renderCards = (cards, container) => {
-  const dates = [
-    ...new Set(cards.map((item) => new Date(item.startDate).toDateString()))
-  ];
+const renderCards = (cards, container, isDefaultSorting = true) => {
+  const dates = isDefaultSorting
+    ? [...new Set(cards.map((item) => new Date(item.startDate).toDateString()))]
+    : [true];
 
   dates.forEach((date, dateIndex) => {
-    const day = new TripDayItemComponent(new Date(date), dateIndex + 1);
+    const day = isDefaultSorting
+      ? new TripDayItemComponent(new Date(date), dateIndex + 1)
+      : new TripDayItemComponent();
     const dayElement = day.getElement();
 
     cards
-      .filter((_card) => new Date(_card.startDate).toDateString() === date)
+      .filter((_card) => {
+        return isDefaultSorting
+          ? new Date(_card.startDate).toDateString() === date
+          : _card;
+      })
       .forEach((_card) => {
         const eventsList = dayElement.querySelector(`.trip-events__list`);
 
@@ -76,10 +82,12 @@ export default class TripController {
 
     this._eventsSortingComponent.setSortTypeChangeHandler((sortType) => {
       let sortedCards = [];
+      let isDefaultSorting = false;
 
       switch (sortType) {
         case SortType.DATE_DOWN:
           sortedCards = cards.slice();
+          isDefaultSorting = true;
           break;
         case SortType.TIME_DOWN:
           sortedCards = cards.slice().sort((a, b) => b.startDate - a.startDate);
@@ -90,7 +98,7 @@ export default class TripController {
       }
 
       this._container.getElement().innerHTML = ``;
-      renderCards(sortedCards, this._container);
+      renderCards(sortedCards, this._container, isDefaultSorting);
     });
 
     const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
