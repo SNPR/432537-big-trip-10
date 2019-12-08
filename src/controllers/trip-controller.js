@@ -6,6 +6,7 @@ import {
   CardComponent
 } from "../components";
 import {renderElement, RenderPosition, replace} from "../utils/render";
+import {SortType} from "../utils/constants";
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 
@@ -70,6 +71,24 @@ export default class TripController {
           day,
           RenderPosition.BEFOREEND
       );
+    });
+
+    this._eventsSortingComponent.setSortTypeChangeHandler((sortType) => {
+      let sortedCards = [];
+
+      switch (sortType) {
+        case SortType.DATE_DOWN:
+          sortedCards = cards.slice();
+          break;
+        case SortType.TIME_DOWN:
+          sortedCards = cards.slice().sort((a, b) => b.startDate - a.startDate);
+          break;
+        case SortType.PRICE_DOWN:
+          sortedCards = cards.slice().sort((a, b) => a.price - b.price);
+          break;
+      }
+
+      this._container.getElement().innerHTML = ``;
     });
 
     const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
