@@ -1,6 +1,12 @@
 import AbstractComponent from "./abstract-component";
+import {SortType} from "../utils/constants";
 
 export default class EventsSorting extends AbstractComponent {
+  constructor() {
+    super();
+    this._currentSortType = SortType.DATE_DOWN;
+  }
+
   getTemplate() {
     return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       <span class="trip-sort__item  trip-sort__item--day">Day</span>
@@ -13,6 +19,7 @@ export default class EventsSorting extends AbstractComponent {
           name="trip-sort"
           value="sort-event"
           checked
+          data-sort-type="${SortType.DATE_DOWN}"
         />
         <label class="trip-sort__btn" for="sort-event">Event</label>
       </div>
@@ -24,6 +31,7 @@ export default class EventsSorting extends AbstractComponent {
           type="radio"
           name="trip-sort"
           value="sort-time"
+          data-sort-type="${SortType.TIME_DOWN}"
         />
         <label class="trip-sort__btn" for="sort-time">
           Time
@@ -47,6 +55,7 @@ export default class EventsSorting extends AbstractComponent {
           type="radio"
           name="trip-sort"
           value="sort-price"
+          data-sort-type="${SortType.PRICE_DOWN}"
         />
         <label class="trip-sort__btn" for="sort-price">
           Price
@@ -66,5 +75,23 @@ export default class EventsSorting extends AbstractComponent {
       <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
   </form>
 `;
+  }
+
+  setSortTypeChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      if (evt.target.tagName !== `INPUT`) {
+        return;
+      }
+
+      const sortType = evt.target.dataset.sortType;
+
+      if (this._currentSortType === sortType) {
+        return;
+      }
+
+      this._currentSortType = sortType;
+
+      handler(this._currentSortType);
+    });
   }
 }
