@@ -10,6 +10,49 @@ import {SortType} from "../utils/constants";
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 
+const renderCards = (cards, container) => {
+  const dates = [
+    ...new Set(cards.map((item) => new Date(item.startDate).toDateString()))
+  ];
+
+  dates.forEach((date, dateIndex) => {
+    const day = new TripDayItemComponent(new Date(date), dateIndex + 1);
+    const dayElement = day.getElement();
+
+    cards
+      .filter((_card) => new Date(_card.startDate).toDateString() === date)
+      .forEach((_card) => {
+        const eventsList = dayElement.querySelector(`.trip-events__list`);
+
+        const cardComponent = new CardComponent(_card);
+        const cardEditComponent = new CardEditComponent(_card);
+
+        const onEscKeyDown = (evt) => {
+          const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+
+          if (isEscKey) {
+            replace(cardComponent, cardEditComponent);
+            document.removeEventListener(`keydown`, onEscKeyDown);
+          }
+        };
+
+        renderElement(eventsList, cardComponent, RenderPosition.BEFOREEND);
+
+        cardComponent.setClickHandler(() => {
+          replace(cardEditComponent, cardComponent);
+          document.addEventListener(`keydown`, onEscKeyDown);
+        });
+
+        cardEditComponent.setSubmitHandler((evt) => {
+          evt.preventDefault();
+          replace(cardComponent, cardEditComponent);
+        });
+      });
+
+    renderElement(container.getElement(), day, RenderPosition.BEFOREEND);
+  });
+};
+
 export default class TripController {
   constructor(container) {
     this._container = container;
@@ -17,9 +60,8 @@ export default class TripController {
   }
 
   render(cards) {
-    const dates = [
-      ...new Set(cards.map((item) => new Date(item.startDate).toDateString()))
-    ];
+    renderCards(cards, this._container);
+
     renderElement(
         tripInfo,
         new TripInfoComponent(cards),
@@ -32,47 +74,6 @@ export default class TripController {
         RenderPosition.AFTERBEGIN
     );
 
-    dates.forEach((date, dateIndex) => {
-      const day = new TripDayItemComponent(new Date(date), dateIndex + 1);
-      const dayElement = day.getElement();
-
-      cards
-        .filter((_card) => new Date(_card.startDate).toDateString() === date)
-        .forEach((_card) => {
-          const eventsList = dayElement.querySelector(`.trip-events__list`);
-
-          const cardComponent = new CardComponent(_card);
-          const cardEditComponent = new CardEditComponent(_card);
-
-          const onEscKeyDown = (evt) => {
-            const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-            if (isEscKey) {
-              replace(cardComponent, cardEditComponent);
-              document.removeEventListener(`keydown`, onEscKeyDown);
-            }
-          };
-
-          renderElement(eventsList, cardComponent, RenderPosition.BEFOREEND);
-
-          cardComponent.setClickHandler(() => {
-            replace(cardEditComponent, cardComponent);
-            document.addEventListener(`keydown`, onEscKeyDown);
-          });
-
-          cardEditComponent.setSubmitHandler((evt) => {
-            evt.preventDefault();
-            replace(cardComponent, cardEditComponent);
-          });
-        });
-
-      renderElement(
-          this._container.getElement(),
-          day,
-          RenderPosition.BEFOREEND
-      );
-    });
-
     this._eventsSortingComponent.setSortTypeChangeHandler((sortType) => {
       let sortedCards = [];
 
@@ -84,11 +85,12 @@ export default class TripController {
           sortedCards = cards.slice().sort((a, b) => b.startDate - a.startDate);
           break;
         case SortType.PRICE_DOWN:
-          sortedCards = cards.slice().sort((a, b) => a.price - b.price);
+          sortedCards = cards.slice().sort((a, b) => b.price - a.price);
           break;
       }
 
       this._container.getElement().innerHTML = ``;
+      renderCards(sortedCards, this._container);
     });
 
     const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
