@@ -2,12 +2,10 @@ import {
   CardEditComponent,
   EventsSortingComponent,
   TripDayItemComponent,
-  TripDaysComponent,
   TripInfoComponent,
   CardComponent
 } from "../components";
 import {renderElement, RenderPosition, replace} from "../utils/render";
-
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 
@@ -15,7 +13,6 @@ export default class TripController {
   constructor(container) {
     this._container = container;
     this._eventsSortingComponent = new EventsSortingComponent();
-    this._tripDaysComponent = new TripDaysComponent();
   }
 
   render(cards) {
@@ -31,13 +28,7 @@ export default class TripController {
     renderElement(
         tripEvents,
         this._eventsSortingComponent,
-        RenderPosition.BEFOREEND
-    );
-
-    renderElement(
-        tripEvents,
-        this._tripDaysComponent,
-        RenderPosition.BEFOREEND
+        RenderPosition.AFTERBEGIN
     );
 
     dates.forEach((date, dateIndex) => {
@@ -74,7 +65,11 @@ export default class TripController {
           });
         });
 
-      renderElement(this._container, day, RenderPosition.BEFOREEND);
+      renderElement(
+          this._container.getElement(),
+          day,
+          RenderPosition.BEFOREEND
+      );
     });
 
     const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
