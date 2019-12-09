@@ -1,7 +1,8 @@
 import {
   FiltersComponent,
   MenuComponent,
-  NoEventsMessageComponent
+  NoEventsMessageComponent,
+  TripDaysComponent
 } from "./components";
 import TripController from "./controllers/trip-controller";
 import {renderElement, RenderPosition} from "./utils/render";
@@ -11,6 +12,7 @@ import {cards} from "./mock/cards";
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
+const tripDaysComponent = new TripDaysComponent();
 
 renderElement(
     tripControls,
@@ -24,6 +26,8 @@ renderElement(
     RenderPosition.BEFOREEND
 );
 
+renderElement(tripEvents, tripDaysComponent, RenderPosition.BEFOREEND);
+
 if (cards.length === 0) {
   renderElement(
       tripEvents,
@@ -31,6 +35,6 @@ if (cards.length === 0) {
       RenderPosition.BEFOREEND
   );
 } else {
-  const tripController = new TripController(tripEvents);
+  const tripController = new TripController(tripDaysComponent);
   tripController.render(cards);
 }
