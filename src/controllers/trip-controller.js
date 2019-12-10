@@ -1,12 +1,12 @@
 import {
-  CardEditComponent,
   EventsSortingComponent,
   TripDayItemComponent,
-  TripInfoComponent,
-  CardComponent
+  TripInfoComponent
 } from "../components";
-import {renderElement, RenderPosition, replace} from "../utils/render";
+import {renderElement, RenderPosition} from "../utils/render";
 import {SortType} from "../utils/constants";
+import PointController from "./point-controller";
+
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 
@@ -19,7 +19,9 @@ const renderCards = (cards, container, isDefaultSorting = true) => {
     const day = isDefaultSorting
       ? new TripDayItemComponent(new Date(date), dateIndex + 1)
       : new TripDayItemComponent();
-    const dayElement = day.getElement();
+    const pointController = new PointController(
+        day.getElement().querySelector(`.trip-events__list`)
+    );
 
     cards
       .filter((_card) => {
@@ -28,31 +30,7 @@ const renderCards = (cards, container, isDefaultSorting = true) => {
           : _card;
       })
       .forEach((_card) => {
-        const eventsList = dayElement.querySelector(`.trip-events__list`);
-
-        const cardComponent = new CardComponent(_card);
-        const cardEditComponent = new CardEditComponent(_card);
-
-        const onEscKeyDown = (evt) => {
-          const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
-
-          if (isEscKey) {
-            replace(cardComponent, cardEditComponent);
-            document.removeEventListener(`keydown`, onEscKeyDown);
-          }
-        };
-
-        renderElement(eventsList, cardComponent, RenderPosition.BEFOREEND);
-
-        cardComponent.setClickHandler(() => {
-          replace(cardEditComponent, cardComponent);
-          document.addEventListener(`keydown`, onEscKeyDown);
-        });
-
-        cardEditComponent.setSubmitHandler((evt) => {
-          evt.preventDefault();
-          replace(cardComponent, cardEditComponent);
-        });
+        pointController.render(_card);
       });
 
     renderElement(container.getElement(), day, RenderPosition.BEFOREEND);
