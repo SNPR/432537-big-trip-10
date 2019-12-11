@@ -355,4 +355,10 @@ export default class CardEdit extends AbstractComponent {
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
   }
+
+  setFavoriteButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.event__favorite-checkbox`)
+      .addEventListener(`click`, handler);
+  }
 }
