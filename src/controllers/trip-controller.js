@@ -112,6 +112,7 @@ export default class TripController {
       newCard,
       this._cards.slice(index + 1)
     ];
+
     pointController.render(newCard);
   }
 }
