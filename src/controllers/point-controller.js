@@ -31,5 +31,10 @@ export default class PointController {
       evt.preventDefault();
       replace(cardComponent, cardEditComponent);
     });
+
+    cardEditComponent.setFavoriteButtonClickHandler(() => {
+      const newCard = Object.assign({}, card, {isFavorite: !card.isFavorite});
+      this._onDataChange(card, newCard);
+    });
   }
 }
