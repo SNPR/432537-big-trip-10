@@ -10,7 +10,12 @@ import PointController from "./point-controller";
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
 
-const renderCards = (cards, container, isDefaultSorting = true) => {
+const renderCards = (
+    cards,
+    container,
+    onDataChange,
+    isDefaultSorting = true
+) => {
   const dates = isDefaultSorting
     ? [...new Set(cards.map((item) => new Date(item.startDate).toDateString()))]
     : [true];
@@ -20,7 +25,8 @@ const renderCards = (cards, container, isDefaultSorting = true) => {
       ? new TripDayItemComponent(new Date(date), dateIndex + 1)
       : new TripDayItemComponent();
     const pointController = new PointController(
-        day.getElement().querySelector(`.trip-events__list`)
+        day.getElement().querySelector(`.trip-events__list`),
+        onDataChange
     );
 
     cards
@@ -41,10 +47,14 @@ export default class TripController {
   constructor(container) {
     this._container = container;
     this._eventsSortingComponent = new EventsSortingComponent();
+    this._cards = [];
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   render(cards) {
-    this._cards = cards;
+    if (this._cards.length === 0) {
+      this._cards = cards;
+    }
     renderCards(cards, this._container, this._onDataChange);
 
     renderElement(
@@ -77,11 +87,22 @@ export default class TripController {
       }
 
       this._container.getElement().innerHTML = ``;
-      renderCards(sortedCards, this._container, isDefaultSorting);
+      renderCards(
+          sortedCards,
+          this._container,
+          this._onDataChange,
+          isDefaultSorting
+      );
     });
 
     const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
 
     document.querySelector(`.trip-info__cost-value`).textContent = getFullPrice;
+  }
+
+  _onDataChange(oldCard, newCard, pointController) {
+    const index = this._cards.findIndex((card) => card === oldCard);
+    this._cards[index] = newCard;
+    pointController.render(newCard);
   }
 }

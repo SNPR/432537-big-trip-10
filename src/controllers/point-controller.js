@@ -34,7 +34,11 @@ export default class PointController {
 
     cardEditComponent.setFavoriteButtonClickHandler(() => {
       const newCard = Object.assign({}, card, {isFavorite: !card.isFavorite});
-      this._onDataChange(card, newCard);
+      cardEditComponent
+        .getElement()
+        .parentElement.removeChild(cardEditComponent.getElement());
+
+      this._onDataChange(card, newCard, this);
     });
   }
 }
