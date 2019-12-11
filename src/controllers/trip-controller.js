@@ -44,7 +44,8 @@ export default class TripController {
   }
 
   render(cards) {
-    renderCards(cards, this._container);
+    this._cards = cards;
+    renderCards(cards, this._container, this._onDataChange);
 
     renderElement(
         tripInfo,
