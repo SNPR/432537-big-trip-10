@@ -269,7 +269,7 @@ export default class CardEdit extends AbstractComponent {
             class="event__favorite-checkbox  visually-hidden"
             type="checkbox"
             name="event-favorite"
-            checked
+            ${this._card.isFavorite && `checked`}
           />
           <label class="event__favorite-btn" for="event-favorite-1">
             <span class="visually-hidden">Add to favorite</span>
