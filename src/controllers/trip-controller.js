@@ -102,7 +102,16 @@ export default class TripController {
 
   _onDataChange(oldCard, newCard, pointController) {
     const index = this._cards.findIndex((card) => card === oldCard);
-    this._cards[index] = newCard;
+
+    if (index === -1) {
+      return;
+    }
+
+    this._cards = [
+      ...this._cards.slice(0, index),
+      newCard,
+      this._cards.slice(index + 1)
+    ];
     pointController.render(newCard);
   }
 }
