@@ -2,8 +2,9 @@ import {CardComponent, CardEditComponent} from "../components";
 import {replace, RenderPosition, renderElement} from "../utils/render";
 
 export default class PointController {
-  constructor(container) {
+  constructor(container, onDateChange) {
     this._container = container;
+    this._onDateChange = onDateChange;
   }
 
   render(card) {
