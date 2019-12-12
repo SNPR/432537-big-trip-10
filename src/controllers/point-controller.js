@@ -1,5 +1,6 @@
 import {CardComponent, CardEditComponent} from "../components";
 import {replace, RenderPosition, renderElement} from "../utils/render";
+import {Mode} from "../utils/constants";
 
 export default class PointController {
   constructor(container, onDataChange) {
@@ -7,6 +8,7 @@ export default class PointController {
     this._onDataChange = onDataChange;
     this._cardComponent = null;
     this._cardEditComponent = null;
+    this._mode = Mode.DEFAULT;
   }
 
   render(card) {
@@ -20,19 +22,19 @@ export default class PointController {
       const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
       if (isEscKey) {
-        replace(this._cardComponent, this._cardEditComponent);
+        this._replaceCardEditToCard();
         document.removeEventListener(`keydown`, onEscKeyDown);
       }
     };
 
     this._cardComponent.setClickHandler(() => {
-      replace(this._cardEditComponent, this._cardComponent);
+      this._replaceCardToCardEdit();
       document.addEventListener(`keydown`, onEscKeyDown);
     });
 
     this._cardEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
-      replace(this._cardComponent, this._cardEditComponent);
+      this._replaceCardEditToCard();
     });
 
     this._cardEditComponent.setFavoriteButtonClickHandler(() => {
@@ -50,6 +52,20 @@ export default class PointController {
           this._cardComponent,
           RenderPosition.BEFOREEND
       );
+    }
+  }
+
+  _replaceCardEditToCard() {
+    replace(this._cardComponent, this._cardEditComponent);
+  }
+
+  _replaceCardToCardEdit() {
+    replace(this._cardEditComponent, this._cardComponent);
+  }
+
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceEditCardToCard();
     }
   }
 }
