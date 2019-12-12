@@ -51,6 +51,7 @@ export default class TripController {
     this._eventsSortingComponent = new EventsSortingComponent();
     this._cards = [];
     this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
   }
 
   render(cards) {
