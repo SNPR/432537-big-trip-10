@@ -17,6 +17,7 @@ const renderCards = (
     onViewChange,
     isDefaultSorting = true
 ) => {
+  const pointControllers = [];
   const dates = isDefaultSorting
     ? [...new Set(cards.map((item) => new Date(item.startDate).toDateString()))]
     : [true];
@@ -39,10 +40,13 @@ const renderCards = (
             onViewChange
         );
         pointController.render(_card);
+        pointControllers.push(pointController);
       });
 
     renderElement(container.getElement(), day, RenderPosition.BEFOREEND);
   });
+
+  return pointControllers;
 };
 
 export default class TripController {
@@ -59,7 +63,12 @@ export default class TripController {
     if (this._cards.length === 0) {
       this._cards = cards;
     }
-    renderCards(cards, this._container, this._onDataChange, this._onViewChange);
+    this._showedPointControllers = renderCards(
+        cards,
+        this._container,
+        this._onDataChange,
+        this._onViewChange
+    );
 
     renderElement(
         tripInfo,
@@ -91,7 +100,7 @@ export default class TripController {
       }
 
       this._container.getElement().innerHTML = ``;
-      renderCards(
+      this._showedPointControllers = renderCards(
           sortedCards,
           this._container,
           this._onDataChange,
@@ -121,5 +130,7 @@ export default class TripController {
     pointController.render(newCard);
   }
 
-  _onViewChange() {}
+  _onViewChange() {
+    this._showedPointControllers.forEach((it) => it.setDefaultView());
+  }
 }
