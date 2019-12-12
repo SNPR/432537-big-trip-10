@@ -10,8 +10,8 @@ export default class PointController {
   }
 
   render(card) {
-    const oldСardComponent = this._cardComponent;
-    const oldСardEditComponent = this._cardEditComponent;
+    const oldCardComponent = this._cardComponent;
+    const oldCardEditComponent = this._cardEditComponent;
 
     this._cardComponent = new CardComponent(card);
     this._cardEditComponent = new CardEditComponent(card);
@@ -24,12 +24,6 @@ export default class PointController {
         document.removeEventListener(`keydown`, onEscKeyDown);
       }
     };
-
-    renderElement(
-        this._container,
-        this._cardComponent,
-        RenderPosition.BEFOREEND
-    );
 
     this._cardComponent.setClickHandler(() => {
       replace(this._cardEditComponent, this._cardComponent);
@@ -47,9 +41,9 @@ export default class PointController {
       this._onDataChange(card, newCard, this);
     });
 
-    if (oldСardComponent && oldСardEditComponent) {
-      replace(this._cardComponent, oldСardComponent);
-      replace(this._cardEditComponent, oldСardEditComponent);
+    if (oldCardComponent && oldCardEditComponent) {
+      replace(this._cardComponent, oldCardComponent);
+      replace(this._cardEditComponent, oldCardEditComponent);
     } else {
       renderElement(
           this._container,
