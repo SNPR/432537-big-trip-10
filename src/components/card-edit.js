@@ -1,4 +1,4 @@
-import { parseDate } from "../utils/common.js";
+import {parseDate} from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component";
 
 export default class CardEdit extends AbstractSmartComponent {
@@ -7,10 +7,6 @@ export default class CardEdit extends AbstractSmartComponent {
     this._card = card;
     this._render = render;
     this._subscribeOnEvents();
-    this.setSubmitHandler = this.setSubmitHandler.bind(this);
-    this.setFavoriteButtonClickHandler = this.setFavoriteButtonClickHandler.bind(
-      this
-    );
   }
 
   getTemplate() {
@@ -304,7 +300,7 @@ export default class CardEdit extends AbstractSmartComponent {
 
             <div class="event__available-offers">
             ${this._card.offers
-              .map(offer => {
+              .map((offer) => {
                 return `
                   <div class="event__offer-selector">
                     <input
@@ -339,7 +335,7 @@ export default class CardEdit extends AbstractSmartComponent {
             <div class="event__photos-container">
               <div class="event__photos-tape">
               ${this._card.photos
-                .map(photo => {
+                .map((photo) => {
                   return `
                     <img
                       class="event__photo"
@@ -381,7 +377,7 @@ export default class CardEdit extends AbstractSmartComponent {
     const element = this.getElement();
     element
       .querySelector(`.event__type-list`)
-      .addEventListener(`click`, evt => {
+      .addEventListener(`click`, (evt) => {
         if (evt.target.tagName === `INPUT`) {
           this._card = Object.assign({}, this._card, {
             type: evt.target.value
