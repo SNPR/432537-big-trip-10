@@ -57,10 +57,12 @@ export default class PointController {
 
   _replaceCardEditToCard() {
     replace(this._cardComponent, this._cardEditComponent);
+    this._mode = Mode.DEFAULT;
   }
 
   _replaceCardToCardEdit() {
     replace(this._cardEditComponent, this._cardComponent);
+    this._mode = Mode.EDIT;
   }
 
   setDefaultView() {
