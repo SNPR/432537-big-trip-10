@@ -5,6 +5,7 @@ export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
     super();
     this._card = card;
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
@@ -352,6 +353,10 @@ export default class CardEdit extends AbstractSmartComponent {
   `;
   }
 
+  recoveryListeners() {
+    this._subscribeOnEvents();
+  }
+
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
   }
@@ -360,5 +365,17 @@ export default class CardEdit extends AbstractSmartComponent {
     this.getElement()
       .querySelector(`.event__favorite-checkbox`)
       .addEventListener(`click`, handler);
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+    element
+      .querySelector(`.event__type-list`)
+      .addEventListener(`click`, (evt) => {
+        if (evt.target.tagName === `INPUT`) {
+          this._card.type = evt.target.value;
+          this.rerender();
+        }
+      });
   }
 }
