@@ -1,7 +1,7 @@
-import AbstractComponent from "./abstract-component";
 import {parseDate} from "../utils/common.js";
+import AbstractSmartComponent from "./abstract-smart-component";
 
-export default class CardEdit extends AbstractComponent {
+export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
     super();
     this._card = card;
