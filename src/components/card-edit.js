@@ -1,12 +1,16 @@
-import {parseDate} from "../utils/common.js";
+import { parseDate } from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component";
 
 export default class CardEdit extends AbstractSmartComponent {
-  constructor(card) {
+  constructor(card, render) {
     super();
     this._card = card;
-    this._eventType = card.type;
+    this._render = render;
     this._subscribeOnEvents();
+    this.setSubmitHandler = this.setSubmitHandler.bind(this);
+    this.setFavoriteButtonClickHandler = this.setFavoriteButtonClickHandler.bind(
+      this
+    );
   }
 
   getTemplate() {
@@ -20,7 +24,7 @@ export default class CardEdit extends AbstractSmartComponent {
                 class="event__type-icon"
                 width="17"
                 height="17"
-                src="img/icons/${this._eventType}.png"
+                src="img/icons/${this._card.type}.png"
                 alt="Event type icon"
               />
             </label>
@@ -41,7 +45,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="taxi"
-                    ${this._eventType === `taxi` && `checked`}
+                    ${this._card.type === `taxi` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--taxi"
@@ -57,7 +61,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="bus"
-                    ${this._eventType === `bus` && `checked`}
+                    ${this._card.type === `bus` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--bus"
@@ -73,7 +77,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="train"
-                    ${this._eventType === `train` && `checked`}
+                    ${this._card.type === `train` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--train"
@@ -89,7 +93,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="ship"
-                    ${this._eventType === `ship` && `checked`}
+                    ${this._card.type === `ship` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--ship"
@@ -105,7 +109,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="transport"
-                    ${this._eventType === `transport` && `checked`}
+                    ${this._card.type === `transport` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--transport"
@@ -121,7 +125,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="drive"
-                    ${this._eventType === `drive` && `checked`}
+                    ${this._card.type === `drive` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--drive"
@@ -137,7 +141,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="flight"
-                    ${this._eventType === `flight` && `checked`}
+                    ${this._card.type === `flight` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--flight"
@@ -157,7 +161,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="check-in"
-                    ${this._eventType === `check-in` && `checked`}
+                    ${this._card.type === `check-in` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--check-in"
@@ -173,7 +177,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="sightseeing"
-                    ${this._eventType === `sightseeing` && `checked`}
+                    ${this._card.type === `sightseeing` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--sightseeing"
@@ -189,7 +193,7 @@ export default class CardEdit extends AbstractSmartComponent {
                     type="radio"
                     name="event-type"
                     value="restaurant"
-                    ${this._eventType === `restaurant` && `checked`}
+                    ${this._card.type === `restaurant` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--restaurant"
@@ -206,7 +210,7 @@ export default class CardEdit extends AbstractSmartComponent {
               class="event__label  event__type-output"
               for="event-destination-1"
             >
-            ${this._eventType} at
+            ${this._card.type} at
             </label>
             <input
               class="event__input  event__input--destination"
@@ -300,7 +304,7 @@ export default class CardEdit extends AbstractSmartComponent {
 
             <div class="event__available-offers">
             ${this._card.offers
-              .map((offer) => {
+              .map(offer => {
                 return `
                   <div class="event__offer-selector">
                     <input
@@ -335,7 +339,7 @@ export default class CardEdit extends AbstractSmartComponent {
             <div class="event__photos-container">
               <div class="event__photos-tape">
               ${this._card.photos
-                .map((photo) => {
+                .map(photo => {
                   return `
                     <img
                       class="event__photo"
@@ -358,6 +362,11 @@ export default class CardEdit extends AbstractSmartComponent {
     this._subscribeOnEvents();
   }
 
+  rerender() {
+    super.rerender();
+    this._render(this._card);
+  }
+
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
   }
@@ -372,9 +381,11 @@ export default class CardEdit extends AbstractSmartComponent {
     const element = this.getElement();
     element
       .querySelector(`.event__type-list`)
-      .addEventListener(`click`, (evt) => {
+      .addEventListener(`click`, evt => {
         if (evt.target.tagName === `INPUT`) {
-          this._eventType = evt.target.value;
+          this._card = Object.assign({}, this._card, {
+            type: evt.target.value
+          });
           this.rerender();
         }
       });

@@ -10,6 +10,7 @@ export default class PointController {
     this._cardComponent = null;
     this._cardEditComponent = null;
     this._mode = Mode.DEFAULT;
+    this.render = this.render.bind(this);
   }
 
   render(card) {
@@ -17,7 +18,9 @@ export default class PointController {
     const oldCardEditComponent = this._cardEditComponent;
 
     this._cardComponent = new CardComponent(card);
-    this._cardEditComponent = new CardEditComponent(card);
+    this._cardEditComponent = new CardEditComponent(card, (newCard) =>
+      this.render(newCard)
+    );
 
     const onEscKeyDown = (evt) => {
       const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
