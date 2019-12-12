@@ -69,7 +69,7 @@ export default class PointController {
 
   setDefaultView() {
     if (this._mode !== Mode.DEFAULT) {
-      this._replaceEditCardToCard();
+      this._replaceCardEditToCard();
     }
   }
 }
