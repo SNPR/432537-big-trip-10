@@ -3,9 +3,10 @@ import {replace, RenderPosition, renderElement} from "../utils/render";
 import {Mode} from "../utils/constants";
 
 export default class PointController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
     this._cardComponent = null;
     this._cardEditComponent = null;
     this._mode = Mode.DEFAULT;
