@@ -14,6 +14,7 @@ const renderCards = (
     cards,
     container,
     onDataChange,
+    onViewChange,
     isDefaultSorting = true
 ) => {
   const dates = isDefaultSorting
@@ -34,7 +35,8 @@ const renderCards = (
       .forEach((_card) => {
         const pointController = new PointController(
             day.getElement().querySelector(`.trip-events__list`),
-            onDataChange
+            onDataChange,
+            onViewChange
         );
         pointController.render(_card);
       });
@@ -55,7 +57,7 @@ export default class TripController {
     if (this._cards.length === 0) {
       this._cards = cards;
     }
-    renderCards(cards, this._container, this._onDataChange);
+    renderCards(cards, this._container, this._onDataChange, this._onViewChange);
 
     renderElement(
         tripInfo,
@@ -91,6 +93,7 @@ export default class TripController {
           sortedCards,
           this._container,
           this._onDataChange,
+          this._onViewChange,
           isDefaultSorting
       );
     });
@@ -115,4 +118,6 @@ export default class TripController {
 
     pointController.render(newCard);
   }
+
+  _onViewChange() {}
 }
