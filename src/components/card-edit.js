@@ -1,10 +1,12 @@
-import AbstractComponent from "./abstract-component";
 import {parseDate} from "../utils/common.js";
+import AbstractSmartComponent from "./abstract-smart-component";
 
-export default class CardEdit extends AbstractComponent {
+export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
     super();
     this._card = card;
+    this._eventType = card.type;
+    this._subscribeOnEvents();
   }
 
   getTemplate() {
@@ -18,7 +20,7 @@ export default class CardEdit extends AbstractComponent {
                 class="event__type-icon"
                 width="17"
                 height="17"
-                src="img/icons/${this._card.type}.png"
+                src="img/icons/${this._eventType}.png"
                 alt="Event type icon"
               />
             </label>
@@ -39,7 +41,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="taxi"
-                    ${this._card.type === `taxi` && `checked`}
+                    ${this._eventType === `taxi` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--taxi"
@@ -55,7 +57,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="bus"
-                    ${this._card.type === `bus` && `checked`}
+                    ${this._eventType === `bus` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--bus"
@@ -71,7 +73,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="train"
-                    ${this._card.type === `train` && `checked`}
+                    ${this._eventType === `train` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--train"
@@ -87,7 +89,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="ship"
-                    ${this._card.type === `ship` && `checked`}
+                    ${this._eventType === `ship` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--ship"
@@ -103,7 +105,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="transport"
-                    ${this._card.type === `transport` && `checked`}
+                    ${this._eventType === `transport` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--transport"
@@ -119,7 +121,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="drive"
-                    ${this._card.type === `drive` && `checked`}
+                    ${this._eventType === `drive` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--drive"
@@ -135,7 +137,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="flight"
-                    ${this._card.type === `flight` && `checked`}
+                    ${this._eventType === `flight` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--flight"
@@ -155,7 +157,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="check-in"
-                    ${this._card.type === `check-in` && `checked`}
+                    ${this._eventType === `check-in` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--check-in"
@@ -171,7 +173,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="sightseeing"
-                    ${this._card.type === `sightseeing` && `checked`}
+                    ${this._eventType === `sightseeing` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--sightseeing"
@@ -187,7 +189,7 @@ export default class CardEdit extends AbstractComponent {
                     type="radio"
                     name="event-type"
                     value="restaurant"
-                    ${this._card.type === `restaurant` && `checked`}
+                    ${this._eventType === `restaurant` && `checked`}
                   />
                   <label
                     class="event__type-label  event__type-label--restaurant"
@@ -204,7 +206,7 @@ export default class CardEdit extends AbstractComponent {
               class="event__label  event__type-output"
               for="event-destination-1"
             >
-            ${this._card.type} at
+            ${this._eventType} at
             </label>
             <input
               class="event__input  event__input--destination"
@@ -269,7 +271,7 @@ export default class CardEdit extends AbstractComponent {
             class="event__favorite-checkbox  visually-hidden"
             type="checkbox"
             name="event-favorite"
-            checked
+            ${this._card.isFavorite && `checked`}
           />
           <label class="event__favorite-btn" for="event-favorite-1">
             <span class="visually-hidden">Add to favorite</span>
@@ -352,7 +354,29 @@ export default class CardEdit extends AbstractComponent {
   `;
   }
 
+  recoveryListeners() {
+    this._subscribeOnEvents();
+  }
+
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
+  }
+
+  setFavoriteButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.event__favorite-checkbox`)
+      .addEventListener(`click`, handler);
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+    element
+      .querySelector(`.event__type-list`)
+      .addEventListener(`click`, (evt) => {
+        if (evt.target.tagName === `INPUT`) {
+          this._eventType = evt.target.value;
+          this.rerender();
+        }
+      });
   }
 }

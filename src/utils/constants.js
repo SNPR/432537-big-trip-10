@@ -3,3 +3,8 @@ export const SortType = {
   TIME_DOWN: `time-down`,
   PRICE_DOWN: `price-down`
 };
+
+export const Mode = {
+  DEFAULT: `default`,
+  EDIT: `edit`
+};
