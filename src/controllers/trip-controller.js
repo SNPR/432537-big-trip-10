@@ -24,10 +24,6 @@ const renderCards = (
     const day = isDefaultSorting
       ? new TripDayItemComponent(new Date(date), dateIndex + 1)
       : new TripDayItemComponent();
-    const pointController = new PointController(
-        day.getElement().querySelector(`.trip-events__list`),
-        onDataChange
-    );
 
     cards
       .filter((_card) => {
@@ -36,6 +32,10 @@ const renderCards = (
           : _card;
       })
       .forEach((_card) => {
+        const pointController = new PointController(
+            day.getElement().querySelector(`.trip-events__list`),
+            onDataChange
+        );
         pointController.render(_card);
       });
 
