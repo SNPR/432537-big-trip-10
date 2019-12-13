@@ -1,5 +1,8 @@
 import {parseDate} from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import "flatpickr/dist/themes/light.css";
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -370,6 +373,23 @@ export default class CardEdit extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     const element = this.getElement();
+    const flatpickrOptions = {
+      dateFormat: `d/m/y H:i`,
+      defaultDate: this._card.startDate,
+      enableTime: true,
+      allowInput: true
+    };
+
+    flatpickr(
+        element.querySelector(`input[name="event-start-time"]`),
+        Object.assign({}, flatpickrOptions, {defaultDate: this._card.startDate})
+    );
+
+    flatpickr(
+        element.querySelector(`input[name="event-end-time"]`),
+        Object.assign({}, flatpickrOptions, {defaultDate: this._card.endDate})
+    );
+
     element
       .querySelector(`.event__type-list`)
       .addEventListener(`click`, (evt) => {
