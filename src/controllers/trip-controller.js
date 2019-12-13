@@ -113,7 +113,13 @@ export default class TripController {
       );
     });
 
-    const getFullPrice = cards.reduce((acc, item) => acc + item.price, 0);
+    const getFullPrice = cards.reduce((acc, item) => {
+      return (
+        acc +
+        item.price +
+        item.offers.reduce((_acc, _item) => _acc + _item.price, 0)
+      );
+    }, 0);
 
     document.querySelector(`.trip-info__cost-value`).textContent = getFullPrice;
   }
