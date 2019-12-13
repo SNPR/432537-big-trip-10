@@ -1,4 +1,3 @@
-import {parseDate} from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
@@ -239,7 +238,7 @@ export default class CardEdit extends AbstractSmartComponent {
               id="event-start-time-1"
               type="text"
               name="event-start-time"
-              value="${parseDate(this._card.startDate)}"
+              value="${this._card.startDate}"
             />
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">
@@ -250,7 +249,7 @@ export default class CardEdit extends AbstractSmartComponent {
               id="event-end-time-1"
               type="text"
               name="event-end-time"
-              value="${parseDate(this._card.endDate)}"
+              value="${this._card.endDate}"
             />
           </div>
 
