@@ -92,7 +92,11 @@ export default class TripController {
           isDefaultSorting = true;
           break;
         case SortType.TIME_DOWN:
-          sortedCards = cards.slice().sort((a, b) => b.startDate - a.startDate);
+          sortedCards = cards
+            .slice()
+            .sort(
+                (a, b) => b.endDate - b.startDate - (a.endDate - a.startDate)
+            );
           break;
         case SortType.PRICE_DOWN:
           sortedCards = cards.slice().sort((a, b) => b.price - a.price);
