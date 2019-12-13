@@ -1,24 +1,6 @@
-const addZero = (value) => {
-  if (value === 0) {
-    return `00`;
-  } else if (value < 10) {
-    return `0${value}`;
-  }
+import moment from "moment";
 
-  return value;
-};
-
-export const parseDate = (UTCTimestamp) => {
-  const date = new Date(UTCTimestamp);
-  return `${date.getDate()}/${date.getMonth()}/${String(
-      date.getFullYear()
-  ).slice(2)}`;
-};
-
-export const parseTime = (UTCTimestamp) => {
-  const date = new Date(UTCTimestamp);
-  return `${addZero(date.getHours())}:${addZero(date.getMinutes())}`;
-};
+export const parseTime = (UTCTimestamp) => moment(UTCTimestamp).format(`hh:mm`);
 
 export const getDuration = (startDateUTCTimestamp, endDateUTCTimestamp) => {
   const startDate = new Date(startDateUTCTimestamp);
