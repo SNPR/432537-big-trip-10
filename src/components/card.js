@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component";
-import {parseTime} from "../utils/common";
+import {parseTime, getEventDuration} from "../utils/common";
 
 export default class Card extends AbstractComponent {
   constructor(card) {
@@ -26,7 +26,9 @@ export default class Card extends AbstractComponent {
           ${parseTime(this._card.endDate)}
           </time>
         </p>
-        <p class="event__duration">1H 30M</p>
+        <p class="event__duration">
+        ${getEventDuration(this._card.startDate, this._card.endDate)}
+        </p>
       </div>
 
       <p class="event__price">
