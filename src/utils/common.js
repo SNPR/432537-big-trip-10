@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const parseTime = (UTCTimestamp) => moment(UTCTimestamp).format(`hh:mm`);
+export const parseTime = (UTCTimestamp) => moment(UTCTimestamp).format(`HH:mm`);
 
 export const getTripDuration = (startDateUTCTimestamp, endDateUTCTimestamp) => {
   const monthName = moment(startDateUTCTimestamp).format(`MMM`);
