@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstract-component";
-import {getDuration} from "../utils/common.js";
+import {getTripDuration} from "../utils/common.js";
 
 export default class TripInfo extends AbstractComponent {
   constructor(cards) {
@@ -14,7 +14,7 @@ export default class TripInfo extends AbstractComponent {
     ${this._cards[this._cards.length - 1].city}
     </h1>
     <p class="trip-info__dates">
-    ${getDuration(
+    ${getTripDuration(
       this._cards[0].startDate,
       this._cards[this._cards.length - 1].endDate
   )}

@@ -1,5 +1,7 @@
-import {parseDate} from "../utils/common.js";
 import AbstractSmartComponent from "./abstract-smart-component";
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import "flatpickr/dist/themes/light.css";
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -7,6 +9,10 @@ export default class CardEdit extends AbstractSmartComponent {
     this._card = card;
     this._eventType = card.type;
     this._subscribeOnEvents();
+    this._flatpickrStartDate = null;
+    this._flatpickrEndDate = null;
+
+    this._applyFlatpickr();
   }
 
   getTemplate() {
@@ -232,7 +238,7 @@ export default class CardEdit extends AbstractSmartComponent {
               id="event-start-time-1"
               type="text"
               name="event-start-time"
-              value="${parseDate(this._card.startDate)}"
+              value="${this._card.startDate}"
             />
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">
@@ -243,7 +249,7 @@ export default class CardEdit extends AbstractSmartComponent {
               id="event-end-time-1"
               type="text"
               name="event-end-time"
-              value="${parseDate(this._card.endDate)}"
+              value="${this._card.endDate}"
             />
           </div>
 
@@ -368,8 +374,34 @@ export default class CardEdit extends AbstractSmartComponent {
       .addEventListener(`click`, handler);
   }
 
+  _applyFlatpickr() {
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
+    }
+
+    const element = this.getElement();
+    const flatpickrOptions = {
+      dateFormat: `d/m/y H:i`,
+      enableTime: true,
+      allowInput: true
+    };
+
+    this._flatpickrStartDate = flatpickr(
+        element.querySelector(`input[name="event-start-time"]`),
+        Object.assign({}, flatpickrOptions, {defaultDate: this._card.startDate})
+    );
+
+    this._flatpickrEndDate = flatpickr(
+        element.querySelector(`input[name="event-end-time"]`),
+        Object.assign({}, flatpickrOptions, {defaultDate: this._card.endDate})
+    );
+  }
   _subscribeOnEvents() {
     const element = this.getElement();
+
     element
       .querySelector(`.event__type-list`)
       .addEventListener(`click`, (evt) => {
@@ -378,5 +410,11 @@ export default class CardEdit extends AbstractSmartComponent {
           this.rerender();
         }
       });
+  }
+
+  rerender() {
+    super.rerender();
+
+    this._applyFlatpickr();
   }
 }
