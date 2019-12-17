@@ -11,6 +11,8 @@ export default class CardEdit extends AbstractSmartComponent {
     this._subscribeOnEvents();
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
+    this._submitHandler = null;
+    this._favoriteButtonClickHandler = null;
 
     this._applyFlatpickr();
   }
@@ -361,17 +363,23 @@ export default class CardEdit extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
+    this.setSubmitHandler(this._submitHandler);
+    this.setFavoriteButtonClickHandler(this._favoriteButtonClickHandler);
     this._subscribeOnEvents();
   }
 
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
+
+    this._submitHandler = handler;
   }
 
   setFavoriteButtonClickHandler(handler) {
     this.getElement()
       .querySelector(`.event__favorite-checkbox`)
       .addEventListener(`click`, handler);
+
+    this._favoriteButtonClickHandler = handler;
   }
 
   _applyFlatpickr() {
