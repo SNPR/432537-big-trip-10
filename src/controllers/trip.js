@@ -4,7 +4,7 @@ import {
   TripInfoComponent
 } from "../components";
 import {renderElement, RenderPosition} from "../utils/render";
-import {SortType} from "../utils/constants";
+import {SortType, Mode} from "../utils/constants";
 import PointController from "./point";
 
 const tripEvents = document.querySelector(`.trip-events`);
@@ -39,7 +39,7 @@ const renderCards = (
             onDataChange,
             onViewChange
         );
-        pointController.render(_card);
+        pointController.render(_card, Mode.DEFAULT);
         pointControllers.push(pointController);
       });
 
@@ -129,7 +129,7 @@ export default class TripController {
     const isSuccess = this._pointsModel.updatePoint(oldCard.id, newCard);
 
     if (isSuccess) {
-      pointController.render(newCard);
+      pointController.render(newCard, Mode.DEFAULT);
     }
   }
 

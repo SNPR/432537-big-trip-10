@@ -2,6 +2,60 @@ import AbstractSmartComponent from "./abstract-smart-component";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
+import moment from "moment";
+
+const parseFormData = (formData) => {
+  const example = {
+    type: `taxi`,
+    city: `Saint Petersburg`,
+    startDate: 1576716727323,
+    endDate: 1576772887323,
+    offers: [
+      {
+        name: `Travel by train`,
+        type: `train`,
+        price: 35,
+        checked: false
+      },
+      {
+        name: `Add luggage`,
+        type: `luggage`,
+        price: 15,
+        checked: true
+      },
+      {
+        name: `Choose seats`,
+        type: `seats`,
+        price: 15,
+        checked: true
+      }
+    ],
+    photos: [
+      `http://picsum.photos/300/150?r=0.7422113582727439`,
+      `http://picsum.photos/300/150?r=0.457386737318767`,
+      `http://picsum.photos/300/150?r=0.691700396138907`,
+      `http://picsum.photos/300/150?r=0.4257515263641778`,
+      `http://picsum.photos/300/150?r=0.9417674750921567`
+    ],
+    description: `Aliquam id orci ut lectus varius viverra.`,
+    price: 26,
+    isFavorite: false,
+    id: `1576692247322.5227`
+  };
+  // debugger;
+  return {
+    type: formData.get(`event-type`),
+    city: formData.get(`event-destination`),
+    startDate: formData.get(`event-start-time`),
+    endDate: formData.get(`event-end-time`),
+    offers: this._card,
+    photos: [],
+    description: ``,
+    price: formData.get(`event-price`),
+    isFavorite: false,
+    id: String(Date.now() + Math.random())
+  };
+};
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -13,6 +67,7 @@ export default class CardEdit extends AbstractSmartComponent {
     this._flatpickrEndDate = null;
     this._submitHandler = null;
     this._favoriteButtonClickHandler = null;
+    this._deleteButtonClickHandler = null;
 
     this._applyFlatpickr();
   }
@@ -318,8 +373,9 @@ export default class CardEdit extends AbstractSmartComponent {
                       name="event-offer-${offer.type}"
                       ${offer.checked && `checked`}
                     />
-                    <label class="event__offer-label" for="event-offer-
-                    ${offer.type}-1">
+                    <label class="event__offer-label" for="event-offer-${
+  offer.type
+}-1">
                       <span class="event__offer-title">${offer.name}</span>
                       &plus; &euro;&nbsp;<span class="event__offer-price">
                       ${offer.price}
@@ -365,6 +421,7 @@ export default class CardEdit extends AbstractSmartComponent {
   recoveryListeners() {
     this.setSubmitHandler(this._submitHandler);
     this.setFavoriteButtonClickHandler(this._favoriteButtonClickHandler);
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this._subscribeOnEvents();
   }
 
@@ -380,6 +437,14 @@ export default class CardEdit extends AbstractSmartComponent {
       .addEventListener(`click`, handler);
 
     this._favoriteButtonClickHandler = handler;
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, handler);
+
+    this._deleteButtonClickHandler = handler;
   }
 
   _applyFlatpickr() {
@@ -420,6 +485,12 @@ export default class CardEdit extends AbstractSmartComponent {
       });
   }
 
+  getData() {
+    const form = this.getElement().querySelector(`.event--edit`);
+    const formData = new FormData(form);
+
+    return parseFormData(formData);
+  }
   rerender() {
     super.rerender();
 
