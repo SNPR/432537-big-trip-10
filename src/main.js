@@ -39,6 +39,6 @@ if (cards.length === 0) {
       RenderPosition.BEFOREEND
   );
 } else {
-  const tripController = new TripController(tripDaysComponent);
+  const tripController = new TripController(tripDaysComponent, pointsModel);
   tripController.render(cards);
 }
