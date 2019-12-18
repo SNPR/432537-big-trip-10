@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-const FILTER_ID_PREFIX = `filter__`;
+const FILTER_ID_PREFIX = `filter_`;
 
 const getFilterNameById = (id) => {
   return id.substring(FILTER_ID_PREFIX.length);
@@ -26,8 +26,9 @@ export default class Filters extends AbstractComponent {
               value="${filter.name}"
               ${filter.checked && `checked`}
             />
-            <label class="trip-filters__filter-label" for="filter-
-            ${filter.name}">
+            <label class="trip-filters__filter-label" for="filter-${
+  filter.name
+}">
             ${filter.name}
             </label>
           </div>
@@ -41,7 +42,7 @@ export default class Filters extends AbstractComponent {
   }
 
   setFilterChangeHandler(handler) {
-    this.getElement().addEventListener(`click`, (evt) => {
+    this.getElement().addEventListener(`change`, (evt) => {
       const filterName = getFilterNameById(evt.target.id);
       handler(filterName);
     });
