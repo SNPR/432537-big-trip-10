@@ -1,11 +1,11 @@
-import { CardComponent, CardEditComponent } from "../components";
+import {CardComponent, CardEditComponent} from "../components";
 import {
   replace,
   remove,
   RenderPosition,
   renderElement
 } from "../utils/render";
-import { Mode } from "../utils/constants";
+import {Mode} from "../utils/constants";
 
 const emptyPoint = {
   type: ``,
@@ -43,7 +43,7 @@ export default class PointController {
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
-    this._cardEditComponent.setSubmitHandler(evt => {
+    this._cardEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       // this._replaceCardEditToCard();
       const data = this._cardEditComponent.getData();
@@ -55,7 +55,7 @@ export default class PointController {
     );
 
     this._cardEditComponent.setFavoriteButtonClickHandler(() => {
-      const newCard = Object.assign({}, card, { isFavorite: !card.isFavorite });
+      const newCard = Object.assign({}, card, {isFavorite: !card.isFavorite});
 
       this._onDataChange(card, newCard, this);
     });
@@ -68,9 +68,9 @@ export default class PointController {
           this._replaceCardEditToCard();
         } else {
           renderElement(
-            this._container,
-            this._cardComponent,
-            RenderPosition.BEFOREEND
+              this._container,
+              this._cardComponent,
+              RenderPosition.BEFOREEND
           );
         }
         break;
@@ -81,9 +81,9 @@ export default class PointController {
         }
         document.addEventListener(`keydown`, this._onEscKeyDown);
         renderElement(
-          this._container,
-          this._cardEditComponent,
-          RenderPosition.AFTERBEGIN
+            this._container,
+            this._cardEditComponent,
+            RenderPosition.AFTERBEGIN
         );
         break;
     }

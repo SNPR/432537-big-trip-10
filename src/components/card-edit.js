@@ -4,7 +4,7 @@ import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import moment from "moment";
 
-const parseFormData = (formData) => {
+const parseFormData = (formData, offers) => {
   const example = {
     type: `taxi`,
     city: `Saint Petersburg`,
@@ -42,13 +42,21 @@ const parseFormData = (formData) => {
     isFavorite: false,
     id: `1576692247322.5227`
   };
-  // debugger;
+  debugger;
   return {
     type: formData.get(`event-type`),
     city: formData.get(`event-destination`),
     startDate: formData.get(`event-start-time`),
     endDate: formData.get(`event-end-time`),
-    offers: this._card,
+    offers: offers.map((offer) => {
+      return {
+        name: offer.name,
+        price: offer.price,
+        type: offer.type,
+        checked:
+          formData.get(`event-offer-${offer.type}`) === `on` ? true : false
+      };
+    }),
     photos: [],
     description: ``,
     price: formData.get(`event-price`),
@@ -489,7 +497,7 @@ export default class CardEdit extends AbstractSmartComponent {
     const form = this.getElement().querySelector(`.event--edit`);
     const formData = new FormData(form);
 
-    return parseFormData(formData);
+    return parseFormData(formData, this._card.offers);
   }
   rerender() {
     super.rerender();
