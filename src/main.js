@@ -9,7 +9,7 @@ import {renderElement, RenderPosition} from "./utils/render";
 import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
-import PointsModel from './models/point';
+import PointsModel from "./models/point";
 
 const pointsModel = new PointsModel();
 pointsModel.setPoints(cards);

@@ -1,7 +1,7 @@
-import FiltersComponent from '../components/filters';
-import {FilterType} from '../utils/constants';
-import {renderElement, replace, RenderPosition} from '../utils/render.js';
-import {getPointsByFilter} from '../utils/filter.js';
+import FiltersComponent from "../components/filters";
+import {FilterType} from "../utils/constants";
+import {renderElement, replace, RenderPosition} from "../utils/render.js";
+import {getPointsByFilter} from "../utils/filter.js";
 
 export default class FilterController {
   constructor(container, pointsModel) {
@@ -21,7 +21,7 @@ export default class FilterController {
       return {
         name: filterType,
         count: getPointsByFilter(allPoints, filterType).length,
-        checked: filterType === this._activeFilterType,
+        checked: filterType === this._activeFilterType
       };
     });
     const oldComponent = this._filtersComponent;
@@ -32,7 +32,11 @@ export default class FilterController {
     if (oldComponent) {
       replace(this._filtersComponent, oldComponent);
     } else {
-      renderElement(container, this._filtersComponent, RenderPosition.BEFOREEND);
+      renderElement(
+          container,
+          this._filtersComponent,
+          RenderPosition.BEFOREEND
+      );
     }
   }
 

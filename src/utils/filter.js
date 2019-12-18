@@ -1,5 +1,4 @@
-import {FilterType} from './constants';
-
+import {FilterType} from "./constants";
 
 export const getFuturePoints = (points) => {
   return points.filter((point) => point.startDate > Date.now());

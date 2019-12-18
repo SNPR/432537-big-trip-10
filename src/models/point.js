@@ -1,5 +1,5 @@
-import {getPointsByFilter} from '../utils/filter.js';
-import {FilterType} from '../utils/constants';
+import {getPointsByFilter} from "../utils/filter.js";
+import {FilterType} from "../utils/constants";
 
 export default class Point {
   constructor() {
@@ -27,7 +27,11 @@ export default class Point {
       return false;
     }
 
-    this._points = [...this._points.slice(0, index), point, ...this._points.slice(index + 1)];
+    this._points = [
+      ...this._points.slice(0, index),
+      point,
+      ...this._points.slice(index + 1)
+    ];
 
     return true;
   }
