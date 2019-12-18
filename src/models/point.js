@@ -1,5 +1,5 @@
-import { getPointsByFilter } from "../utils/filter.js";
-import { FilterType } from "../utils/constants";
+import {getPointsByFilter} from "../utils/filter.js";
+import {FilterType} from "../utils/constants";
 
 export default class Point {
   constructor() {
@@ -22,7 +22,7 @@ export default class Point {
   }
 
   updatePoint(id, point) {
-    const index = this._points.findIndex(it => it.id === id);
+    const index = this._points.findIndex((it) => it.id === id);
 
     if (index === -1) {
       return false;
@@ -34,7 +34,7 @@ export default class Point {
       ...this._points.slice(index + 1)
     ];
 
-    this._dataChangeHandlers.forEach(handler => handler());
+    this._dataChangeHandlers.forEach((handler) => handler());
     return true;
   }
 
@@ -57,7 +57,7 @@ export default class Point {
   }
 
   removePoint(id) {
-    const index = this._points.findIndex(it => it.id === id);
+    const index = this._points.findIndex((it) => it.id === id);
 
     if (index === -1) {
       return false;
@@ -74,6 +74,6 @@ export default class Point {
   }
 
   _callHandlers(handlers) {
-    handlers.forEach(handler => handler());
+    handlers.forEach((handler) => handler());
   }
 }
