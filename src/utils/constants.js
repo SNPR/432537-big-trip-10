@@ -8,3 +8,9 @@ export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`
 };
+
+export const FilterType = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`,
+};
