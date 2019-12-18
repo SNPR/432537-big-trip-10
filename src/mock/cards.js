@@ -105,7 +105,8 @@ const generateCard = () => {
       .map(getRandomPhoto),
     description: getRandomDescriprion(sentences),
     price: getRandomNumber(10, 100),
-    isFavorite: false
+    isFavorite: false,
+    id: String(new Date() + Math.random())
   };
 };
 
