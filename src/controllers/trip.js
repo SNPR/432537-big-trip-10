@@ -104,7 +104,7 @@ export default class TripController {
           break;
       }
 
-      this._container.getElement().innerHTML = ``;
+      this._removePoints();
       this._showedPointControllers = renderCards(
           sortedCards,
           this._container,
@@ -145,5 +145,10 @@ export default class TripController {
         this._onDataChange,
         this._onViewChange
     );
+  }
+
+  _removePoints() {
+    this._container.getElement().innerHTML = ``;
+    this._showedPointConlrollers = [];
   }
 }
