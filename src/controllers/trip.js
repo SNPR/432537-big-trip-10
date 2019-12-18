@@ -149,6 +149,6 @@ export default class TripController {
 
   _removePoints() {
     this._container.getElement().innerHTML = ``;
-    this._showedPointConlrollers = [];
+    this._showedPointControllers = [];
   }
 }
