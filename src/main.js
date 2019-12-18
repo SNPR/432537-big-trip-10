@@ -9,6 +9,10 @@ import {renderElement, RenderPosition} from "./utils/render";
 import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
+import PointModel from './models/point';
+
+const pointModel = new PointModel();
+pointModel.setPoints(cards);
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
