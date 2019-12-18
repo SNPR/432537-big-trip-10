@@ -5,7 +5,7 @@ import {
 } from "../components";
 import {renderElement, RenderPosition} from "../utils/render";
 import {SortType} from "../utils/constants";
-import PointController from "./point-controller";
+import PointController from "./point";
 
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);

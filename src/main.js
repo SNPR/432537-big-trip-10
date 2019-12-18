@@ -4,7 +4,7 @@ import {
   NoEventsMessageComponent,
   TripDaysComponent
 } from "./components";
-import TripController from "./controllers/trip-controller";
+import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
 import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
