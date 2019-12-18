@@ -106,7 +106,7 @@ const generateCard = () => {
     description: getRandomDescriprion(sentences),
     price: getRandomNumber(10, 100),
     isFavorite: false,
-    id: String(new Date() + Math.random())
+    id: String(Date.now() + Math.random())
   };
 };
 
