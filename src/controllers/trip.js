@@ -85,7 +85,8 @@ export default class TripController {
         this._pointsModel.getPoints(),
         this._container,
         this._onDataChange,
-        this._onViewChange
+        this._onViewChange,
+        this._isDefaultSorting
     );
   }
 
