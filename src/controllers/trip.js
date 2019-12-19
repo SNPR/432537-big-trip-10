@@ -167,9 +167,6 @@ export default class TripController {
         this._pointsModel.addPoint(newCard);
         pointController.render(newCard, Mode.DEFAULT);
 
-        const destroyedPoint = this._showedPointControllers.pop();
-        destroyedPoint.destroy();
-
         this._showedPointControllers = [
           pointController,
           ...this._showedPointControllers
