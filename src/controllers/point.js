@@ -8,7 +8,7 @@ import {
 import {Mode} from "../utils/constants";
 
 export const EmptyPoint = {
-  type: ``,
+  type: `taxi`,
   city: ``,
   startDate: null,
   endDate: null,
