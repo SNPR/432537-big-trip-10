@@ -299,7 +299,9 @@ export default class CardEdit extends AbstractSmartComponent {
           <button class="event__save-btn  btn  btn--blue" type="submit">
             Save
           </button>
-          <button class="event__reset-btn" type="reset">Delete</button>
+          <button class="event__reset-btn" type="reset">${
+  this._card.startDate === null ? `Cancel` : `Delete`
+}</button>
 
           <input
             id="event-favorite-1"
@@ -466,7 +468,6 @@ export default class CardEdit extends AbstractSmartComponent {
         this._card.offers,
         this._card.photos,
         this._card.description,
-        // this._card.isFavorite,
         this._card.id
     );
   }
