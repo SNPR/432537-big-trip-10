@@ -75,6 +75,7 @@ export default class TripController {
     );
 
     this._creatingPoint.render(EmptyPoint, Mode.ADDING);
+    this._onViewChange();
   }
 
   _updatePoints() {
