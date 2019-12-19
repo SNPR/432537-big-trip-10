@@ -10,7 +10,7 @@ const parseFormData = (formData, offers, photos, description, id) => {
     city: formData.get(`event-destination`),
     startDate: moment(
         formData.get(`event-start-time`),
-        `YY/MM/DD HH:mm`
+        `DD/MM/YY HH:mm`
     ).valueOf(),
     endDate: moment(formData.get(`event-end-time`), `YY/MM/DD HH:mm`).valueOf(),
     offers: offers.map((offer) => {
@@ -25,7 +25,6 @@ const parseFormData = (formData, offers, photos, description, id) => {
     photos,
     description,
     price: formData.get(`event-price`),
-    // isFavorite,
     id
   };
 };
