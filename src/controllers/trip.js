@@ -15,7 +15,7 @@ const renderCards = (
     container,
     onDataChange,
     onViewChange,
-    isDefaultSorting = true
+    isDefaultSorting
 ) => {
   const pointControllers = [];
   const dates = isDefaultSorting
@@ -60,6 +60,7 @@ export default class TripController {
     this._onFilterChange = this._onFilterChange.bind(this);
     this._pointsModel.setFilterChangeHandler(this._onFilterChange);
     this._creatingPoint = null;
+    this._isDefaultSorting = true;
   }
 
   createPoint() {
@@ -95,7 +96,8 @@ export default class TripController {
         cards,
         this._container,
         this._onDataChange,
-        this._onViewChange
+        this._onViewChange,
+        this._isDefaultSorting
     );
 
     renderElement(
@@ -112,14 +114,13 @@ export default class TripController {
 
     this._eventsSortingComponent.setSortTypeChangeHandler((sortType) => {
       let sortedCards = [];
-      let isDefaultSorting = false;
 
       switch (sortType) {
         case SortType.DATE_DOWN:
           sortedCards = this._pointsModel
             .getPoints()
             .sort((a, b) => a.startDate - b.startDate);
-          isDefaultSorting = true;
+          this._isDefaultSorting = true;
           break;
         case SortType.TIME_DOWN:
           sortedCards = this._pointsModel
@@ -128,12 +129,14 @@ export default class TripController {
             .sort(
                 (a, b) => b.endDate - b.startDate - (a.endDate - a.startDate)
             );
+          this._isDefaultSorting = false;
           break;
         case SortType.PRICE_DOWN:
           sortedCards = this._pointsModel
             .getPoints()
             .slice()
             .sort((a, b) => b.price - a.price);
+          this._isDefaultSorting = false;
           break;
       }
 
@@ -143,7 +146,7 @@ export default class TripController {
           this._container,
           this._onDataChange,
           this._onViewChange,
-          isDefaultSorting
+          this._isDefaultSorting
       );
     });
 
@@ -178,7 +181,8 @@ export default class TripController {
             this._pointsModel.getPoints(),
             this._container,
             this._onDataChange,
-            this._onViewChange
+            this._onViewChange,
+            this._isDefaultSorting
         );
       }
     } else if (newCard === null) {
