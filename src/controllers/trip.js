@@ -79,7 +79,6 @@ export default class TripController {
 
   _updatePoints() {
     this._removePoints();
-
     renderCards(
         this._pointsModel.getPoints(),
         this._container,
@@ -116,18 +115,24 @@ export default class TripController {
 
       switch (sortType) {
         case SortType.DATE_DOWN:
-          sortedCards = cards.slice();
+          sortedCards = this._pointsModel
+            .getPoints()
+            .sort((a, b) => a.startDate - b.startDate);
           isDefaultSorting = true;
           break;
         case SortType.TIME_DOWN:
-          sortedCards = cards
+          sortedCards = this._pointsModel
+            .getPoints()
             .slice()
             .sort(
                 (a, b) => b.endDate - b.startDate - (a.endDate - a.startDate)
             );
           break;
         case SortType.PRICE_DOWN:
-          sortedCards = cards.slice().sort((a, b) => b.price - a.price);
+          sortedCards = this._pointsModel
+            .getPoints()
+            .slice()
+            .sort((a, b) => b.price - a.price);
           break;
       }
 
@@ -191,6 +196,7 @@ export default class TripController {
   }
 
   _removePoints() {
+    this._container.getElement().innerHTML = ``;
     this._showedPointControllers.forEach((pointController) =>
       pointController.destroy()
     );
