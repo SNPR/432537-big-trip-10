@@ -5,7 +5,7 @@ import {
 } from "../components";
 import {renderElement, RenderPosition} from "../utils/render";
 import {SortType, Mode} from "../utils/constants";
-import PointController from "./point";
+import PointController, {EmptyPoint} from "./point";
 
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
@@ -59,6 +59,33 @@ export default class TripController {
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._pointsModel.setFilterChangeHandler(this._onFilterChange);
+    this._creatingPoint = null;
+  }
+
+  createPoint() {
+    if (this._creatingPoint) {
+      return;
+    }
+
+    const tripDaysElement = this._container.getElement();
+    this._creatingPoint = new PointController(
+        tripDaysElement,
+        this._onDataChange,
+        this._onViewChange
+    );
+
+    this._creatingPoint.render(EmptyPoint, Mode.ADDING);
+  }
+
+  _updatePoints() {
+    this._removePoints();
+
+    renderCards(
+        this._pointsModel.getPoints(),
+        this._container,
+        this._onDataChange,
+        this._onViewChange
+    );
   }
 
   render() {
@@ -126,10 +153,32 @@ export default class TripController {
   }
 
   _onDataChange(oldCard, newCard, pointController) {
-    const isSuccess = this._pointsModel.updatePoint(oldCard.id, newCard);
+    if (oldCard === EmptyPoint) {
+      this._creatingPoint = null;
+      if (newCard === null) {
+        pointController.destroy();
+        this._updatePoints();
+      } else {
+        this._pointsModel.addPoint(newCard);
+        pointController.render(newCard, Mode.DEFAULT);
 
-    if (isSuccess) {
-      pointController.render(newCard, Mode.DEFAULT);
+        const destroyedPoint = this._showedPointControllers.pop();
+        destroyedPoint.destroy();
+
+        this._showedPointControllers = [
+          pointController,
+          ...this._showedPointControllers
+        ];
+      }
+    } else if (newCard === null) {
+      this._pointsModel.removePoint(oldCard.id);
+      this._updatePoints();
+    } else {
+      const isSuccess = this._pointsModel.updatePoint(oldCard.id, newCard);
+
+      if (isSuccess) {
+        pointController.render(newCard, Mode.DEFAULT);
+      }
     }
   }
 
@@ -138,17 +187,13 @@ export default class TripController {
   }
 
   _onFilterChange() {
-    this._removePoints();
-    renderCards(
-        this._pointsModel.getPoints(),
-        this._container,
-        this._onDataChange,
-        this._onViewChange
-    );
+    this._updatePoints();
   }
 
   _removePoints() {
-    this._container.getElement().innerHTML = ``;
+    this._showedPointControllers.forEach((pointController) =>
+      pointController.destroy()
+    );
     this._showedPointControllers = [];
   }
 }

@@ -37,4 +37,9 @@ if (cards.length === 0) {
 } else {
   const tripController = new TripController(tripDaysComponent, pointsModel);
   tripController.render(cards);
+  document
+    .querySelector(`.trip-main__event-add-btn`)
+    .addEventListener(`click`, () => {
+      tripController.createPoint();
+    });
 }

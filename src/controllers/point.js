@@ -7,7 +7,7 @@ import {
 } from "../utils/render";
 import {Mode} from "../utils/constants";
 
-const emptyPoint = {
+export const EmptyPoint = {
   type: ``,
   city: ``,
   startDate: null,
@@ -46,7 +46,6 @@ export default class PointController {
 
     this._cardEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
-      this._replaceCardEditToCard();
       const data = this._cardEditComponent.getData();
       this._onDataChange(card, data, this);
     });
@@ -88,17 +87,6 @@ export default class PointController {
         );
         break;
     }
-
-    // if (oldCardComponent && oldCardEditComponent) {
-    //   replace(this._cardComponent, oldCardComponent);
-    //   replace(this._cardEditComponent, oldCardEditComponent);
-    // } else {
-    //   renderElement(
-    //       this._container,
-    //       this._cardComponent,
-    //       RenderPosition.BEFOREEND
-    //   );
-    // }
   }
 
   _replaceCardEditToCard() {
@@ -117,7 +105,7 @@ export default class PointController {
 
     if (isEscKey) {
       if (this._mode === Mode.ADDING) {
-        this._onDataChange(emptyPoint, null, this);
+        this._onDataChange(EmptyPoint, null, this);
       }
       this._replaceCardEditToCard();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
