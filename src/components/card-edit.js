@@ -471,6 +471,18 @@ export default class CardEdit extends AbstractSmartComponent {
         this._card.id
     );
   }
+
+  removeElement() {
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
+    }
+
+    super.removeElement();
+  }
+
   rerender() {
     super.rerender();
 
