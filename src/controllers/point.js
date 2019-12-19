@@ -28,6 +28,7 @@ export default class PointController {
     this._cardComponent = null;
     this._cardEditComponent = null;
     this._mode = Mode.DEFAULT;
+    this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
   render(card, mode) {
@@ -45,7 +46,7 @@ export default class PointController {
 
     this._cardEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
-      // this._replaceCardEditToCard();
+      this._replaceCardEditToCard();
       const data = this._cardEditComponent.getData();
       this._onDataChange(card, data, this);
     });
@@ -100,6 +101,17 @@ export default class PointController {
     // }
   }
 
+  _replaceCardEditToCard() {
+    replace(this._cardComponent, this._cardEditComponent);
+    this._mode = Mode.DEFAULT;
+  }
+
+  _replaceCardToCardEdit() {
+    this._onViewChange();
+    replace(this._cardEditComponent, this._cardComponent);
+    this._mode = Mode.EDIT;
+  }
+
   _onEscKeyDown(evt) {
     const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
 
@@ -110,17 +122,6 @@ export default class PointController {
       this._replaceCardEditToCard();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
-  }
-
-  _replaceCardEditToCard() {
-    replace(this._cardComponent, this._cardEditComponent);
-    this._mode = Mode.DEFAULT;
-  }
-
-  _replaceCardToCardEdit() {
-    this._onViewChange();
-    replace(this._cardEditComponent, this._cardComponent);
-    this._mode = Mode.EDIT;
   }
 
   setDefaultView() {
