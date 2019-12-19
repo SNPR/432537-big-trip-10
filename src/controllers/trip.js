@@ -166,13 +166,19 @@ export default class TripController {
       } else {
         this._pointsModel.addPoint(newCard);
 
-        pointController.render(newCard, Mode.DEFAULT);
-
         this._showedPointControllers = [
           pointController,
           ...this._showedPointControllers
         ];
-        this._updatePoints();
+
+        this._removePoints();
+
+        this._showedPointControllers = renderCards(
+            this._pointsModel.getPoints(),
+            this._container,
+            this._onDataChange,
+            this._onViewChange
+        );
       }
     } else if (newCard === null) {
       this._pointsModel.removePoint(oldCard.id);

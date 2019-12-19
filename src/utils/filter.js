@@ -11,7 +11,7 @@ export const getPastPoints = (points) => {
 export const getPointsByFilter = (points, filterType) => {
   switch (filterType) {
     case FilterType.EVERYTHING:
-      return points;
+      return points.sort((a, b) => a.startDate - b.startDate);
     case FilterType.FUTURE:
       return getFuturePoints(points);
     case FilterType.PAST:
