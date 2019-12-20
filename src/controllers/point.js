@@ -6,19 +6,7 @@ import {
   renderElement
 } from "../utils/render";
 import {Mode} from "../utils/constants";
-
-export const EmptyPoint = {
-  type: `taxi`,
-  city: ``,
-  startDate: null,
-  endDate: null,
-  offers: [],
-  photos: [],
-  description: ``,
-  price: 0,
-  isFavorite: false,
-  id: String(Date.now() + Math.random())
-};
+import {EmptyPoint} from "../mock/cards";
 
 export default class PointController {
   constructor(container, onDataChange, onViewChange) {
