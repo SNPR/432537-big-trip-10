@@ -329,7 +329,9 @@ export default class CardEdit extends AbstractSmartComponent {
           </button>
         </header>
 
-        <section class="event__details">
+        ${
+  this._card.offers.length
+    ? `<section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">
               Offers
@@ -386,7 +388,9 @@ export default class CardEdit extends AbstractSmartComponent {
               </div>
             </div>
           </section>
-        </section>
+        </section>`
+    : ``
+}
       </form>
     </li>
   `;
