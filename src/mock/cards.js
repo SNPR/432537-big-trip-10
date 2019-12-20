@@ -122,8 +122,8 @@ const generateCards = (amount) => {
 export const EmptyPoint = {
   type: `taxi`,
   city: ``,
-  startDate: null,
-  endDate: null,
+  startDate: Date.now(),
+  endDate: Date.now(),
   offers: [],
   photos: [],
   description: ``,
