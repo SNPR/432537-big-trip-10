@@ -92,10 +92,8 @@ export default class TripController {
   }
 
   render() {
-    const cards = this._pointsModel.getPoints();
-
     this._showedPointControllers = renderCards(
-        cards,
+        this._pointsModel.getPoints(),
         this._container,
         this._onDataChange,
         this._onViewChange,
@@ -104,7 +102,7 @@ export default class TripController {
 
     renderElement(
         tripInfo,
-        new TripInfoComponent(cards),
+        new TripInfoComponent(this._pointsModel.getPoints()),
         RenderPosition.AFTERBEGIN
     );
 
@@ -152,7 +150,7 @@ export default class TripController {
       );
     });
 
-    const getFullPrice = cards.reduce((acc, item) => {
+    const getFullPrice = this._pointsModel.getPoints().reduce((acc, item) => {
       return (
         acc +
         item.price +
