@@ -212,4 +212,12 @@ export default class TripController {
     );
     this._showedPointControllers = [];
   }
+
+  hide() {
+    this._container.hide();
+  }
+
+  show() {
+    this._container.show();
+  }
 }
