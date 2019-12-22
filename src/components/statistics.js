@@ -1,4 +1,6 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
+import chartjs from "chart.js";
+import chartjsPluginDatalabes from "chartjs-plugin-datalabels";
 
 export default class Statistics extends AbstractSmartComponent {
   getTemplate() {
