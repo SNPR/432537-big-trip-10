@@ -1,7 +1,6 @@
 import FiltersComponent from "../components/filters";
 import {FilterType} from "../utils/constants";
 import {renderElement, replace, RenderPosition} from "../utils/render.js";
-import {getPointsByFilter} from "../utils/filter.js";
 
 export default class FilterController {
   constructor(container, pointsModel) {
