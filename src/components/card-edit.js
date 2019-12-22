@@ -25,7 +25,8 @@ const parseFormData = (formData, offers, photos, description, id) => {
     photos,
     description,
     price: formData.get(`event-price`),
-    id
+    id,
+    isFavorite: formData.get(`event-favorite`) === `on`
   };
 };
 
