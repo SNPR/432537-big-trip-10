@@ -2,6 +2,33 @@ import AbstractSmartComponent from "./abstract-smart-component";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
+import moment from "moment";
+
+const parseFormData = (formData, offers, photos, description, id) => {
+  return {
+    type: formData.get(`event-type`),
+    city: formData.get(`event-destination`),
+    startDate: moment(
+        formData.get(`event-start-time`),
+        `DD/MM/YY HH:mm`
+    ).valueOf(),
+    endDate: moment(formData.get(`event-end-time`), `DD/MM/YY HH:mm`).valueOf(),
+    offers: offers.map((offer) => {
+      return {
+        name: offer.name,
+        price: offer.price,
+        type: offer.type,
+        checked:
+          formData.get(`event-offer-${offer.type}`) === `on` ? true : false
+      };
+    }),
+    photos,
+    description,
+    price: formData.get(`event-price`),
+    id,
+    isFavorite: formData.get(`event-favorite`) === `on`
+  };
+};
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -11,6 +38,9 @@ export default class CardEdit extends AbstractSmartComponent {
     this._subscribeOnEvents();
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
+    this._submitHandler = null;
+    this._favoriteButtonClickHandler = null;
+    this._deleteButtonClickHandler = null;
 
     this._applyFlatpickr();
   }
@@ -270,7 +300,9 @@ export default class CardEdit extends AbstractSmartComponent {
           <button class="event__save-btn  btn  btn--blue" type="submit">
             Save
           </button>
-          <button class="event__reset-btn" type="reset">Delete</button>
+          <button class="event__reset-btn" type="reset">${
+  this._card.offers.length > 0 ? `Delete` : `Cancel`
+}</button>
 
           <input
             id="event-favorite-1"
@@ -298,7 +330,9 @@ export default class CardEdit extends AbstractSmartComponent {
           </button>
         </header>
 
-        <section class="event__details">
+        ${
+  this._card.offers.length
+    ? `<section class="event__details">
           <section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">
               Offers
@@ -316,8 +350,9 @@ export default class CardEdit extends AbstractSmartComponent {
                       name="event-offer-${offer.type}"
                       ${offer.checked && `checked`}
                     />
-                    <label class="event__offer-label" for="event-offer-
-                    ${offer.type}-1">
+                    <label class="event__offer-label" for="event-offer-${
+  offer.type
+}-1">
                       <span class="event__offer-title">${offer.name}</span>
                       &plus; &euro;&nbsp;<span class="event__offer-price">
                       ${offer.price}
@@ -354,24 +389,41 @@ export default class CardEdit extends AbstractSmartComponent {
               </div>
             </div>
           </section>
-        </section>
+        </section>`
+    : ``
+}
       </form>
     </li>
   `;
   }
 
   recoveryListeners() {
+    this.setSubmitHandler(this._submitHandler);
+    this.setFavoriteButtonClickHandler(this._favoriteButtonClickHandler);
+    this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this._subscribeOnEvents();
   }
 
   setSubmitHandler(handler) {
     this.getElement().addEventListener(`submit`, handler);
+
+    this._submitHandler = handler;
   }
 
   setFavoriteButtonClickHandler(handler) {
     this.getElement()
       .querySelector(`.event__favorite-checkbox`)
       .addEventListener(`click`, handler);
+
+    this._favoriteButtonClickHandler = handler;
+  }
+
+  setDeleteButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, handler);
+
+    this._deleteButtonClickHandler = handler;
   }
 
   _applyFlatpickr() {
@@ -410,6 +462,30 @@ export default class CardEdit extends AbstractSmartComponent {
           this.rerender();
         }
       });
+  }
+
+  getData() {
+    const form = this.getElement().querySelector(`.event--edit`);
+    const formData = new FormData(form);
+
+    return parseFormData(
+        formData,
+        this._card.offers,
+        this._card.photos,
+        this._card.description,
+        this._card.id
+    );
+  }
+
+  removeElement() {
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
+    }
+
+    super.removeElement();
   }
 
   rerender() {

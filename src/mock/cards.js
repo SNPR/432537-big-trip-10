@@ -105,7 +105,8 @@ const generateCard = () => {
       .map(getRandomPhoto),
     description: getRandomDescriprion(sentences),
     price: getRandomNumber(10, 100),
-    isFavorite: false
+    isFavorite: false,
+    id: String(Date.now() + Math.random())
   };
 };
 
@@ -116,6 +117,19 @@ const generateCards = (amount) => {
     .sort(
         (currentCard, nextCard) => currentCard.startDate - nextCard.startDate
     );
+};
+
+export const EmptyPoint = {
+  type: `taxi`,
+  city: ``,
+  startDate: Date.now(),
+  endDate: Date.now(),
+  offers: [],
+  photos: [],
+  description: ``,
+  price: 0,
+  isFavorite: false,
+  id: String(Date.now() + Math.random())
 };
 
 export const cards = generateCards(CARDS_AMOUNT);

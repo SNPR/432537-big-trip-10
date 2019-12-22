@@ -1,14 +1,17 @@
 import {
-  FiltersComponent,
   MenuComponent,
   NoEventsMessageComponent,
   TripDaysComponent
 } from "./components";
-import TripController from "./controllers/trip-controller";
+import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
-import {filters} from "./mock/filter";
 import {menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
+import PointsModel from "./models/point";
+import FilterController from "./controllers/filter.js";
+
+const pointsModel = new PointsModel();
+pointsModel.setPoints(cards);
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
@@ -20,11 +23,8 @@ renderElement(
     RenderPosition.BEFOREEND
 );
 
-renderElement(
-    tripControls,
-    new FiltersComponent(filters),
-    RenderPosition.BEFOREEND
-);
+const filterController = new FilterController(tripControls, pointsModel);
+filterController.render();
 
 renderElement(tripEvents, tripDaysComponent, RenderPosition.BEFOREEND);
 
@@ -35,6 +35,11 @@ if (cards.length === 0) {
       RenderPosition.BEFOREEND
   );
 } else {
-  const tripController = new TripController(tripDaysComponent);
+  const tripController = new TripController(tripDaysComponent, pointsModel);
   tripController.render(cards);
+  document
+    .querySelector(`.trip-main__event-add-btn`)
+    .addEventListener(`click`, () => {
+      tripController.createPoint();
+    });
 }
