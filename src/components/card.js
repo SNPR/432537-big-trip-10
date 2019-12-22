@@ -38,6 +38,7 @@ export default class Card extends AbstractComponent {
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
       ${this._card.offers
+        .filter((offer) => offer.checked)
         .map((offer) => {
           return `
             <li class="event__offer">
