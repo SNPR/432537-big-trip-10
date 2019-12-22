@@ -45,3 +45,4 @@ if (cards.length === 0) {
 }
 
 renderElement(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
+statisticsComponent.hide();
