@@ -69,9 +69,8 @@ export default class TripController {
       return;
     }
 
-    const tripDaysElement = this._container.getElement();
     this._creatingPoint = new PointController(
-        tripDaysElement,
+        this._container.getElement(),
         this._onDataChange,
         this._onViewChange
     );
