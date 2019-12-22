@@ -15,7 +15,7 @@ export default class Menu extends AbstractComponent {
           (item) =>
             `<a class="trip-tabs__btn ${
               item.active ? ACTIVE_MENU_CLASS : ``
-            }" href="#">${item.name}</a>`
+            }" href="#" id="${item.name.toLowerCase()}">${item.name}</a>`
       )
       .join(``)}
     </nav>
@@ -26,11 +26,22 @@ export default class Menu extends AbstractComponent {
     this.getElement()
       .querySelectorAll(`.trip-tabs__btn`)
       .forEach((_item) => {
-        if (_item.textContent === selectedItem) {
+        if (_item.id === selectedItem) {
           _item.classList.add(ACTIVE_MENU_CLASS);
         } else {
           _item.classList.remove(ACTIVE_MENU_CLASS);
         }
       });
+  }
+
+  setOnChange(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      if (evt.target.tagName !== `A`) {
+        return;
+      }
+      const menuItem = evt.target.id;
+
+      handler(menuItem);
+    });
   }
 }
