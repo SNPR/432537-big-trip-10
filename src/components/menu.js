@@ -1,5 +1,7 @@
 import AbstractComponent from "./abstract-component";
 
+const ACTIVE_MENU_CLASS = `trip-tabs__btn--active`;
+
 export default class Menu extends AbstractComponent {
   constructor(menuItems) {
     super();
@@ -11,11 +13,24 @@ export default class Menu extends AbstractComponent {
     ${this._menuItems
       .map(
           (item) =>
-            `<a class="trip-tabs__btn ${item.active &&
-            `trip-tabs__btn--active`}" href="#">${item.name}</a>`
+            `<a class="trip-tabs__btn ${
+              item.active ? ACTIVE_MENU_CLASS : ``
+            }" href="#">${item.name}</a>`
       )
       .join(``)}
     </nav>
   `;
+  }
+
+  setActiveItem(selectedItem) {
+    this.getElement()
+      .querySelectorAll(`.trip-tabs__btn`)
+      .forEach((_item) => {
+        if (_item.textContent === selectedItem) {
+          _item.classList.add(ACTIVE_MENU_CLASS);
+        } else {
+          _item.classList.remove(ACTIVE_MENU_CLASS);
+        }
+      });
   }
 }
