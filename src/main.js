@@ -18,12 +18,10 @@ const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
 const siteMainElement = document.querySelector(`.page-body__page-main`);
 const tripDaysComponent = new TripDaysComponent();
+const menuComponent = new MenuComponent(menuItems);
+const statisticsComponent = new StatisticsComponent();
 
-renderElement(
-    tripControls,
-    new MenuComponent(menuItems),
-    RenderPosition.BEFOREEND
-);
+renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
 
 const filterController = new FilterController(tripControls, pointsModel);
 filterController.render();
@@ -46,8 +44,4 @@ if (cards.length === 0) {
     });
 }
 
-renderElement(
-    siteMainElement,
-    new StatisticsComponent(),
-    RenderPosition.BEFOREEND
-);
+renderElement(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
