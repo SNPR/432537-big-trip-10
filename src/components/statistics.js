@@ -1,6 +1,6 @@
-import AbstractComponent from "./abstract-component.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 
-export default class Statistics extends AbstractComponent {
+export default class Statistics extends AbstractSmartComponent {
   getTemplate() {
     return `<section class="statistics">
               <h2 class="visually-hidden">Trip statistics</h2>
