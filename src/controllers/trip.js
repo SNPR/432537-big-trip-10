@@ -81,7 +81,7 @@ export default class TripController {
 
   _updatePoints() {
     this._removePoints();
-    renderCards(
+    this._showedPointControllers = renderCards(
         this._pointsModel.getPoints(),
         this._container,
         this._onDataChange,
