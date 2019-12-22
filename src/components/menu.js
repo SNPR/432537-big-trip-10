@@ -15,7 +15,7 @@ export default class Menu extends AbstractComponent {
           (item) =>
             `<a class="trip-tabs__btn ${
               item.active ? ACTIVE_MENU_CLASS : ``
-            }" href="#" id="${item.name.toLowerCase()}">${item.name}</a>`
+            }" href="#" id="${item.name}">${item.name}</a>`
       )
       .join(``)}
     </nav>

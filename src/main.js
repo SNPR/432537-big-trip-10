@@ -6,7 +6,7 @@ import {
 } from "./components";
 import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
-import {menuItems} from "./mock/menu";
+import {MenuItem, menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
 import PointsModel from "./models/point";
 import FilterController from "./controllers/filter.js";
@@ -20,6 +20,7 @@ const siteMainElement = document.querySelector(`.page-body__page-main`);
 const tripDaysComponent = new TripDaysComponent();
 const menuComponent = new MenuComponent(menuItems);
 const statisticsComponent = new StatisticsComponent();
+const tripController = new TripController(tripDaysComponent, pointsModel);
 
 renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
 
@@ -35,7 +36,6 @@ if (cards.length === 0) {
       RenderPosition.BEFOREEND
   );
 } else {
-  const tripController = new TripController(tripDaysComponent, pointsModel);
   tripController.render(cards);
   document
     .querySelector(`.trip-main__event-add-btn`)
@@ -46,3 +46,18 @@ if (cards.length === 0) {
 
 renderElement(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
 statisticsComponent.hide();
+
+menuComponent.setOnChange((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.TABLE:
+      menuComponent.setActiveItem(MenuItem.TABLE);
+      tripController.show();
+      statisticsComponent.hide();
+      break;
+    case MenuItem.STATS:
+      menuComponent.setActiveItem(MenuItem.STATS);
+      statisticsComponent.show();
+      tripController.hide();
+      break;
+  }
+});
