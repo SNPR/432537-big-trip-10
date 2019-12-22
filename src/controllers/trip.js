@@ -118,6 +118,7 @@ export default class TripController {
         case SortType.DATE_DOWN:
           sortedCards = this._pointsModel
             .getPoints()
+            .slice()
             .sort((a, b) => a.startDate - b.startDate);
           this._isDefaultSorting = true;
           break;
