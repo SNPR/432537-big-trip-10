@@ -1,7 +1,8 @@
 import {
   MenuComponent,
   NoEventsMessageComponent,
-  TripDaysComponent
+  TripDaysComponent,
+  StatisticsComponent
 } from "./components";
 import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
@@ -15,6 +16,7 @@ pointsModel.setPoints(cards);
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
+const siteMainElement = document.querySelector(`.page-body__page-main`);
 const tripDaysComponent = new TripDaysComponent();
 
 renderElement(
@@ -43,3 +45,9 @@ if (cards.length === 0) {
       tripController.createPoint();
     });
 }
+
+renderElement(
+    siteMainElement,
+    new StatisticsComponent(),
+    RenderPosition.BEFOREEND
+);
