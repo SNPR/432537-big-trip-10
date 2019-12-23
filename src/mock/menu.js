@@ -1,10 +1,15 @@
+export const MenuItem = {
+  TABLE: `Table`,
+  STATS: `Stats`
+};
+
 export const menuItems = [
   {
-    name: `Table`,
+    name: MenuItem.TABLE,
     active: true
   },
   {
-    name: `Stats`,
+    name: MenuItem.STATS,
     active: false
   }
 ];
