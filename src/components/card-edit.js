@@ -493,4 +493,10 @@ export default class CardEdit extends AbstractSmartComponent {
 
     this._applyFlatpickr();
   }
+
+  setClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
+  }
 }
