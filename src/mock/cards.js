@@ -73,8 +73,7 @@ const types = [
   `flight`,
   `check-in`,
   `sightseeing`,
-  `restaurant`,
-  `trip`
+  `restaurant`
 ];
 
 const getRandomNumber = (min, max) => {
