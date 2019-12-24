@@ -35,9 +35,9 @@ const generateChartsData = (points) => {
 
   const moneyData = Object.entries(moneyStatistics).sort((a, b) => b[1] - a[1]);
 
-  const transportData = Object.entries(transportStatistics).sort(
-      (a, b) => b[1] - a[1]
-  );
+  const transportData = Object.entries(transportStatistics)
+    .sort((a, b) => b[1] - a[1])
+    .filter((item) => item[1] !== 0);
 
   const timeData = Object.entries(timeStatictics)
     .sort((a, b) => b[1] - a[1])
@@ -46,7 +46,8 @@ const generateChartsData = (points) => {
         item[0],
         Math.round(moment.duration(item[1], `milliseconds`).asHours())
       ];
-    });
+    })
+    .filter((item) => item[1] !== 0);
 
   return {
     moneyData,
