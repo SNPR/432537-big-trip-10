@@ -1,6 +1,136 @@
 import AbstractSmartComponent from "./abstract-smart-component.js";
-// import {Chart} from "chart.js";
-// import chartjsPluginDatalabes from "chartjs-plugin-datalabels";
+import Chart from "chart.js";
+import chartjsPluginDatalabes from "chartjs-plugin-datalabels";
+import moment from "moment";
+
+const generateChartsData = (points) => {
+  const moneyStatistics = {};
+  const transportStatistics = {
+    taxi: 0,
+    bus: 0,
+    train: 0,
+    ship: 0,
+    transport: 0,
+    drive: 0
+  };
+  const timeStatictics = {};
+
+  points.forEach((point) => {
+    if (point.type in moneyStatistics) {
+      moneyStatistics[point.type] += point.price;
+    } else {
+      moneyStatistics[point.type] = point.price;
+    }
+
+    if (point.type in transportStatistics) {
+      transportStatistics[point.type] += 1;
+    }
+
+    if (point.type in timeStatictics) {
+      timeStatictics[point.type] += point.endDate - point.startDate;
+    } else {
+      timeStatictics[point.type] = point.endDate - point.startDate;
+    }
+  });
+
+  const moneyData = Object.entries(moneyStatistics).sort((a, b) => b[1] - a[1]);
+
+  const transportData = Object.entries(transportStatistics).sort(
+      (a, b) => b[1] - a[1]
+  );
+
+  const timeData = Object.entries(timeStatictics)
+    .sort((a, b) => b[1] - a[1])
+    .map((item) => {
+      return [
+        item[0],
+        Math.round(moment.duration(item[1], `milliseconds`).asHours())
+      ];
+    });
+
+  return {
+    moneyData,
+    transportData,
+    timeData
+  };
+};
+
+const createChart = (ctx, data, label, labelPositon) => {
+  return new Chart(ctx, {
+    type: `horizontalBar`,
+    plugins: [chartjsPluginDatalabes],
+    data: {
+      labels: data.map((item) => item[0].toUpperCase()),
+      datasets: [
+        {
+          label: `MONEY`,
+          data: data.map((item) => item[1]),
+          backgroundColor: `#FFFFFF`,
+          borderColor: `gray`,
+          borderWidth: 1,
+          barThickness: 30,
+          barPercentage: 1.0
+        }
+      ]
+    },
+    options: {
+      responsive: false,
+      aspectRatio: 2.2,
+      legend: {
+        position: `left`,
+        labels: {
+          fontSize: 18,
+          fontStyle: `bold`
+        }
+      },
+      tooltips: {
+        mode: `nearest`,
+        titleAlign: `left`
+      },
+      scales: {
+        xAxes: [
+          {
+            gridLines: {
+              display: false
+            }
+          }
+        ],
+        yAxes: [
+          {
+            gridLines: {
+              display: false
+            }
+          }
+        ]
+      },
+      plugins: {
+        datalabels: {
+          labels: {
+            title: {
+              font: {
+                weight: `bold`,
+                size: 16
+              }
+            }
+          },
+          anchor: `end`,
+          align: `left`,
+          formatter(value) {
+            return labelPositon === `left`
+              ? `${label}${value}`
+              : `${value}${label}`;
+          }
+        }
+      }
+    }
+  });
+};
+
+const moneyChartCtx = document.querySelector(`.statistics__chart--money`);
+const transportChartCtx = document.querySelector(
+    `.statistics__chart--transport`
+);
+const timeChartCtx = document.querySelector(`.statistics__chart--time`);
 
 export default class Statistics extends AbstractSmartComponent {
   getTemplate() {
