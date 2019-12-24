@@ -17,9 +17,9 @@ const generateChartsData = (points) => {
 
   points.forEach((point) => {
     if (point.type in moneyStatistics) {
-      moneyStatistics[point.type] += point.price;
+      moneyStatistics[point.type] += Number(point.price);
     } else {
-      moneyStatistics[point.type] = point.price;
+      moneyStatistics[point.type] = Number(point.price);
     }
 
     if (point.type in transportStatistics) {
@@ -55,7 +55,7 @@ const generateChartsData = (points) => {
   };
 };
 
-const createChart = (ctx, data, label, labelPositon) => {
+const renderChart = (ctx, data, label, legend, labelPositon) => {
   return new Chart(ctx, {
     type: `horizontalBar`,
     plugins: [chartjsPluginDatalabes],
@@ -63,7 +63,7 @@ const createChart = (ctx, data, label, labelPositon) => {
       labels: data.map((item) => item[0].toUpperCase()),
       datasets: [
         {
-          label: `MONEY`,
+          label: legend.toUpperCase(),
           data: data.map((item) => item[1]),
           backgroundColor: `#FFFFFF`,
           borderColor: `gray`,
@@ -92,6 +92,9 @@ const createChart = (ctx, data, label, labelPositon) => {
           {
             gridLines: {
               display: false
+            },
+            ticks: {
+              beginAtZero: true
             }
           }
         ],
@@ -126,13 +129,18 @@ const createChart = (ctx, data, label, labelPositon) => {
   });
 };
 
-const moneyChartCtx = document.querySelector(`.statistics__chart--money`);
-const transportChartCtx = document.querySelector(
-    `.statistics__chart--transport`
-);
-const timeChartCtx = document.querySelector(`.statistics__chart--time`);
-
 export default class Statistics extends AbstractSmartComponent {
+  constructor(pointsModel) {
+    super();
+
+    this._pointsModel = pointsModel;
+    this._moneyChart = null;
+    this._transportChart = null;
+    this._timeChart = null;
+
+    this._renderCharts();
+  }
+
   getTemplate() {
     return `<section class="statistics">
               <h2 class="visually-hidden">Trip statistics</h2>
@@ -160,4 +168,57 @@ export default class Statistics extends AbstractSmartComponent {
           </section>
     `;
   }
+
+  _renderCharts() {
+    const element = this.getElement();
+
+    const moneyCtx = element.querySelector(`.statistics__chart--money`);
+    const transportCtx = element.querySelector(`.statistics__chart--transport`);
+    const timeCtx = element.querySelector(`.statistics__chart--time`);
+
+    this._resetCharts();
+
+    const {moneyData, transportData, timeData} = generateChartsData(
+        this._pointsModel.getPoints()
+    );
+
+    this._moneyChart = renderChart(moneyCtx, moneyData, `€`, `money`, `left`);
+    this._transportChart = renderChart(
+        transportCtx,
+        transportData,
+        `x`,
+        `transport`
+    );
+    this._timeChart = renderChart(timeCtx, timeData, `h`, `time`);
+  }
+
+  rerender() {
+    super.rerender();
+    this._renderCharts();
+  }
+
+  _resetCharts() {
+    if (this._moneyChart) {
+      this._moneyChart.destroy();
+      this._moneyChart = null;
+    }
+
+    if (this._transportChart) {
+      this._transportChart.destroy();
+      this._transportChart = null;
+    }
+
+    if (this._colorsChart) {
+      this._colorsChart.destroy();
+      this._colorsChart = null;
+    }
+  }
+
+  show() {
+    super.show();
+
+    this.rerender();
+  }
+
+  recoveryListeners() {}
 }

@@ -19,7 +19,7 @@ const tripEvents = document.querySelector(`.trip-events`);
 const siteMainElement = document.querySelector(`.page-body__page-main`);
 const tripDaysComponent = new TripDaysComponent();
 const menuComponent = new MenuComponent(menuItems);
-const statisticsComponent = new StatisticsComponent();
+const statisticsComponent = new StatisticsComponent(pointsModel);
 const tripController = new TripController(tripDaysComponent, pointsModel);
 
 renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
