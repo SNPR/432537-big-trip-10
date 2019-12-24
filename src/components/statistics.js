@@ -65,7 +65,7 @@ const renderChart = (ctx, data, label, legend, labelPositon) => {
         {
           label: legend.toUpperCase(),
           data: data.map((item) => item[1]),
-          backgroundColor: `#FFFFFF`,
+          backgroundColor: `lightgray`,
           borderColor: `gray`,
           borderWidth: 1,
           barThickness: 30,
