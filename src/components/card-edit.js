@@ -42,6 +42,8 @@ export default class CardEdit extends AbstractSmartComponent {
     this._eventType = card.type;
     this._city = card.city;
     this._offers = [...card.offers];
+    this._photos = [...card.photos];
+    this._description = card.description;
     this._subscribeOnEvents();
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -337,7 +339,9 @@ export default class CardEdit extends AbstractSmartComponent {
           </button>
         </header>
 
-      <section class="event__details">
+        ${
+  this._city
+    ? `<section class="event__details">
         ${
   this._offers.length
     ? `<section class="event__section  event__section--offers">
@@ -381,12 +385,12 @@ export default class CardEdit extends AbstractSmartComponent {
               Destination
             </h3>
             <p class="event__destination-description">
-            ${this._card.description}
+            ${this._description}
             </p>
 
             <div class="event__photos-container">
               <div class="event__photos-tape">
-              ${this._card.photos
+              ${this._photos
                 .map((photo) => {
                   return `
                     <img
@@ -402,7 +406,9 @@ export default class CardEdit extends AbstractSmartComponent {
           </section>`
     : ``
 }
-        </section>
+        </section>`
+    : ``
+}
       </form>
     </li>
   `;
@@ -480,8 +486,8 @@ export default class CardEdit extends AbstractSmartComponent {
       .addEventListener(`change`, (evt) => {
         this._city = evt.target.value;
 
-        this._card.photos = getRandomPhotos();
-        this._card.description = getRandomDescriprion();
+        this._photos = getRandomPhotos();
+        this._description = getRandomDescriprion();
         this.rerender();
       });
   }
@@ -493,8 +499,8 @@ export default class CardEdit extends AbstractSmartComponent {
     return parseFormData(
         formData,
         this._offers,
-        this._card.photos,
-        this._card.description,
+        this._photos,
+        this._description,
         this._card.id
     );
   }
