@@ -1,6 +1,5 @@
 import {
   MenuComponent,
-  NoEventsMessageComponent,
   TripDaysComponent,
   StatisticsComponent
 } from "./components";
@@ -29,20 +28,12 @@ filterController.render();
 
 renderElement(tripEvents, tripDaysComponent, RenderPosition.BEFOREEND);
 
-if (cards.length === 0) {
-  renderElement(
-      tripEvents,
-      new NoEventsMessageComponent(),
-      RenderPosition.BEFOREEND
-  );
-} else {
-  tripController.render(cards);
-  document
-    .querySelector(`.trip-main__event-add-btn`)
-    .addEventListener(`click`, () => {
-      tripController.createPoint();
-    });
-}
+tripController.render(cards);
+document
+  .querySelector(`.trip-main__event-add-btn`)
+  .addEventListener(`click`, () => {
+    tripController.createPoint();
+  });
 
 renderElement(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
 statisticsComponent.hide();

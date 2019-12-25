@@ -1,9 +1,10 @@
 import {
   EventsSortingComponent,
   TripDayItemComponent,
-  TripInfoComponent
+  TripInfoComponent,
+  NoEventsMessageComponent
 } from "../components";
-import {renderElement, RenderPosition} from "../utils/render";
+import {renderElement, RenderPosition, remove} from "../utils/render";
 import {SortType, Mode} from "../utils/constants";
 import PointController from "./point";
 import {EmptyPoint} from "../mock/cards";
@@ -54,13 +55,15 @@ export default class TripController {
   constructor(container, pointsModel) {
     this._container = container;
     this._pointsModel = pointsModel;
-    this._eventsSortingComponent = new EventsSortingComponent();
+    this._eventsSortingComponent = null;
+    this._tripInfoComponent = null;
     this._showedPointControllers = [];
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
     this._pointsModel.setFilterChangeHandler(this._onFilterChange);
     this._creatingPoint = null;
+    this._noEventsMessageComponent = null;
     this._isDefaultSorting = true;
   }
 
@@ -90,7 +93,51 @@ export default class TripController {
     );
   }
 
+  _toggleNoEventsMessageComponent() {
+    if (this._pointsModel.getPoints().length === 0) {
+      if (!this._noEventsMessageComponent) {
+        this._noEventsMessageComponent = new NoEventsMessageComponent();
+        renderElement(
+            tripEvents,
+            this._noEventsMessageComponent,
+            RenderPosition.BEFOREEND
+        );
+      }
+    } else {
+      if (this._noEventsMessageComponent) {
+        remove(this._noEventsMessageComponent);
+        this._noEventsMessageComponent = null;
+        this.render();
+      }
+    }
+    this._reset();
+  }
+
+  _reset() {
+    this._container.getElement().innerHTML = ``;
+    if (this._tripInfoComponent) {
+      remove(this._tripInfoComponent);
+    }
+    if (this._eventsSortingComponent) {
+      remove(this._eventsSortingComponent);
+    }
+
+    if (this._pointsModel.getPoints().length) {
+      this._eventsSortingComponent = new EventsSortingComponent();
+      this._tripInfoComponent = new TripInfoComponent(
+          this._pointsModel.getPoints()
+      );
+
+      this.render();
+    }
+  }
+
   render() {
+    if (this._pointsModel.getPoints().length === 0) {
+      this._toggleNoEventsMessageComponent();
+      return;
+    }
+
     this._showedPointControllers = renderCards(
         this._pointsModel.getPoints(),
         this._container,
@@ -99,11 +146,12 @@ export default class TripController {
         this._isDefaultSorting
     );
 
-    renderElement(
-        tripInfo,
-        new TripInfoComponent(this._pointsModel.getPoints()),
-        RenderPosition.AFTERBEGIN
+    this._eventsSortingComponent = new EventsSortingComponent();
+    this._tripInfoComponent = new TripInfoComponent(
+        this._pointsModel.getPoints()
     );
+
+    renderElement(tripInfo, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
 
     renderElement(
         tripEvents,
@@ -150,15 +198,19 @@ export default class TripController {
       );
     });
 
-    const getFullPrice = this._pointsModel.getPoints().reduce((acc, item) => {
+    this._getFullPrice();
+  }
+
+  _getFullPrice() {
+    const fullPrice = this._pointsModel.getPoints().reduce((acc, item) => {
       return (
         acc +
-        item.price +
-        item.offers.reduce((_acc, _item) => _acc + _item.price, 0)
+        Number(item.price) +
+        item.offers.reduce((_acc, _item) => _acc + Number(_item.price), 0)
       );
     }, 0);
 
-    document.querySelector(`.trip-info__cost-value`).textContent = getFullPrice;
+    document.querySelector(`.trip-info__cost-value`).textContent = fullPrice;
   }
 
   _onDataChange(oldCard, newCard, pointController) {
@@ -195,6 +247,8 @@ export default class TripController {
         pointController.render(newCard, Mode.DEFAULT);
       }
     }
+
+    this._toggleNoEventsMessageComponent();
   }
 
   _onViewChange() {
