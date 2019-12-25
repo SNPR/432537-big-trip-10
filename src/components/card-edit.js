@@ -3,6 +3,7 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import moment from "moment";
+import {getRandomOffers} from "../mock/cards";
 
 const parseFormData = (formData, offers, photos, description, id) => {
   return {
@@ -330,10 +331,10 @@ export default class CardEdit extends AbstractSmartComponent {
           </button>
         </header>
 
+      <section class="event__details">
         ${
   this._card.offers.length
-    ? `<section class="event__details">
-          <section class="event__section  event__section--offers">
+    ? `<section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">
               Offers
             </h3>
@@ -363,7 +364,9 @@ export default class CardEdit extends AbstractSmartComponent {
               })
               .join(``)}
             </div>
-          </section>
+          </section>`
+    : ``
+}
 
           <section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">
@@ -389,9 +392,7 @@ export default class CardEdit extends AbstractSmartComponent {
               </div>
             </div>
           </section>
-        </section>`
-    : ``
-}
+        </section>
       </form>
     </li>
   `;
@@ -459,6 +460,7 @@ export default class CardEdit extends AbstractSmartComponent {
       .addEventListener(`click`, (evt) => {
         if (evt.target.tagName === `INPUT`) {
           this._eventType = evt.target.value;
+          this._card.offers = getRandomOffers();
           this.rerender();
         }
       });
