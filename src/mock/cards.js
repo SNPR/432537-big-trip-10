@@ -58,7 +58,7 @@ const cities = [`Amsterdam`, `Geneva`, `Chamonix`, `Saint Petersburg`];
 
 const getRandomPhoto = () => `http://picsum.photos/300/150?r=${Math.random()}`;
 
-const getRandomDescriprion = () =>
+export const getRandomDescriprion = () =>
   shuffleArray(sentences)
     .slice(0, getRandomNumber(1, 4))
     .join(` `);
@@ -134,3 +134,7 @@ export const EmptyPoint = {
 export const cards = generateCards(CARDS_AMOUNT);
 
 export const getRandomOffers = () => shuffleArray(offers).slice(2);
+export const getRandomPhotos = () =>
+  Array(5)
+    .fill(``)
+    .map(getRandomPhoto);

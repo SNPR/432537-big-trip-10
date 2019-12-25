@@ -3,7 +3,11 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import moment from "moment";
-import {getRandomOffers} from "../mock/cards";
+import {
+  getRandomOffers,
+  getRandomPhotos,
+  getRandomDescriprion
+} from "../mock/cards";
 
 const parseFormData = (formData, offers, photos, description, id) => {
   return {
@@ -36,6 +40,7 @@ export default class CardEdit extends AbstractSmartComponent {
     super();
     this._card = card;
     this._eventType = card.type;
+    this._city = card.city;
     this._subscribeOnEvents();
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -250,7 +255,7 @@ export default class CardEdit extends AbstractSmartComponent {
               id="event-destination-1"
               type="text"
               name="event-destination"
-              value="${this._card.city}"
+              value="${this._city}"
               list="destination-list-1"
             />
             <datalist id="destination-list-1">
@@ -463,6 +468,16 @@ export default class CardEdit extends AbstractSmartComponent {
           this._card.offers = getRandomOffers();
           this.rerender();
         }
+      });
+
+    element
+      .querySelector(`.event__input--destination`)
+      .addEventListener(`change`, (evt) => {
+        this._city = evt.target.value;
+
+        this._card.photos = getRandomPhotos();
+        this._card.description = getRandomDescriprion();
+        this.rerender();
       });
   }
 
