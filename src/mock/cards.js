@@ -132,3 +132,21 @@ export const EmptyPoint = {
 };
 
 export const cards = generateCards(CARDS_AMOUNT);
+
+export const generateOffers = (amount) => {
+  return Array(amount)
+    .fill(``)
+    .map((_) => {
+      return {
+        type: getRandomArrayItem(types),
+        offers: Array(2)
+          .fill(``)
+          .map(() => {
+            return {
+              title: getRandomArrayItem(offers.map((offer) => offer.name)),
+              price: getRandomNumber(10, 100)
+            };
+          })
+      };
+    });
+};
