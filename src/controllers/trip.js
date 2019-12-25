@@ -67,7 +67,6 @@ export default class TripController {
     this._noEventsMessageComponent = null;
     this._isDefaultSorting = true;
     this._tripDaysComponent = new TripDaysComponent();
-    debugger;
     renderElement(
         this._container,
         this._tripDaysComponent,
