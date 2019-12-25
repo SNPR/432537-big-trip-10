@@ -310,7 +310,7 @@ export default class CardEdit extends AbstractSmartComponent {
             Save
           </button>
           <button class="event__reset-btn" type="reset">${
-  this._offers.length > 0 ? `Delete` : `Cancel`
+  this._card.isNew ? `Cancel` : `Delete`
 }</button>
 
           <input

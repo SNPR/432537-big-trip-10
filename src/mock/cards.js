@@ -128,7 +128,8 @@ export const EmptyPoint = {
   description: ``,
   price: 0,
   isFavorite: false,
-  id: String(Date.now() + Math.random())
+  id: String(Date.now() + Math.random()),
+  isNew: true
 };
 
 export const cards = generateCards(CARDS_AMOUNT);
