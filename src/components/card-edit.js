@@ -41,6 +41,7 @@ export default class CardEdit extends AbstractSmartComponent {
     this._card = card;
     this._eventType = card.type;
     this._city = card.city;
+    this._offers = [...card.offers];
     this._subscribeOnEvents();
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -307,7 +308,7 @@ export default class CardEdit extends AbstractSmartComponent {
             Save
           </button>
           <button class="event__reset-btn" type="reset">${
-  this._card.offers.length > 0 ? `Delete` : `Cancel`
+  this._offers.length > 0 ? `Delete` : `Cancel`
 }</button>
 
           <input
@@ -338,14 +339,14 @@ export default class CardEdit extends AbstractSmartComponent {
 
       <section class="event__details">
         ${
-  this._card.offers.length
+  this._offers.length
     ? `<section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">
               Offers
             </h3>
 
             <div class="event__available-offers">
-            ${this._card.offers
+            ${this._offers
               .map((offer) => {
                 return `
                   <div class="event__offer-selector">
@@ -373,7 +374,9 @@ export default class CardEdit extends AbstractSmartComponent {
     : ``
 }
 
-          <section class="event__section  event__section--destination">
+          ${
+  this._city
+    ? `<section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">
               Destination
             </h3>
@@ -396,7 +399,9 @@ export default class CardEdit extends AbstractSmartComponent {
                 .join(``)}
               </div>
             </div>
-          </section>
+          </section>`
+    : ``
+}
         </section>
       </form>
     </li>
@@ -465,7 +470,7 @@ export default class CardEdit extends AbstractSmartComponent {
       .addEventListener(`click`, (evt) => {
         if (evt.target.tagName === `INPUT`) {
           this._eventType = evt.target.value;
-          this._card.offers = getRandomOffers();
+          this._offers = getRandomOffers();
           this.rerender();
         }
       });
@@ -487,7 +492,7 @@ export default class CardEdit extends AbstractSmartComponent {
 
     return parseFormData(
         formData,
-        this._card.offers,
+        this._offers,
         this._card.photos,
         this._card.description,
         this._card.id
