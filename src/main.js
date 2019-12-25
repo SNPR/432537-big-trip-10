@@ -1,8 +1,4 @@
-import {
-  MenuComponent,
-  TripDaysComponent,
-  StatisticsComponent
-} from "./components";
+import {MenuComponent, StatisticsComponent} from "./components";
 import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
 import {MenuItem, menuItems} from "./mock/menu";
@@ -16,17 +12,15 @@ pointsModel.setPoints(cards);
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
 const siteMainElement = document.querySelector(`.page-body__page-main`);
-const tripDaysComponent = new TripDaysComponent();
+
 const menuComponent = new MenuComponent(menuItems);
 const statisticsComponent = new StatisticsComponent(pointsModel);
-const tripController = new TripController(tripDaysComponent, pointsModel);
+const tripController = new TripController(tripEvents, pointsModel);
 
 renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
 
 const filterController = new FilterController(tripControls, pointsModel);
 filterController.render();
-
-renderElement(tripEvents, tripDaysComponent, RenderPosition.BEFOREEND);
 
 tripController.render(cards);
 document

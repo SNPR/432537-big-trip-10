@@ -1,5 +1,6 @@
 import {
   EventsSortingComponent,
+  TripDaysComponent,
   TripDayItemComponent,
   TripInfoComponent,
   NoEventsMessageComponent
@@ -65,6 +66,13 @@ export default class TripController {
     this._creatingPoint = null;
     this._noEventsMessageComponent = null;
     this._isDefaultSorting = true;
+    this._tripDaysComponent = new TripDaysComponent();
+    debugger;
+    renderElement(
+        this._container,
+        this._tripDaysComponent,
+        RenderPosition.BEFOREEND
+    );
   }
 
   createPoint() {
@@ -73,7 +81,7 @@ export default class TripController {
     }
 
     this._creatingPoint = new PointController(
-        this._container.getElement(),
+        this._tripDaysComponent.getElement(),
         this._onDataChange,
         this._onViewChange
     );
@@ -86,7 +94,7 @@ export default class TripController {
     this._removePoints();
     this._showedPointControllers = renderCards(
         this._pointsModel.getPoints(),
-        this._container,
+        this._tripDaysComponent,
         this._onDataChange,
         this._onViewChange,
         this._isDefaultSorting
@@ -114,7 +122,7 @@ export default class TripController {
   }
 
   _reset() {
-    this._container.getElement().innerHTML = ``;
+    this._tripDaysComponent.getElement().innerHTML = ``;
     this._getFullPrice();
 
     if (this._tripInfoComponent) {
@@ -142,7 +150,7 @@ export default class TripController {
 
     this._showedPointControllers = renderCards(
         this._pointsModel.getPoints(),
-        this._container,
+        this._tripDaysComponent,
         this._onDataChange,
         this._onViewChange,
         this._isDefaultSorting
@@ -193,7 +201,7 @@ export default class TripController {
       this._removePoints();
       this._showedPointControllers = renderCards(
           sortedCards,
-          this._container,
+          this._tripDaysComponent,
           this._onDataChange,
           this._onViewChange,
           this._isDefaultSorting
@@ -233,7 +241,7 @@ export default class TripController {
 
         this._showedPointControllers = renderCards(
             this._pointsModel.getPoints(),
-            this._container,
+            this._tripDaysComponent,
             this._onDataChange,
             this._onViewChange,
             this._isDefaultSorting
@@ -262,7 +270,7 @@ export default class TripController {
   }
 
   _removePoints() {
-    this._container.getElement().innerHTML = ``;
+    this._tripDaysComponent.getElement().innerHTML = ``;
     this._showedPointControllers.forEach((pointController) =>
       pointController.destroy()
     );
@@ -270,10 +278,10 @@ export default class TripController {
   }
 
   hide() {
-    this._container.hide();
+    this._container.classList.add(`visually-hidden`);
   }
 
   show() {
-    this._container.show();
+    this._container.classList.remove(`visually-hidden`);
   }
 }
