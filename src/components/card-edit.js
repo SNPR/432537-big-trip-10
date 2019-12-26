@@ -43,6 +43,7 @@ export default class CardEdit extends AbstractSmartComponent {
     this._city = card.city;
     this._offers = [...card.offers];
     this._photos = [...card.photos];
+    this._price = card.price;
     this._description = card.description;
     this._subscribeOnEvents();
     this._flatpickrStartDate = null;
@@ -302,7 +303,7 @@ export default class CardEdit extends AbstractSmartComponent {
               id="event-price-1"
               type="text"
               name="event-price"
-              value="${this._card.price}"
+              value="${this._price}"
             />
           </div>
 
@@ -489,6 +490,12 @@ export default class CardEdit extends AbstractSmartComponent {
         this._photos = getRandomPhotos();
         this._description = getRandomDescriprion();
         this.rerender();
+      });
+
+    element
+      .querySelector(`.event__input--price`)
+      .addEventListener(`change`, (evt) => {
+        this._price = evt.target.value;
       });
   }
 
