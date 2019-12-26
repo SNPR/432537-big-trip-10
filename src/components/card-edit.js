@@ -3,6 +3,11 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import moment from "moment";
+import {
+  getRandomOffers,
+  getRandomPhotos,
+  getRandomDescriprion
+} from "../mock/cards";
 
 const parseFormData = (formData, offers, photos, description, id) => {
   return {
@@ -35,6 +40,11 @@ export default class CardEdit extends AbstractSmartComponent {
     super();
     this._card = card;
     this._eventType = card.type;
+    this._city = card.city;
+    this._offers = [...card.offers];
+    this._photos = [...card.photos];
+    this._price = card.price;
+    this._description = card.description;
     this._subscribeOnEvents();
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -249,7 +259,7 @@ export default class CardEdit extends AbstractSmartComponent {
               id="event-destination-1"
               type="text"
               name="event-destination"
-              value="${this._card.city}"
+              value="${this._city}"
               list="destination-list-1"
             />
             <datalist id="destination-list-1">
@@ -293,7 +303,7 @@ export default class CardEdit extends AbstractSmartComponent {
               id="event-price-1"
               type="text"
               name="event-price"
-              value="${this._card.price}"
+              value="${this._price}"
             />
           </div>
 
@@ -301,7 +311,7 @@ export default class CardEdit extends AbstractSmartComponent {
             Save
           </button>
           <button class="event__reset-btn" type="reset">${
-  this._card.offers.length > 0 ? `Delete` : `Cancel`
+  this._card.isNew ? `Cancel` : `Delete`
 }</button>
 
           <input
@@ -331,15 +341,17 @@ export default class CardEdit extends AbstractSmartComponent {
         </header>
 
         ${
-  this._card.offers.length
+  this._city
     ? `<section class="event__details">
-          <section class="event__section  event__section--offers">
+        ${
+  this._offers.length
+    ? `<section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">
               Offers
             </h3>
 
             <div class="event__available-offers">
-            ${this._card.offers
+            ${this._offers
               .map((offer) => {
                 return `
                   <div class="event__offer-selector">
@@ -363,19 +375,23 @@ export default class CardEdit extends AbstractSmartComponent {
               })
               .join(``)}
             </div>
-          </section>
+          </section>`
+    : ``
+}
 
-          <section class="event__section  event__section--destination">
+          ${
+  this._city
+    ? `<section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">
               Destination
             </h3>
             <p class="event__destination-description">
-            ${this._card.description}
+            ${this._description}
             </p>
 
             <div class="event__photos-container">
               <div class="event__photos-tape">
-              ${this._card.photos
+              ${this._photos
                 .map((photo) => {
                   return `
                     <img
@@ -388,7 +404,9 @@ export default class CardEdit extends AbstractSmartComponent {
                 .join(``)}
               </div>
             </div>
-          </section>
+          </section>`
+    : ``
+}
         </section>`
     : ``
 }
@@ -459,8 +477,25 @@ export default class CardEdit extends AbstractSmartComponent {
       .addEventListener(`click`, (evt) => {
         if (evt.target.tagName === `INPUT`) {
           this._eventType = evt.target.value;
+          this._offers = getRandomOffers();
           this.rerender();
         }
+      });
+
+    element
+      .querySelector(`.event__input--destination`)
+      .addEventListener(`change`, (evt) => {
+        this._city = evt.target.value;
+
+        this._photos = getRandomPhotos();
+        this._description = getRandomDescriprion();
+        this.rerender();
+      });
+
+    element
+      .querySelector(`.event__input--price`)
+      .addEventListener(`change`, (evt) => {
+        this._price = evt.target.value;
       });
   }
 
@@ -470,9 +505,9 @@ export default class CardEdit extends AbstractSmartComponent {
 
     return parseFormData(
         formData,
-        this._card.offers,
-        this._card.photos,
-        this._card.description,
+        this._offers,
+        this._photos,
+        this._description,
         this._card.id
     );
   }
@@ -492,5 +527,11 @@ export default class CardEdit extends AbstractSmartComponent {
     super.rerender();
 
     this._applyFlatpickr();
+  }
+
+  setClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
   }
 }

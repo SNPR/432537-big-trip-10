@@ -32,6 +32,11 @@ export default class PointController {
       document.addEventListener(`keydown`, this._onEscKeyDown);
     });
 
+    this._cardEditComponent.setClickHandler(() => {
+      this._replaceCardEditToCard();
+      document.removeEventListener(`keydown`, this._onEscKeyDown);
+    });
+
     this._cardEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       const data = this._cardEditComponent.getData();

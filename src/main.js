@@ -1,11 +1,7 @@
-import {
-  MenuComponent,
-  NoEventsMessageComponent,
-  TripDaysComponent
-} from "./components";
+import {MenuComponent, StatisticsComponent} from "./components";
 import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
-import {menuItems} from "./mock/menu";
+import {MenuItem, menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
 import PointsModel from "./models/point";
 import FilterController from "./controllers/filter.js";
@@ -15,31 +11,38 @@ pointsModel.setPoints(cards);
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
-const tripDaysComponent = new TripDaysComponent();
+const siteMainElement = document.querySelector(`.page-body__page-main`);
 
-renderElement(
-    tripControls,
-    new MenuComponent(menuItems),
-    RenderPosition.BEFOREEND
-);
+const menuComponent = new MenuComponent(menuItems);
+const statisticsComponent = new StatisticsComponent(pointsModel);
+const tripController = new TripController(tripEvents, pointsModel);
+
+renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
 
 const filterController = new FilterController(tripControls, pointsModel);
 filterController.render();
 
-renderElement(tripEvents, tripDaysComponent, RenderPosition.BEFOREEND);
+tripController.render(cards);
+document
+  .querySelector(`.trip-main__event-add-btn`)
+  .addEventListener(`click`, () => {
+    tripController.createPoint();
+  });
 
-if (cards.length === 0) {
-  renderElement(
-      tripEvents,
-      new NoEventsMessageComponent(),
-      RenderPosition.BEFOREEND
-  );
-} else {
-  const tripController = new TripController(tripDaysComponent, pointsModel);
-  tripController.render(cards);
-  document
-    .querySelector(`.trip-main__event-add-btn`)
-    .addEventListener(`click`, () => {
-      tripController.createPoint();
-    });
-}
+renderElement(siteMainElement, statisticsComponent, RenderPosition.BEFOREEND);
+statisticsComponent.hide();
+
+menuComponent.setChangeHandler((menuItem) => {
+  switch (menuItem) {
+    case MenuItem.TABLE:
+      menuComponent.setActiveItem(MenuItem.TABLE);
+      tripController.show();
+      statisticsComponent.hide();
+      break;
+    case MenuItem.STATS:
+      menuComponent.setActiveItem(MenuItem.STATS);
+      statisticsComponent.show();
+      tripController.hide();
+      break;
+  }
+});
