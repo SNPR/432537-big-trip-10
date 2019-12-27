@@ -335,9 +335,13 @@ export default class CardEdit extends AbstractSmartComponent {
             </svg>
           </label>
 
-          <button class="event__rollup-btn" type="button">
-            <span class="visually-hidden">Open event</span>
-          </button>
+          ${
+  !this._card.isNew
+    ? `<button class="event__rollup-btn" type="button">
+                <span class="visually-hidden">Open event</span>
+              </button>`
+    : ``
+}
         </header>
 
         ${
@@ -530,8 +534,10 @@ export default class CardEdit extends AbstractSmartComponent {
   }
 
   setClickHandler(handler) {
-    this.getElement()
-      .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, handler);
+    if (!this._card.isNew) {
+      this.getElement()
+        .querySelector(`.event__rollup-btn`)
+        .addEventListener(`click`, handler);
+    }
   }
 }
