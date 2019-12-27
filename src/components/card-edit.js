@@ -345,7 +345,7 @@ export default class CardEdit extends AbstractSmartComponent {
         </header>
 
         ${
-  this._city
+  this._city || this._offers.length > 0
     ? `<section class="event__details">
         ${
   this._offers.length
