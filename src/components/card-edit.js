@@ -460,7 +460,8 @@ export default class CardEdit extends AbstractSmartComponent {
     const flatpickrOptions = {
       dateFormat: `d/m/y H:i`,
       enableTime: true,
-      allowInput: true
+      allowInput: true,
+      minDate: this._card.startDate
     };
 
     this._flatpickrStartDate = flatpickr(
