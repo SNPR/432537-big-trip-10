@@ -1,9 +1,11 @@
+import moment from "moment";
+
 export default class Point {
   constructor(data) {
     this.type = data[`type`];
     this.city = data[`destination`][`name`];
-    this.startDate = data[`date_from`];
-    this.endDate = data[`date_to`];
+    this.startDate = moment(data[`date_from`]).unix();
+    this.endDate = moment(data[`date_to`]).unix();
     this.offers = data[`offers`];
     this.photos = data[`destination`][`pictures`];
     this.description = data[`destination`][`description`];

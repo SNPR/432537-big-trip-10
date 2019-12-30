@@ -2,28 +2,32 @@ import {MenuComponent, StatisticsComponent} from "./components";
 import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
 import {MenuItem, menuItems} from "./mock/menu";
-import {cards} from "./mock/cards";
 import PointsModel from "./models/points";
 import FilterController from "./controllers/filter.js";
 import {AUTHORIZATION, END_POINT} from "./utils/constants";
-
-const pointsModel = new PointsModel();
-pointsModel.setPoints(cards);
+import API from "./api.js";
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
 const siteMainElement = document.querySelector(`.page-body__page-main`);
 
+const api = new API(END_POINT, AUTHORIZATION);
+
 const menuComponent = new MenuComponent(menuItems);
-const statisticsComponent = new StatisticsComponent(pointsModel);
+const pointsModel = new PointsModel();
 const tripController = new TripController(tripEvents, pointsModel);
+const statisticsComponent = new StatisticsComponent(pointsModel);
+
+api.getPoints().then((points) => {
+  pointsModel.setPoints(points);
+  tripController.render(points);
+});
 
 renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
 
 const filterController = new FilterController(tripControls, pointsModel);
 filterController.render();
 
-tripController.render(cards);
 document
   .querySelector(`.trip-main__event-add-btn`)
   .addEventListener(`click`, () => {

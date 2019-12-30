@@ -361,15 +361,15 @@ export default class CardEdit extends AbstractSmartComponent {
                   <div class="event__offer-selector">
                     <input
                       class="event__offer-checkbox  visually-hidden"
-                      id="event-offer-${offer.type}-1"
+                      id="event-offer-${this._card.type}-1"
                       type="checkbox"
-                      name="event-offer-${offer.type}"
+                      name="event-offer-${this._card.type}"
                       ${offer.checked && `checked`}
                     />
                     <label class="event__offer-label" for="event-offer-${
-  offer.type
+  this._card.type
 }-1">
-                      <span class="event__offer-title">${offer.name}</span>
+                      <span class="event__offer-title">${offer.title}</span>
                       &plus; &euro;&nbsp;<span class="event__offer-price">
                       ${offer.price}
                       </span>
@@ -400,8 +400,8 @@ export default class CardEdit extends AbstractSmartComponent {
                   return `
                     <img
                       class="event__photo"
-                      src="${photo}"
-                      alt="Event photo"
+                      src="${photo.src}"
+                      alt="${photo.description}"
                     />
                   `;
                 })
