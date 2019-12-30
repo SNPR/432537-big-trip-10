@@ -3,7 +3,7 @@ import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
 import {MenuItem, menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
-import PointsModel from "./models/point";
+import PointsModel from "./models/points";
 import FilterController from "./controllers/filter.js";
 
 const pointsModel = new PointsModel();

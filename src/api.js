@@ -1,5 +1,5 @@
 import {Method} from "./utils/constants";
-import Point from "./models/point";
+import Points from "./models/point";
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -25,7 +25,11 @@ export default class API {
       });
   }
 
-  getPoints() {}
+  getPoints() {
+    return this._load({url: `points`})
+      .then((response) => response.json())
+      .then(Point.parsePoints);
+  }
 
   createPoint(point) {}
 
