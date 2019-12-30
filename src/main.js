@@ -6,6 +6,7 @@ import PointsModel from "./models/points";
 import FilterController from "./controllers/filter.js";
 import {AUTHORIZATION, END_POINT} from "./utils/constants";
 import API from "./api.js";
+import Store from "./store";
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
@@ -18,10 +19,12 @@ const pointsModel = new PointsModel();
 const tripController = new TripController(tripEvents, pointsModel);
 const statisticsComponent = new StatisticsComponent(pointsModel);
 
-api.getPoints().then((points) => {
-  pointsModel.setPoints(points);
-  tripController.render(points);
-});
+Promise.all([api.getDestinations(), api.getOffers(), api.getPoints()]).then(
+    (values) => {
+      pointsModel.setPoints(values[2]);
+      tripController.render(values[2]);
+    }
+);
 
 renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
 
