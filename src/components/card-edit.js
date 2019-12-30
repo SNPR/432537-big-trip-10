@@ -8,6 +8,7 @@ import {
   getRandomPhotos,
   getRandomDescriprion
 } from "../mock/cards";
+import Store from "../store";
 
 const parseFormData = (formData, offers, photos, description, id) => {
   return {
@@ -263,9 +264,12 @@ export default class CardEdit extends AbstractSmartComponent {
               list="destination-list-1"
             />
             <datalist id="destination-list-1">
-              <option value="Amsterdam"></option>
-              <option value="Geneva"></option>
-              <option value="Chamonix"></option>
+            ${Store.getDestinations()
+              .map((destination) => {
+                return `<option value="${destination.name}"></option>`;
+              })
+              .join(``)}
+
             </datalist>
           </div>
 

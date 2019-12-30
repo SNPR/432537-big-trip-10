@@ -6,7 +6,6 @@ import PointsModel from "./models/points";
 import FilterController from "./controllers/filter.js";
 import {AUTHORIZATION, END_POINT} from "./utils/constants";
 import API from "./api.js";
-import Store from "./store";
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
