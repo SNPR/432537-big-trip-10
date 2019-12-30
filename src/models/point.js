@@ -1,7 +1,7 @@
 export default class Point {
   constructor(data) {
     this.type = data[`type`];
-    this.city = data[`destination`];
+    this.city = data[`destination`][`name`];
     this.startDate = data[`date_from`];
     this.endDate = data[`date_to`];
     this.offers = data[`offers`];
