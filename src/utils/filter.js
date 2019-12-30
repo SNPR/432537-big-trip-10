@@ -2,7 +2,7 @@ import {FilterType} from "./constants";
 
 export const getFuturePoints = (points) => {
   return points
-    .filter((point) => point.startDate > Date.now())
+    .filter((point) => point.endDate > Date.now())
     .sort((a, b) => a.startDate - b.startDate);
 };
 
