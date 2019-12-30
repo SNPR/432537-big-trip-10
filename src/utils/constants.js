@@ -15,3 +15,10 @@ export const FilterType = {
   FUTURE: `future`,
   PAST: `past`
 };
+
+export const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
