@@ -5,6 +5,7 @@ import {MenuItem, menuItems} from "./mock/menu";
 import {cards} from "./mock/cards";
 import PointsModel from "./models/points";
 import FilterController from "./controllers/filter.js";
+import {AUTHORIZATION, END_POINT} from "./utils/constants";
 
 const pointsModel = new PointsModel();
 pointsModel.setPoints(cards);
