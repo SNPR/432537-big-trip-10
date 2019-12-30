@@ -1,11 +1,9 @@
-import moment from "moment";
-
 export default class Point {
   constructor(data) {
     this.type = data[`type`];
     this.city = data[`destination`][`name`];
-    this.startDate = moment(data[`date_from`]).unix();
-    this.endDate = moment(data[`date_to`]).unix();
+    this.startDate = new Date(data[`date_from`]).getTime();
+    this.endDate = new Date(data[`date_to`]).getTime();
     this.offers = data[`offers`];
     this.photos = data[`destination`][`pictures`];
     this.description = data[`destination`][`description`];
@@ -17,8 +15,8 @@ export default class Point {
   toRAW() {
     return {
       base_price: this.price,
-      date_from: this.startDate,
-      date_to: this.endDate,
+      date_from: new Date(this.startDate).toISOString(),
+      date_to: new Date(this.endDate).toISOString(),
       destination: {
         description: this.description,
         name: this.city,
