@@ -3,11 +3,6 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import moment from "moment";
-import {
-  getRandomOffers,
-  getRandomPhotos,
-  getRandomDescriprion
-} from "../mock/cards";
 import Store from "../store";
 
 const parseFormData = (formData, offers, photos, description, id) => {
@@ -52,7 +47,6 @@ export default class CardEdit extends AbstractSmartComponent {
     this._submitHandler = null;
     this._favoriteButtonClickHandler = null;
     this._deleteButtonClickHandler = null;
-
     this._applyFlatpickr();
   }
 
@@ -497,11 +491,13 @@ export default class CardEdit extends AbstractSmartComponent {
       .querySelector(`.event__input--destination`)
       .addEventListener(`change`, (evt) => {
         this._city = evt.target.value;
+        this._photos = this._card.photos;
 
-        this._photos = getRandomPhotos();
-        this._description = Store.getDestinations().find(
+        const city = Store.getDestinations().find(
             (destination) => destination.name === this._city
-        ).description;
+        );
+        this._description = city ? city.description : ``;
+
         this.rerender();
       });
 
