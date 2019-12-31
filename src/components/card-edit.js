@@ -3,6 +3,7 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import moment from "moment";
+import nanoid from "nanoid";
 import Store from "../store";
 
 const parseFormData = (formData, offers, photos, description, id) => {
@@ -355,18 +356,17 @@ export default class CardEdit extends AbstractSmartComponent {
             <div class="event__available-offers">
             ${this._offers
               .map((offer) => {
+                const offerId = nanoid();
                 return `
                   <div class="event__offer-selector">
                     <input
                       class="event__offer-checkbox  visually-hidden"
-                      id="event-offer-${this._card.type}-1"
+                      id="event-offer-${offerId}-1"
                       type="checkbox"
-                      name="event-offer-${this._card.type}"
+                      name="event-offer-${offerId}"
                       ${offer.checked && `checked`}
                     />
-                    <label class="event__offer-label" for="event-offer-${
-  this._card.type
-}-1">
+                    <label class="event__offer-label" for="event-offer-${offerId}-1">
                       <span class="event__offer-title">${offer.title}</span>
                       &plus; &euro;&nbsp;<span class="event__offer-price">
                       ${offer.price}
