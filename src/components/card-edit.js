@@ -486,7 +486,9 @@ export default class CardEdit extends AbstractSmartComponent {
       .addEventListener(`click`, (evt) => {
         if (evt.target.tagName === `INPUT`) {
           this._eventType = evt.target.value;
-          this._offers = getRandomOffers();
+          this._offers = Store.getOffers().find(
+              (offer) => offer.type === this._eventType
+          ).offers;
           this.rerender();
         }
       });
