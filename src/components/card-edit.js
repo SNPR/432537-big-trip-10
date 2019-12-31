@@ -497,7 +497,9 @@ export default class CardEdit extends AbstractSmartComponent {
         this._city = evt.target.value;
 
         this._photos = getRandomPhotos();
-        this._description = getRandomDescriprion();
+        this._description = Store.getDestinations().find(
+            (destination) => destination.name === this._city
+        ).description;
         this.rerender();
       });
 
