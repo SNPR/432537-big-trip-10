@@ -1,10 +1,14 @@
 import {MenuComponent, StatisticsComponent} from "./components";
 import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
-import {MenuItem, menuItems} from "./mock/menu";
 import PointsModel from "./models/points";
 import FilterController from "./controllers/filter.js";
-import {AUTHORIZATION, END_POINT} from "./utils/constants";
+import {
+  AUTHORIZATION,
+  END_POINT,
+  MenuItem,
+  menuItems
+} from "./utils/constants";
 import API from "./api.js";
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);

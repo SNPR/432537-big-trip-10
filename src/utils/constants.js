@@ -4,6 +4,22 @@ export const SortType = {
   PRICE_DOWN: `price-down`
 };
 
+export const MenuItem = {
+  TABLE: `Table`,
+  STATS: `Stats`
+};
+
+export const menuItems = [
+  {
+    name: MenuItem.TABLE,
+    active: true
+  },
+  {
+    name: MenuItem.STATS,
+    active: false
+  }
+];
+
 export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
