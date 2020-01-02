@@ -2,35 +2,8 @@ import AbstractSmartComponent from "./abstract-smart-component";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
-import moment from "moment";
 import nanoid from "nanoid";
 import Store from "../store";
-
-const parseFormData = (formData, offers, photos, description, id) => {
-  return {
-    type: formData.get(`event-type`),
-    city: formData.get(`event-destination`),
-    startDate: moment(
-        formData.get(`event-start-time`),
-        `DD/MM/YY HH:mm`
-    ).valueOf(),
-    endDate: moment(formData.get(`event-end-time`), `DD/MM/YY HH:mm`).valueOf(),
-    offers: offers.map((offer) => {
-      return {
-        name: offer.name,
-        price: offer.price,
-        type: offer.type,
-        checked:
-          formData.get(`event-offer-${offer.type}`) === `on` ? true : false
-      };
-    }),
-    photos,
-    description,
-    price: formData.get(`event-price`),
-    id,
-    isFavorite: formData.get(`event-favorite`) === `on`
-  };
-};
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -53,7 +26,9 @@ export default class CardEdit extends AbstractSmartComponent {
 
   getTemplate() {
     return `<li class="trip-events__item">
-    <form class="event  event--edit" action="#" method="post">
+    <form class="event  event--edit" action="#" method="post" name="card-id-${
+  this._card.id
+}">
         <header class="event__header">
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -387,7 +362,7 @@ export default class CardEdit extends AbstractSmartComponent {
             <h3 class="event__section-title  event__section-title--destination">
               Destination
             </h3>
-            <p class="event__destination-description">
+            <p class="event__destination-description" name="event-description">
             ${this._description}
             </p>
 
@@ -510,15 +485,8 @@ export default class CardEdit extends AbstractSmartComponent {
 
   getData() {
     const form = this.getElement().querySelector(`.event--edit`);
-    const formData = new FormData(form);
 
-    return parseFormData(
-        formData,
-        this._offers,
-        this._photos,
-        this._description,
-        this._card.id
-    );
+    return new FormData(form);
   }
 
   removeElement() {
