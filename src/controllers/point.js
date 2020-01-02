@@ -35,7 +35,7 @@ const parseFormData = (formData) => {
     is_favorite: formData.get(`event-favorite`) === `on` ? true : false,
     offers: offerLabels.map((offer) => ({
       title: offer.querySelector(`.event__offer-title`).textContent,
-      price: offer.querySelector(`.event__offer-price`).textContent
+      price: Number(offer.querySelector(`.event__offer-price`).textContent)
     })),
     type: formData.get(`event-type`)
   });
