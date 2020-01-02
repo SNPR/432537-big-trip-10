@@ -288,8 +288,9 @@ export default class CardEdit extends AbstractSmartComponent {
           <button class="event__reset-btn" type="reset">${
   this._card.isNew ? `Cancel` : `Delete`
 }</button>
-
-          <input
+${
+  !this._card.isNew
+    ? `<input
             id="event-favorite-1"
             class="event__favorite-checkbox  visually-hidden"
             type="checkbox"
@@ -310,9 +311,7 @@ export default class CardEdit extends AbstractSmartComponent {
             </svg>
           </label>
 
-          ${
-  !this._card.isNew
-    ? `<button class="event__rollup-btn" type="button">
+<button class="event__rollup-btn" type="button">
                 <span class="visually-hidden">Open event</span>
               </button>`
     : ``
@@ -407,11 +406,13 @@ export default class CardEdit extends AbstractSmartComponent {
   }
 
   setFavoriteButtonClickHandler(handler) {
-    this.getElement()
-      .querySelector(`.event__favorite-checkbox`)
-      .addEventListener(`click`, handler);
+    if (!this._card.isNew) {
+      this.getElement()
+        .querySelector(`.event__favorite-checkbox`)
+        .addEventListener(`click`, handler);
 
-    this._favoriteButtonClickHandler = handler;
+      this._favoriteButtonClickHandler = handler;
+    }
   }
 
   setDeleteButtonClickHandler(handler) {
