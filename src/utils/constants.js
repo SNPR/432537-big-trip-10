@@ -24,4 +24,4 @@ export const Method = {
 };
 
 export const AUTHORIZATION = `Basic {_P)[i-390sadasdadW`;
-export const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip/`;
+export const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;
