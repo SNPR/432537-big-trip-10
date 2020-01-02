@@ -15,7 +15,7 @@ const api = new API(END_POINT, AUTHORIZATION);
 
 const menuComponent = new MenuComponent(menuItems);
 const pointsModel = new PointsModel();
-const tripController = new TripController(tripEvents, pointsModel);
+const tripController = new TripController(tripEvents, pointsModel, api);
 const statisticsComponent = new StatisticsComponent(pointsModel);
 
 Promise.all([api.getDestinations(), api.getOffers(), api.getPoints()]).then(
