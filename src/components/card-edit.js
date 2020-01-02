@@ -4,6 +4,7 @@ import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import nanoid from "nanoid";
 import Store from "../store";
+import {EventTypeToPlaceholderText} from "../utils/constants";
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -223,7 +224,7 @@ export default class CardEdit extends AbstractSmartComponent {
               class="event__label  event__type-output"
               for="event-destination-1"
             >
-            ${this._eventType} at
+            ${this._eventType} ${EventTypeToPlaceholderText[this._eventType]}
             </label>
             <input
               class="event__input  event__input--destination"

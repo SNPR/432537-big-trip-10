@@ -23,5 +23,18 @@ export const Method = {
   DELETE: `DELETE`
 };
 
+export const EventTypeToPlaceholderText = {
+  "taxi": `to`,
+  "bus": `to`,
+  "train": `to`,
+  "ship": `to`,
+  "transport": `to`,
+  "drive": `to`,
+  "flight": `to`,
+  "check-in": `at`,
+  "sightseeing": `at`,
+  "restaurant": `at`
+};
+
 export const AUTHORIZATION = `Basic {_P)[i-390sadasdadW`;
 export const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;
