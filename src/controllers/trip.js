@@ -7,8 +7,7 @@ import {
 } from "../components";
 import {renderElement, RenderPosition, remove} from "../utils/render";
 import {SortType, Mode} from "../utils/constants";
-import PointController from "./point";
-import {EmptyPoint} from "../mock/cards";
+import PointController, {EmptyPoint} from "./point";
 
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);

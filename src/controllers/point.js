@@ -7,9 +7,22 @@ import {
   renderElement
 } from "../utils/render";
 import {Mode} from "../utils/constants";
-import {EmptyPoint} from "../mock/cards";
 import PointModel from "../models/point";
 import Store from "../store";
+
+export const EmptyPoint = {
+  type: `taxi`,
+  city: ``,
+  startDate: Date.now(),
+  endDate: Date.now(),
+  offers: [],
+  photos: [],
+  description: ``,
+  price: 0,
+  isFavorite: false,
+  id: String(Date.now() + Math.random()),
+  isNew: true
+};
 
 const parseFormData = (formData) => {
   const offerLabels = [
