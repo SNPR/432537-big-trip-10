@@ -249,8 +249,10 @@ export default class TripController {
         });
       }
     } else if (newCard === null) {
-      this._pointsModel.removePoint(oldCard.id);
-      this._updatePoints();
+      this._api.deletePoint(oldCard.id).then(() => {
+        this._pointsModel.removePoint(oldCard.id);
+        this._updatePoints();
+      });
     } else {
       this._api.updatePoint(oldCard.id, newCard).then((pointModel) => {
         const isSuccess = this._pointsModel.updatePoint(oldCard.id, pointModel);
