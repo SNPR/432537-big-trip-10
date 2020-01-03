@@ -238,7 +238,7 @@ export default class TripController {
           ];
 
           this._removePoints();
-          this._reset();
+
           this._showedPointControllers = renderCards(
               this._pointsModel.getPoints(),
               this._tripDaysComponent,
@@ -246,26 +246,25 @@ export default class TripController {
               this._onViewChange,
               this._isDefaultSorting
           );
+          this._toggleNoEventsMessageComponent();
         });
       }
     } else if (newCard === null) {
       this._api.deletePoint(oldCard.id).then(() => {
         this._pointsModel.removePoint(oldCard.id);
-        this._reset();
         this._updatePoints();
+        this._toggleNoEventsMessageComponent();
       });
     } else {
       this._api.updatePoint(oldCard.id, newCard).then((pointModel) => {
         const isSuccess = this._pointsModel.updatePoint(oldCard.id, pointModel);
         if (isSuccess) {
           pointController.render(pointModel, Mode.DEFAULT);
-          this._reset();
           this._updatePoints();
+          this._reset();
         }
       });
     }
-
-    this._toggleNoEventsMessageComponent();
   }
 
   _onViewChange() {
