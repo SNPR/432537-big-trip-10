@@ -52,7 +52,7 @@ export const EventTypeToPlaceholderText = {
   "restaurant": `at`
 };
 
-export const AUTHORIZATION = `Basic {_P)[i-390sadasdadW`;
+export const AUTHORIZATION = `Basic {_P)[i-390sadasdadEW`;
 export const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;
 
 export const DefaultData = {
