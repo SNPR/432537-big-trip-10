@@ -467,12 +467,12 @@ ${
       .querySelector(`.event__input--destination`)
       .addEventListener(`change`, (evt) => {
         this._city = evt.target.value;
-        this._photos = this._card.photos;
 
         const city = Store.getDestinations().find(
             (destination) => destination.name === this._city
         );
         this._description = city ? city.description : ``;
+        this._photos = city ? city.pictures : [];
 
         this.rerender();
       });
