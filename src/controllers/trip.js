@@ -238,7 +238,7 @@ export default class TripController {
           ];
 
           this._removePoints();
-
+          this._reset();
           this._showedPointControllers = renderCards(
               this._pointsModel.getPoints(),
               this._tripDaysComponent,
@@ -251,6 +251,7 @@ export default class TripController {
     } else if (newCard === null) {
       this._api.deletePoint(oldCard.id).then(() => {
         this._pointsModel.removePoint(oldCard.id);
+        this._reset();
         this._updatePoints();
       });
     } else {
@@ -258,6 +259,7 @@ export default class TripController {
         const isSuccess = this._pointsModel.updatePoint(oldCard.id, pointModel);
         if (isSuccess) {
           pointController.render(pointModel, Mode.DEFAULT);
+          this._reset();
           this._updatePoints();
         }
       });
