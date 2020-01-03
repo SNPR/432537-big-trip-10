@@ -6,7 +6,7 @@ import {
   RenderPosition,
   renderElement
 } from "../utils/render";
-import {Mode} from "../utils/constants";
+import {Mode, SHAKE_ANIMATION_TIMEOUT} from "../utils/constants";
 import PointModel from "../models/point";
 import Store from "../store";
 
@@ -136,6 +136,23 @@ export default class PointController {
         );
         break;
     }
+  }
+
+  shake() {
+    this._cardEditComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT /
+      1000}s`;
+    this._cardComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT /
+      1000}s`;
+
+    setTimeout(() => {
+      this._cardEditComponent.getElement().style.animation = ``;
+      this._cardComponent.getElement().style.animation = ``;
+
+      this._cardEditComponent.setData({
+        saveButtonText: `Save`,
+        deleteButtonText: `Delete`
+      });
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _replaceCardEditToCard() {
