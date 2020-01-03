@@ -85,15 +85,22 @@ export default class PointController {
 
     this._cardEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
+      this._cardEditComponent.setData({
+        saveButtonText: `Saving...`
+      });
+
       const formData = this._cardEditComponent.getData();
       const data = parseFormData(formData);
 
       this._onDataChange(card, data, this);
     });
 
-    this._cardEditComponent.setDeleteButtonClickHandler(() =>
-      this._onDataChange(card, null, this)
-    );
+    this._cardEditComponent.setDeleteButtonClickHandler(() => {
+      this._cardEditComponent.setData({
+        deleteButtonText: `Deleting...`
+      });
+      this._onDataChange(card, null, this);
+    });
 
     this._cardEditComponent.setFavoriteButtonClickHandler(() => {
       const newCard = PointModel.clone(card);

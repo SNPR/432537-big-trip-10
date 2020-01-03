@@ -4,7 +4,7 @@ import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import nanoid from "nanoid";
 import Store from "../store";
-import {EventTypeToPlaceholderText} from "../utils/constants";
+import {EventTypeToPlaceholderText, DefaultData} from "../utils/constants";
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -16,6 +16,7 @@ export default class CardEdit extends AbstractSmartComponent {
     this._photos = [...card.photos];
     this._price = card.price;
     this._description = card.description;
+    this._externalData = DefaultData;
     this._subscribeOnEvents();
     this._flatpickrStartDate = null;
     this._flatpickrEndDate = null;
@@ -281,10 +282,10 @@ export default class CardEdit extends AbstractSmartComponent {
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">
-            Save
+            ${this._externalData.saveButtonText}
           </button>
           <button class="event__reset-btn" type="reset">${
-  this._card.isNew ? `Cancel` : `Delete`
+  this._card.isNew ? `Cancel` : this._externalData.deleteButtonText
 }</button>
 ${
   !this._card.isNew
@@ -487,6 +488,11 @@ ${
     const form = this.getElement().querySelector(`.event--edit`);
 
     return new FormData(form);
+  }
+
+  setData(data) {
+    this._externalData = Object.assign({}, DefaultData, data);
+    this.rerender();
   }
 
   removeElement() {
