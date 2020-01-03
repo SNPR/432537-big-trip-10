@@ -229,22 +229,24 @@ export default class TripController {
         pointController.destroy();
         this._updatePoints();
       } else {
-        this._pointsModel.addPoint(newCard);
+        this._api.createPoint(newCard).then((pointModel) => {
+          this._pointsModel.addPoint(pointModel);
 
-        this._showedPointControllers = [
-          pointController,
-          ...this._showedPointControllers
-        ];
+          this._showedPointControllers = [
+            pointController,
+            ...this._showedPointControllers
+          ];
 
-        this._removePoints();
+          this._removePoints();
 
-        this._showedPointControllers = renderCards(
-            this._pointsModel.getPoints(),
-            this._tripDaysComponent,
-            this._onDataChange,
-            this._onViewChange,
-            this._isDefaultSorting
-        );
+          this._showedPointControllers = renderCards(
+              this._pointsModel.getPoints(),
+              this._tripDaysComponent,
+              this._onDataChange,
+              this._onViewChange,
+              this._isDefaultSorting
+          );
+        });
       }
     } else if (newCard === null) {
       this._pointsModel.removePoint(oldCard.id);
