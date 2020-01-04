@@ -25,8 +25,10 @@ export const EmptyPoint = {
 };
 
 const parseFormData = (formData) => {
-  const offerLabels = [
-    ...document.querySelectorAll(`label[for^="event-offer"]`)
+  const selectedOffers = [
+    ...document.querySelectorAll(
+        `.event__offer-checkbox:checked + label[for^="event-offer"]`
+    )
   ];
   const destination = Store.getDestinations().find(
       (city) => city.name === formData.get(`event-destination`)
@@ -46,7 +48,7 @@ const parseFormData = (formData) => {
       pictures: destination.pictures
     },
     is_favorite: formData.get(`event-favorite`) === `on` ? true : false,
-    offers: offerLabels.map((offer) => ({
+    offers: selectedOffers.map((offer) => ({
       title: offer.querySelector(`.event__offer-title`).textContent,
       price: Number(offer.querySelector(`.event__offer-price`).textContent)
     })),
@@ -85,12 +87,13 @@ export default class PointController {
 
     this._cardEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
-      this._cardEditComponent.setData({
-        saveButtonText: `Saving...`
-      });
 
       const formData = this._cardEditComponent.getData();
       const data = parseFormData(formData);
+
+      this._cardEditComponent.setData({
+        saveButtonText: `Saving...`
+      });
 
       this._onDataChange(card, data, this);
     });
