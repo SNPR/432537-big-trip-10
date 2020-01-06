@@ -6,6 +6,7 @@ export default class Provider {
   constructor(api, backup) {
     this._api = api;
     this._backup = backup;
+    this._isSynchronized = true;
   }
 
   getPoints() {
@@ -17,6 +18,8 @@ export default class Provider {
         return points;
       });
     }
+
+    this._isSynchronized = false;
 
     return Promise.resolve(Point.parsePoints(this._backup.getAll().points));
   }
@@ -58,6 +61,8 @@ export default class Provider {
         Object.assign({}, point.toRAW(), {id: fakeNewPointId})
     );
 
+    this._isSynchronized = false;
+
     this._backup.setItem(`points`, [
       ...this._backup.getAll().points,
       Object.assign({}, fakeNewPoint.toRAW(), {offline: true})
@@ -81,6 +86,8 @@ export default class Provider {
         Object.assign({}, data.toRAW(), {id})
     );
 
+    this._isSynchronized = false;
+
     this._backup.setItem(`points`, [
       ...this._backup.getAll().points.filter((point) => point.id !== id),
       Object.assign({}, fakeUpdatedPoint.toRAW(), {offline: true})
@@ -98,6 +105,7 @@ export default class Provider {
       });
     }
 
+    this._isSynchronized = false;
     this._backup.setItem(`points`, [
       ...this._backup.getAll().points.filter((point) => point.id !== id)
     ]);
@@ -107,5 +115,9 @@ export default class Provider {
 
   _isOnLine() {
     return window.navigator.onLine;
+  }
+
+  getSynchronize() {
+    return this._isSynchronized;
   }
 }
