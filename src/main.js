@@ -27,19 +27,25 @@ const siteMainElement = document.querySelector(`.page-body__page-main`);
 
 const api = new API(END_POINT, AUTHORIZATION);
 const backup = new Backup(BACKUP_NAME, window.localStorage);
-const apiWithProvider = new Provider(api, backup);
+const apiWithProvider = new Provider(apiWithProvider, backup);
 
 const menuComponent = new MenuComponent(menuItems);
 const pointsModel = new PointsModel();
-const tripController = new TripController(tripEvents, pointsModel, api);
+const tripController = new TripController(
+    tripEvents,
+    pointsModel,
+    apiWithProvider
+);
 const statisticsComponent = new StatisticsComponent(pointsModel);
 
-Promise.all([api.getDestinations(), api.getOffers(), api.getPoints()]).then(
-    (values) => {
-      pointsModel.setPoints(values[2]);
-      tripController.render(values[2]);
-    }
-);
+Promise.all([
+  apiWithProvider.getDestinations(),
+  apiWithProvider.getOffers(),
+  apiWithProvider.getPoints()
+]).then((values) => {
+  pointsModel.setPoints(values[2]);
+  tripController.render(values[2]);
+});
 
 renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
 
