@@ -11,6 +11,13 @@ import {
 } from "./utils/constants";
 import API from "./api.js";
 
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker
+    .register(`/sw.js`)
+    .then(() => {})
+    .catch(() => {});
+});
+
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
 const siteMainElement = document.querySelector(`.page-body__page-main`);
