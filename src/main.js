@@ -7,9 +7,12 @@ import {
   AUTHORIZATION,
   END_POINT,
   MenuItem,
-  menuItems
+  menuItems,
+  BACKUP_NAME
 } from "./utils/constants";
 import API from "./api/index";
+import Backup from "./api/backup.js";
+import Provider from "./api/provider.js";
 
 window.addEventListener(`load`, () => {
   navigator.serviceWorker
@@ -23,6 +26,8 @@ const tripEvents = document.querySelector(`.trip-events`);
 const siteMainElement = document.querySelector(`.page-body__page-main`);
 
 const api = new API(END_POINT, AUTHORIZATION);
+const backup = new Backup(BACKUP_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, backup);
 
 const menuComponent = new MenuComponent(menuItems);
 const pointsModel = new PointsModel();
