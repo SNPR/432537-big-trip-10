@@ -75,3 +75,11 @@ menuComponent.setChangeHandler((menuItem) => {
       break;
   }
 });
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
+});
