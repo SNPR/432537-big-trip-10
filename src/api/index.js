@@ -1,6 +1,6 @@
-import {Method} from "./utils/constants";
-import Point from "./models/point";
-import Store from "./store";
+import {Method} from "../utils/constants";
+import Point from "../models/point";
+import Store from "../store";
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {

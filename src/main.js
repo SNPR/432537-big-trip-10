@@ -9,7 +9,7 @@ import {
   MenuItem,
   menuItems
 } from "./utils/constants";
-import API from "./api.js";
+import API from "./api/index";
 
 window.addEventListener(`load`, () => {
   navigator.serviceWorker
