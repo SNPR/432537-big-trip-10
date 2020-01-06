@@ -8,6 +8,14 @@ export default class Provider {
     return this._api.getPoints();
   }
 
+  getDestinations() {
+    return this._api.getDestinations();
+  }
+
+  getOffers() {
+    return this._api.getOffers();
+  }
+
   createPoint(point) {
     return this._api.createPoint(point);
   }
