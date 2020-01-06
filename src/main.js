@@ -27,7 +27,7 @@ const siteMainElement = document.querySelector(`.page-body__page-main`);
 
 const api = new API(END_POINT, AUTHORIZATION);
 const backup = new Backup(BACKUP_NAME, window.localStorage);
-const apiWithProvider = new Provider(apiWithProvider, backup);
+const apiWithProvider = new Provider(api, backup);
 
 const menuComponent = new MenuComponent(menuItems);
 const pointsModel = new PointsModel();

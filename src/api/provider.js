@@ -27,4 +27,8 @@ export default class Provider {
   deletePoint(id) {
     return this._api.deletePoint(id);
   }
+
+  _isOnLine() {
+    return window.navigator.onLine;
+  }
 }
