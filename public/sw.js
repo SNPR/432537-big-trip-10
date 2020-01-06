@@ -53,6 +53,22 @@ const fetchHandler = (evt) => {
   );
 };
 
-self.addEventListener(`activate`, (evt) => {});
+self.addEventListener(`activate`, (evt) => {
+  evt.waitUntil(
+      caches.keys().then((keys) =>
+        Promise.all(
+            keys
+          .map((key) => {
+            if (key.indexOf(CACHE_PREFIX) === 0 && key !== CACHE_NAME) {
+              return caches.delete(key);
+            }
+
+            return null;
+          })
+          .filter((key) => key !== null)
+        )
+      )
+  );
+});
 
 self.addEventListener(`fetch`, fetchHandler);
