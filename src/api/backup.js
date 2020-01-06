@@ -4,11 +4,31 @@ export default class Backup {
     this._storeKey = key;
   }
 
-  getAll() {}
+  getAll() {
+    try {
+      return JSON.parse(this._storage.getItem(this._storeKey));
+    } catch (err) {
+      return {};
+    }
+  }
 
-  dropAll() {}
+  setItem(key, value) {
+    const store = this.getAll();
 
-  setItem(key, value) {}
+    this._storage.setItem(
+        this._storeKey,
+        JSON.stringify(Object.assign({}, store, {[key]: value}))
+    );
+  }
 
-  removeItem(key) {}
+  removeItem(key) {
+    const store = this.getAll();
+
+    delete store[key];
+
+    this._storage.setItem(
+        this._storeKey,
+        JSON.stringify(Object.assign({}, store))
+    );
+  }
 }
