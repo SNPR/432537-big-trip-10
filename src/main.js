@@ -78,6 +78,12 @@ menuComponent.setChangeHandler((menuItem) => {
 
 window.addEventListener(`online`, () => {
   document.title = document.title.replace(` [offline]`, ``);
+
+  if (!apiWithProvider.getSynchronize()) {
+    apiWithProvider.sync().catch((err) => {
+      throw new Error(err);
+    });
+  }
 });
 
 window.addEventListener(`offline`, () => {

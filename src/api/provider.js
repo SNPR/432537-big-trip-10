@@ -2,6 +2,9 @@ import nanoid from "nanoid";
 import Point from "../models/point";
 import Store from "../store";
 
+const getSyncedPoints = (items) =>
+  items.filter(({success}) => success).map(({payload}) => payload.point);
+
 export default class Provider {
   constructor(api, backup) {
     this._api = api;
@@ -65,7 +68,7 @@ export default class Provider {
 
     this._backup.setItem(`points`, [
       ...this._backup.getAll().points,
-      Object.assign({}, fakeNewPoint.toRAW(), {offline: true})
+      fakeNewPoint.toRAW()
     ]);
 
     return Promise.resolve(fakeNewPoint);
@@ -75,7 +78,7 @@ export default class Provider {
     if (this._isOnLine()) {
       return this._api.updatePoint(id, data).then((newPoint) => {
         this._backup.setItem(`points`, [
-          ...this._backup.getAll().points,
+          ...this._backup.getAll().points.filter((point) => point.id !== id),
           newPoint.toRAW()
         ]);
         return newPoint;
@@ -90,7 +93,7 @@ export default class Provider {
 
     this._backup.setItem(`points`, [
       ...this._backup.getAll().points.filter((point) => point.id !== id),
-      Object.assign({}, fakeUpdatedPoint.toRAW(), {offline: true})
+      fakeUpdatedPoint.toRAW()
     ]);
 
     return Promise.resolve(fakeUpdatedPoint);
@@ -119,5 +122,24 @@ export default class Provider {
 
   getSynchronize() {
     return this._isSynchronized;
+  }
+
+  sync() {
+    if (this._isOnLine()) {
+      const backupPoints = this._backup.getAll().points;
+
+      return this._api.sync(backupPoints).then((response) => {
+        const createdPoints = response.created;
+        const updatedPoints = getSyncedPoints(response.updated);
+
+        this._backup.setItem(`points`, [...createdPoints, ...updatedPoints]);
+
+        this._isSynchronized = true;
+
+        return Promise.resolve();
+      });
+    }
+
+    return Promise.reject(new Error(`Sync data failed`));
   }
 }
