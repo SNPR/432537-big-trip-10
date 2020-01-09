@@ -65,3 +65,5 @@ export const SHAKE_ANIMATION_TIMEOUT = 600;
 export const BACKUP_PREFIX = `big_trip-localstorage`;
 export const BACKUP_VER = `v1`;
 export const BACKUP_NAME = `${BACKUP_PREFIX}-${BACKUP_VER}`;
+
+export const DEBOUNCE_TIMEOUT = 500;

@@ -4,7 +4,12 @@ import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import nanoid from "nanoid";
 import Store from "../store";
-import {EventTypeToPlaceholderText, DefaultData} from "../utils/constants";
+import {
+  EventTypeToPlaceholderText,
+  DefaultData,
+  DEBOUNCE_TIMEOUT
+} from "../utils/constants";
+import debounce from "lodash/debounce";
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -408,7 +413,7 @@ ${
     if (!this._card.isNew) {
       this.getElement()
         .querySelector(`.event__favorite-checkbox`)
-        .addEventListener(`click`, handler);
+        .addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
 
       this._favoriteButtonClickHandler = handler;
     }
