@@ -31,12 +31,15 @@ const apiWithProvider = new Provider(api, backup);
 
 const menuComponent = new MenuComponent(menuItems);
 const pointsModel = new PointsModel();
+
+const statisticsComponent = new StatisticsComponent(pointsModel);
+const filterController = new FilterController(tripControls, pointsModel);
 const tripController = new TripController(
     tripEvents,
     pointsModel,
-    apiWithProvider
+    apiWithProvider,
+    filterController
 );
-const statisticsComponent = new StatisticsComponent(pointsModel);
 
 Promise.all([
   apiWithProvider.getDestinations(),
@@ -45,12 +48,10 @@ Promise.all([
 ]).then((values) => {
   pointsModel.setPoints(values[2]);
   tripController.render(values[2]);
+  filterController.render();
 });
 
 renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
-
-const filterController = new FilterController(tripControls, pointsModel);
-filterController.render();
 
 document
   .querySelector(`.trip-main__event-add-btn`)

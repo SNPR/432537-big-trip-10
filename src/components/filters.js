@@ -25,6 +25,7 @@ export default class Filters extends AbstractComponent {
               name="trip-filter"
               value="${filter.name}"
               ${filter.checked && `checked`}
+              ${filter.disabled && `disabled`}
             />
             <label class="trip-filters__filter-label" for="filter-${
   filter.name
