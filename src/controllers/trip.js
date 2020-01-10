@@ -291,6 +291,7 @@ export default class TripController {
 
   _onViewChange() {
     this._showedPointControllers.forEach((it) => it.setDefaultView());
+    this._creatingPoint = null;
   }
 
   _onFilterChange() {
