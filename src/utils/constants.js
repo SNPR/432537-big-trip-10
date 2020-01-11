@@ -67,3 +67,5 @@ export const BACKUP_VER = `v1`;
 export const BACKUP_NAME = `${BACKUP_PREFIX}-${BACKUP_VER}`;
 
 export const DEBOUNCE_TIMEOUT = 500;
+
+export const MAX_SHOWED_OFFERS_AMOUNT = 3;
