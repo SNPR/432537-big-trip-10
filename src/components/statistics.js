@@ -15,69 +15,67 @@ const LabelPrefix = {
   HOURS: `h`
 };
 
-const generateChartsData = (points) => {
-  const moneyStatistics = {};
-  const transportStatistics = {
-    taxi: 0,
-    bus: 0,
-    train: 0,
-    ship: 0,
-    transport: 0,
-    drive: 0
-  };
-  const timeStatictics = {};
+const generateChartData = (legendName, points) => {
+  const labels = [...new Set(points.map((point) => point.type))];
+  switch (legendName) {
+    case LegendName.MONEY:
+      return labels
+        .map((label) => ({
+          label,
+          value: points
+            .filter((point) => point.type === label)
+            .reduce((acc, curr) => acc + Number(curr.price), 0)
+        }))
+        .sort((a, b) => b.value - a.value);
 
-  points.forEach((point) => {
-    if (point.type in moneyStatistics) {
-      moneyStatistics[point.type] += Number(point.price);
-    } else {
-      moneyStatistics[point.type] = Number(point.price);
-    }
-
-    if (point.type in transportStatistics) {
-      transportStatistics[point.type] += 1;
-    }
-
-    if (point.type in timeStatictics) {
-      timeStatictics[point.type] += point.endDate - point.startDate;
-    } else {
-      timeStatictics[point.type] = point.endDate - point.startDate;
-    }
-  });
-
-  const moneyData = Object.entries(moneyStatistics).sort((a, b) => b[1] - a[1]);
-
-  const transportData = Object.entries(transportStatistics)
-    .sort((a, b) => b[1] - a[1])
-    .filter((item) => item[1] !== 0);
-
-  const timeData = Object.entries(timeStatictics)
-    .sort((a, b) => b[1] - a[1])
-    .map((item) => {
-      return [
-        item[0],
-        Math.round(moment.duration(item[1], `milliseconds`).asHours())
+    case LegendName.TRANSPORT:
+      const transportLabels = [
+        `taxi`,
+        `bus`,
+        `train`,
+        `ship`,
+        `transport`,
+        `drive`
       ];
-    })
-    .filter((item) => item[1] !== 0);
+      return transportLabels
+        .map((label) => ({
+          label,
+          value: points.filter((point) => point.type === label).length
+        }))
+        .sort((a, b) => b.value - a.value);
 
-  return {
-    moneyData,
-    transportData,
-    timeData
-  };
+    case LegendName.TIME:
+      return labels
+        .map((label) => ({
+          label,
+          value: points
+            .filter((point) => point.type === label)
+            .reduce(
+                (acc, curr) =>
+                  acc +
+                Math.round(
+                    moment
+                    .duration(curr.endDate - curr.startDate, `milliseconds`)
+                    .asHours()
+                ),
+                0
+            )
+        }))
+        .sort((a, b) => b.value - a.value);
+    default:
+      return [];
+  }
 };
-
 const renderChart = (ctx, data, label, legend, isLabelPositonLeft = false) => {
   return new Chart(ctx, {
     type: `horizontalBar`,
     plugins: [chartjsPluginDatalabes],
     data: {
-      labels: data.map((item) => item[0].toUpperCase()),
+      labels: data.map((item) => item.label),
       datasets: [
         {
           label: legend.toUpperCase(),
-          data: data.map((item) => item[1]),
+          data: data.map((item) => item.value),
           backgroundColor: `lightgray`,
           borderColor: `gray`,
           borderWidth: 1,
@@ -189,26 +187,24 @@ export default class Statistics extends AbstractSmartComponent {
 
     this._resetCharts();
 
-    const {moneyData, transportData, timeData} = generateChartsData(
-        this._pointsModel.getPoints()
-    );
+    const points = this._pointsModel.getPoints();
 
     this._moneyChart = renderChart(
         moneyCtx,
-        moneyData,
+        generateChartData(LegendName.MONEY, points),
         LabelPrefix.EURO,
         LegendName.MONEY,
         true
     );
     this._transportChart = renderChart(
         transportCtx,
-        transportData,
+        generateChartData(LegendName.TRANSPORT, points),
         LabelPrefix.TIMES,
         LegendName.TRANSPORT
     );
     this._timeChart = renderChart(
         timeCtx,
-        timeData,
+        generateChartData(LegendName.TIME, points),
         LabelPrefix.HOURS,
         LegendName.TIME
     );

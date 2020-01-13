@@ -4,6 +4,22 @@ export const SortType = {
   PRICE_DOWN: `price-down`
 };
 
+export const MenuItem = {
+  TABLE: `Table`,
+  STATS: `Stats`
+};
+
+export const menuItems = [
+  {
+    name: MenuItem.TABLE,
+    active: true
+  },
+  {
+    name: MenuItem.STATS,
+    active: false
+  }
+];
+
 export const Mode = {
   DEFAULT: `default`,
   EDIT: `edit`,
@@ -15,3 +31,26 @@ export const FilterType = {
   FUTURE: `future`,
   PAST: `past`
 };
+
+export const Method = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
+
+export const EventTypeToPlaceholderText = {
+  "taxi": `to`,
+  "bus": `to`,
+  "train": `to`,
+  "ship": `to`,
+  "transport": `to`,
+  "drive": `to`,
+  "flight": `to`,
+  "check-in": `at`,
+  "sightseeing": `at`,
+  "restaurant": `at`
+};
+
+export const AUTHORIZATION = `Basic {_P)[i-390sadasdadW`;
+export const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;

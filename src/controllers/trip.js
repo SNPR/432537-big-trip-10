@@ -7,8 +7,7 @@ import {
 } from "../components";
 import {renderElement, RenderPosition, remove} from "../utils/render";
 import {SortType, Mode} from "../utils/constants";
-import PointController from "./point";
-import {EmptyPoint} from "../mock/cards";
+import PointController, {EmptyPoint} from "./point";
 
 const tripEvents = document.querySelector(`.trip-events`);
 const tripInfo = document.querySelector(`.trip-main__trip-info`);
@@ -53,7 +52,7 @@ const renderCards = (
 };
 
 export default class TripController {
-  constructor(container, pointsModel) {
+  constructor(container, pointsModel, api) {
     this._container = container;
     this._pointsModel = pointsModel;
     this._eventsSortingComponent = null;
@@ -67,6 +66,7 @@ export default class TripController {
     this._noEventsMessageComponent = null;
     this._isDefaultSorting = true;
     this._tripDaysComponent = new TripDaysComponent();
+    this._api = api;
     renderElement(
         this._container,
         this._tripDaysComponent,
@@ -250,11 +250,13 @@ export default class TripController {
       this._pointsModel.removePoint(oldCard.id);
       this._updatePoints();
     } else {
-      const isSuccess = this._pointsModel.updatePoint(oldCard.id, newCard);
-
-      if (isSuccess) {
-        pointController.render(newCard, Mode.DEFAULT);
-      }
+      this._api.updatePoint(oldCard.id, newCard).then((pointModel) => {
+        const isSuccess = this._pointsModel.updatePoint(oldCard.id, pointModel);
+        if (isSuccess) {
+          pointController.render(pointModel, Mode.DEFAULT);
+          this._updatePoints();
+        }
+      });
     }
 
     this._toggleNoEventsMessageComponent();

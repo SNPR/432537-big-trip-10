@@ -1,75 +1,43 @@
-import {getPointsByFilter} from "../utils/filter.js";
-import {FilterType} from "../utils/constants";
-
 export default class Point {
-  constructor() {
-    this._points = [];
-    this._activeFilterType = FilterType.EVERYTHING;
-    this._dataChangeHandlers = [];
-    this._filterChangeHandlers = [];
+  constructor(data) {
+    this.type = data[`type`];
+    this.city = data[`destination`][`name`];
+    this.startDate = new Date(data[`date_from`]).getTime();
+    this.endDate = new Date(data[`date_to`]).getTime();
+    this.offers = data[`offers`];
+    this.photos = data[`destination`][`pictures`];
+    this.description = data[`destination`][`description`];
+    this.price = data[`base_price`];
+    this.isFavorite = data[`is_favorite`];
+    this.id = data[`id`];
   }
 
-  getPoints() {
-    return getPointsByFilter(this._points, this._activeFilterType);
+  toRAW() {
+    return {
+      base_price: Number(this.price),
+      date_from: new Date(this.startDate).toISOString(),
+      date_to: new Date(this.endDate).toISOString(),
+      destination: {
+        description: this.description,
+        name: this.city,
+        pictures: this.photos
+      },
+      id: this.id,
+      is_favorite: this.isFavorite,
+      offers: this.offers,
+      type: this.type
+    };
   }
 
-  setPoints(points) {
-    this._points = Array.from(points);
+  static parsePoint(data) {
+    return new Point(data);
   }
 
-  updatePoint(id, point) {
-    const index = this._points.findIndex((it) => it.id === id);
-
-    if (index === -1) {
-      return false;
-    }
-
-    this._points = [
-      ...this._points.slice(0, index),
-      point,
-      ...this._points.slice(index + 1)
-    ];
-
-    this._dataChangeHandlers.forEach((handler) => handler());
-    return true;
+  static parsePoints(data) {
+    return data.map(Point.parsePoint);
   }
 
-  setFilter(filterType) {
-    this._activeFilterType = filterType;
-    this._callHandlers(this._filterChangeHandlers);
-  }
-
-  setFilterChangeHandler(handler) {
-    this._filterChangeHandlers.push(handler);
-  }
-
-  setDataChangeHandler(handler) {
-    this._dataChangeHandlers.push(handler);
-  }
-
-  addPoint(point) {
-    this._points = [point, ...this._points];
-    this._callHandlers(this._dataChangeHandlers);
-  }
-
-  removePoint(id) {
-    const index = this._points.findIndex((it) => it.id === id);
-
-    if (index === -1) {
-      return false;
-    }
-
-    this._points = [
-      ...this._points.slice(0, index),
-      ...this._points.slice(index + 1)
-    ];
-
-    this._callHandlers(this._dataChangeHandlers);
-
-    return true;
-  }
-
-  _callHandlers(handlers) {
-    handlers.forEach((handler) => handler());
+  static clone(data) {
+    return new Point(data.toRAW());
   }
 }

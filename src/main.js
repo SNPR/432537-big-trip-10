@@ -1,28 +1,39 @@
 import {MenuComponent, StatisticsComponent} from "./components";
 import TripController from "./controllers/trip";
 import {renderElement, RenderPosition} from "./utils/render";
-import {MenuItem, menuItems} from "./mock/menu";
-import {cards} from "./mock/cards";
-import PointsModel from "./models/point";
+import PointsModel from "./models/points";
 import FilterController from "./controllers/filter.js";
-
-const pointsModel = new PointsModel();
-pointsModel.setPoints(cards);
+import {
+  AUTHORIZATION,
+  END_POINT,
+  MenuItem,
+  menuItems
+} from "./utils/constants";
+import API from "./api.js";
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
 const siteMainElement = document.querySelector(`.page-body__page-main`);
 
+const api = new API(END_POINT, AUTHORIZATION);
+
 const menuComponent = new MenuComponent(menuItems);
+const pointsModel = new PointsModel();
+const tripController = new TripController(tripEvents, pointsModel, api);
 const statisticsComponent = new StatisticsComponent(pointsModel);
-const tripController = new TripController(tripEvents, pointsModel);
+
+Promise.all([api.getDestinations(), api.getOffers(), api.getPoints()]).then(
+    (values) => {
+      pointsModel.setPoints(values[2]);
+      tripController.render(values[2]);
+    }
+);
 
 renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
 
 const filterController = new FilterController(tripControls, pointsModel);
 filterController.render();
 
-tripController.render(cards);
 document
   .querySelector(`.trip-main__event-add-btn`)
   .addEventListener(`click`, () => {

@@ -2,38 +2,9 @@ import AbstractSmartComponent from "./abstract-smart-component";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
-import moment from "moment";
-import {
-  getRandomOffers,
-  getRandomPhotos,
-  getRandomDescriprion
-} from "../mock/cards";
-
-const parseFormData = (formData, offers, photos, description, id) => {
-  return {
-    type: formData.get(`event-type`),
-    city: formData.get(`event-destination`),
-    startDate: moment(
-        formData.get(`event-start-time`),
-        `DD/MM/YY HH:mm`
-    ).valueOf(),
-    endDate: moment(formData.get(`event-end-time`), `DD/MM/YY HH:mm`).valueOf(),
-    offers: offers.map((offer) => {
-      return {
-        name: offer.name,
-        price: offer.price,
-        type: offer.type,
-        checked:
-          formData.get(`event-offer-${offer.type}`) === `on` ? true : false
-      };
-    }),
-    photos,
-    description,
-    price: formData.get(`event-price`),
-    id,
-    isFavorite: formData.get(`event-favorite`) === `on`
-  };
-};
+import nanoid from "nanoid";
+import Store from "../store";
+import {EventTypeToPlaceholderText} from "../utils/constants";
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -51,7 +22,6 @@ export default class CardEdit extends AbstractSmartComponent {
     this._submitHandler = null;
     this._favoriteButtonClickHandler = null;
     this._deleteButtonClickHandler = null;
-
     this._applyFlatpickr();
   }
 
@@ -252,7 +222,7 @@ export default class CardEdit extends AbstractSmartComponent {
               class="event__label  event__type-output"
               for="event-destination-1"
             >
-            ${this._eventType} at
+            ${this._eventType} ${EventTypeToPlaceholderText[this._eventType]}
             </label>
             <input
               class="event__input  event__input--destination"
@@ -263,9 +233,12 @@ export default class CardEdit extends AbstractSmartComponent {
               list="destination-list-1"
             />
             <datalist id="destination-list-1">
-              <option value="Amsterdam"></option>
-              <option value="Geneva"></option>
-              <option value="Chamonix"></option>
+            ${Store.getDestinations()
+              .map((destination) => {
+                return `<option value="${destination.name}"></option>`;
+              })
+              .join(``)}
+
             </datalist>
           </div>
 
@@ -313,8 +286,9 @@ export default class CardEdit extends AbstractSmartComponent {
           <button class="event__reset-btn" type="reset">${
   this._card.isNew ? `Cancel` : `Delete`
 }</button>
-
-          <input
+${
+  !this._card.isNew
+    ? `<input
             id="event-favorite-1"
             class="event__favorite-checkbox  visually-hidden"
             type="checkbox"
@@ -335,13 +309,15 @@ export default class CardEdit extends AbstractSmartComponent {
             </svg>
           </label>
 
-          <button class="event__rollup-btn" type="button">
-            <span class="visually-hidden">Open event</span>
-          </button>
+<button class="event__rollup-btn" type="button">
+                <span class="visually-hidden">Open event</span>
+              </button>`
+    : ``
+}
         </header>
 
         ${
-  this._city
+  this._city || this._offers.length > 0
     ? `<section class="event__details">
         ${
   this._offers.length
@@ -353,19 +329,18 @@ export default class CardEdit extends AbstractSmartComponent {
             <div class="event__available-offers">
             ${this._offers
               .map((offer) => {
+                const offerId = nanoid();
                 return `
                   <div class="event__offer-selector">
                     <input
                       class="event__offer-checkbox  visually-hidden"
-                      id="event-offer-${offer.type}-1"
+                      id="event-offer-${offerId}-1"
                       type="checkbox"
-                      name="event-offer-${offer.type}"
+                      name="event-offer-${offerId}"
                       ${offer.checked && `checked`}
                     />
-                    <label class="event__offer-label" for="event-offer-${
-  offer.type
-}-1">
-                      <span class="event__offer-title">${offer.name}</span>
+                    <label class="event__offer-label" for="event-offer-${offerId}-1">
+                      <span class="event__offer-title">${offer.title}</span>
                       &plus; &euro;&nbsp;<span class="event__offer-price">
                       ${offer.price}
                       </span>
@@ -385,7 +360,7 @@ export default class CardEdit extends AbstractSmartComponent {
             <h3 class="event__section-title  event__section-title--destination">
               Destination
             </h3>
-            <p class="event__destination-description">
+            <p class="event__destination-description" name="event-description">
             ${this._description}
             </p>
 
@@ -396,8 +371,8 @@ export default class CardEdit extends AbstractSmartComponent {
                   return `
                     <img
                       class="event__photo"
-                      src="${photo}"
-                      alt="Event photo"
+                      src="${photo.src}"
+                      alt="${photo.description}"
                     />
                   `;
                 })
@@ -429,11 +404,13 @@ export default class CardEdit extends AbstractSmartComponent {
   }
 
   setFavoriteButtonClickHandler(handler) {
-    this.getElement()
-      .querySelector(`.event__favorite-checkbox`)
-      .addEventListener(`click`, handler);
+    if (!this._card.isNew) {
+      this.getElement()
+        .querySelector(`.event__favorite-checkbox`)
+        .addEventListener(`click`, handler);
 
-    this._favoriteButtonClickHandler = handler;
+      this._favoriteButtonClickHandler = handler;
+    }
   }
 
   setDeleteButtonClickHandler(handler) {
@@ -456,7 +433,8 @@ export default class CardEdit extends AbstractSmartComponent {
     const flatpickrOptions = {
       dateFormat: `d/m/y H:i`,
       enableTime: true,
-      allowInput: true
+      allowInput: true,
+      minDate: this._card.startDate
     };
 
     this._flatpickrStartDate = flatpickr(
@@ -477,7 +455,9 @@ export default class CardEdit extends AbstractSmartComponent {
       .addEventListener(`click`, (evt) => {
         if (evt.target.tagName === `INPUT`) {
           this._eventType = evt.target.value;
-          this._offers = getRandomOffers();
+          this._offers = Store.getOffers().find(
+              (offer) => offer.type === this._eventType
+          ).offers;
           this.rerender();
         }
       });
@@ -486,9 +466,13 @@ export default class CardEdit extends AbstractSmartComponent {
       .querySelector(`.event__input--destination`)
       .addEventListener(`change`, (evt) => {
         this._city = evt.target.value;
+        this._photos = this._card.photos;
 
-        this._photos = getRandomPhotos();
-        this._description = getRandomDescriprion();
+        const city = Store.getDestinations().find(
+            (destination) => destination.name === this._city
+        );
+        this._description = city ? city.description : ``;
+
         this.rerender();
       });
 
@@ -501,15 +485,8 @@ export default class CardEdit extends AbstractSmartComponent {
 
   getData() {
     const form = this.getElement().querySelector(`.event--edit`);
-    const formData = new FormData(form);
 
-    return parseFormData(
-        formData,
-        this._offers,
-        this._photos,
-        this._description,
-        this._card.id
-    );
+    return new FormData(form);
   }
 
   removeElement() {
@@ -530,8 +507,10 @@ export default class CardEdit extends AbstractSmartComponent {
   }
 
   setClickHandler(handler) {
-    this.getElement()
-      .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, handler);
+    if (!this._card.isNew) {
+      this.getElement()
+        .querySelector(`.event__rollup-btn`)
+        .addEventListener(`click`, handler);
+    }
   }
 }
