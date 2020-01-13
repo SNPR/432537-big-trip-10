@@ -44,7 +44,16 @@ export default class API {
       .then(Store.setOffers);
   }
 
-  createPoint(point) {}
+  createPoint(point) {
+    return this._load({
+      url: `points`,
+      method: Method.POST,
+      body: JSON.stringify(point.toRAW()),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then((response) => response.json())
+      .then(Point.parsePoint);
+  }
 
   updatePoint(id, data) {
     return this._load({
@@ -57,5 +66,7 @@ export default class API {
       .then(Point.parsePoint);
   }
 
-  deletePoint(id) {}
+  deletePoint(id) {
+    return this._load({url: `points/${id}`, method: Method.DELETE});
+  }
 }

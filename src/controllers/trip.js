@@ -122,7 +122,6 @@ export default class TripController {
 
   _reset() {
     this._tripDaysComponent.getElement().innerHTML = ``;
-    this._getFullPrice();
 
     if (this._tripInfoComponent) {
       remove(this._tripInfoComponent);
@@ -139,6 +138,7 @@ export default class TripController {
 
       this.render();
     }
+    this._getFullPrice();
   }
 
   render() {
@@ -229,37 +229,60 @@ export default class TripController {
         pointController.destroy();
         this._updatePoints();
       } else {
-        this._pointsModel.addPoint(newCard);
+        this._api
+          .createPoint(newCard)
+          .then((pointModel) => {
+            this._pointsModel.addPoint(pointModel);
 
-        this._showedPointControllers = [
-          pointController,
-          ...this._showedPointControllers
-        ];
+            this._showedPointControllers = [
+              pointController,
+              ...this._showedPointControllers
+            ];
 
-        this._removePoints();
+            this._removePoints();
 
-        this._showedPointControllers = renderCards(
-            this._pointsModel.getPoints(),
-            this._tripDaysComponent,
-            this._onDataChange,
-            this._onViewChange,
-            this._isDefaultSorting
-        );
+            this._showedPointControllers = renderCards(
+                this._pointsModel.getPoints(),
+                this._tripDaysComponent,
+                this._onDataChange,
+                this._onViewChange,
+                this._isDefaultSorting
+            );
+            this._toggleNoEventsMessageComponent();
+          })
+          .catch(() => {
+            pointController.shake();
+          });
       }
     } else if (newCard === null) {
-      this._pointsModel.removePoint(oldCard.id);
-      this._updatePoints();
-    } else {
-      this._api.updatePoint(oldCard.id, newCard).then((pointModel) => {
-        const isSuccess = this._pointsModel.updatePoint(oldCard.id, pointModel);
-        if (isSuccess) {
-          pointController.render(pointModel, Mode.DEFAULT);
+      this._api
+        .deletePoint(oldCard.id)
+        .then(() => {
+          this._pointsModel.removePoint(oldCard.id);
           this._updatePoints();
-        }
-      });
+          this._toggleNoEventsMessageComponent();
+        })
+        .catch(() => {
+          pointController.shake();
+        });
+    } else {
+      this._api
+        .updatePoint(oldCard.id, newCard)
+        .then((pointModel) => {
+          const isSuccess = this._pointsModel.updatePoint(
+              oldCard.id,
+              pointModel
+          );
+          if (isSuccess) {
+            pointController.render(pointModel, Mode.DEFAULT);
+            this._updatePoints();
+            this._reset();
+          }
+        })
+        .catch(() => {
+          pointController.shake();
+        });
     }
-
-    this._toggleNoEventsMessageComponent();
   }
 
   _onViewChange() {

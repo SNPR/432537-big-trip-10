@@ -6,7 +6,7 @@ import {
   RenderPosition,
   renderElement
 } from "../utils/render";
-import {Mode} from "../utils/constants";
+import {Mode, SHAKE_ANIMATION_TIMEOUT} from "../utils/constants";
 import PointModel from "../models/point";
 import Store from "../store";
 
@@ -25,8 +25,10 @@ export const EmptyPoint = {
 };
 
 const parseFormData = (formData) => {
-  const offerLabels = [
-    ...document.querySelectorAll(`label[for^="event-offer"]`)
+  const selectedOffers = [
+    ...document.querySelectorAll(
+        `.event__offer-checkbox:checked + label[for^="event-offer"]`
+    )
   ];
   const destination = Store.getDestinations().find(
       (city) => city.name === formData.get(`event-destination`)
@@ -46,7 +48,7 @@ const parseFormData = (formData) => {
       pictures: destination.pictures
     },
     is_favorite: formData.get(`event-favorite`) === `on` ? true : false,
-    offers: offerLabels.map((offer) => ({
+    offers: selectedOffers.map((offer) => ({
       title: offer.querySelector(`.event__offer-title`).textContent,
       price: Number(offer.querySelector(`.event__offer-price`).textContent)
     })),
@@ -85,15 +87,23 @@ export default class PointController {
 
     this._cardEditComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
+
       const formData = this._cardEditComponent.getData();
       const data = parseFormData(formData);
+
+      this._cardEditComponent.setData({
+        saveButtonText: `Saving...`
+      });
 
       this._onDataChange(card, data, this);
     });
 
-    this._cardEditComponent.setDeleteButtonClickHandler(() =>
-      this._onDataChange(card, null, this)
-    );
+    this._cardEditComponent.setDeleteButtonClickHandler(() => {
+      this._cardEditComponent.setData({
+        deleteButtonText: `Deleting...`
+      });
+      this._onDataChange(card, null, this);
+    });
 
     this._cardEditComponent.setFavoriteButtonClickHandler(() => {
       const newCard = PointModel.clone(card);
@@ -129,6 +139,23 @@ export default class PointController {
         );
         break;
     }
+  }
+
+  shake() {
+    this._cardEditComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT /
+      1000}s`;
+    this._cardComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT /
+      1000}s`;
+
+    setTimeout(() => {
+      this._cardEditComponent.getElement().style.animation = ``;
+      this._cardComponent.getElement().style.animation = ``;
+
+      this._cardEditComponent.setData({
+        saveButtonText: `Save`,
+        deleteButtonText: `Delete`
+      });
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _replaceCardEditToCard() {
