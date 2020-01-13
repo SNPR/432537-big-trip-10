@@ -7,27 +7,45 @@ import {
   AUTHORIZATION,
   END_POINT,
   MenuItem,
-  menuItems
+  menuItems,
+  BACKUP_NAME
 } from "./utils/constants";
-import API from "./api.js";
+import API from "./api/index";
+import Backup from "./api/backup.js";
+import Provider from "./api/provider.js";
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker
+    .register(`/sw.js`)
+    .then(() => {})
+    .catch(() => {});
+});
 
 const tripControls = document.querySelector(`.trip-main__trip-controls`);
 const tripEvents = document.querySelector(`.trip-events`);
 const siteMainElement = document.querySelector(`.page-body__page-main`);
 
 const api = new API(END_POINT, AUTHORIZATION);
+const backup = new Backup(BACKUP_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, backup);
 
 const menuComponent = new MenuComponent(menuItems);
 const pointsModel = new PointsModel();
-const tripController = new TripController(tripEvents, pointsModel, api);
+const tripController = new TripController(
+    tripEvents,
+    pointsModel,
+    apiWithProvider
+);
 const statisticsComponent = new StatisticsComponent(pointsModel);
 
-Promise.all([api.getDestinations(), api.getOffers(), api.getPoints()]).then(
-    (values) => {
-      pointsModel.setPoints(values[2]);
-      tripController.render(values[2]);
-    }
-);
+Promise.all([
+  apiWithProvider.getDestinations(),
+  apiWithProvider.getOffers(),
+  apiWithProvider.getPoints()
+]).then((values) => {
+  pointsModel.setPoints(values[2]);
+  tripController.render(values[2]);
+});
 
 renderElement(tripControls, menuComponent, RenderPosition.BEFOREEND);
 
@@ -56,4 +74,18 @@ menuComponent.setChangeHandler((menuItem) => {
       tripController.hide();
       break;
   }
+});
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+
+  if (!apiWithProvider.getSynchronize()) {
+    apiWithProvider.sync().catch((err) => {
+      throw new Error(err);
+    });
+  }
+});
+
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
 });

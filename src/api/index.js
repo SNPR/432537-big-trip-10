@@ -1,6 +1,6 @@
-import {Method} from "./utils/constants";
-import Point from "./models/point";
-import Store from "./store";
+import {Method} from "../utils/constants";
+import Point from "../models/point";
+import Store from "../store";
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
@@ -68,5 +68,14 @@ export default class API {
 
   deletePoint(id) {
     return this._load({url: `points/${id}`, method: Method.DELETE});
+  }
+
+  sync(data) {
+    return this._load({
+      url: `points/sync`,
+      method: Method.POST,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    }).then((response) => response.json());
   }
 }
