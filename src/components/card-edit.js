@@ -338,7 +338,7 @@ ${
             ${Store.getOffersByType(this._eventType)
               .map((offer) => {
                 const offerId = nanoid();
-                const currentOffer = this._offers.find(
+                const selectedOffer = this._offers.find(
                     (_offer) => _offer.title === offer.title
                 );
                 return `
@@ -348,12 +348,12 @@ ${
                       id="event-offer-${offerId}-1"
                       type="checkbox"
                       name="event-offer-${offerId}"
-                      ${currentOffer && `checked`}
+                      ${selectedOffer && `checked`}
                     />
                     <label class="event__offer-label" for="event-offer-${offerId}-1">
                       <span class="event__offer-title">${offer.title}</span>
                       &plus; &euro;&nbsp;<span class="event__offer-price">
-                      ${currentOffer ? currentOffer.price : offer.price}
+                      ${selectedOffer ? selectedOffer.price : offer.price}
                       </span>
                     </label>
                   </div>
