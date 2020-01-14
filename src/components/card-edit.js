@@ -238,6 +238,7 @@ export default class CardEdit extends AbstractSmartComponent {
               name="event-destination"
               value="${this._city}"
               list="destination-list-1"
+              required
             />
             <datalist id="destination-list-1">
             ${Store.getDestinations()
