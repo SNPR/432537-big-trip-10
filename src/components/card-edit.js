@@ -463,9 +463,7 @@ ${
       .addEventListener(`click`, (evt) => {
         if (evt.target.tagName === `INPUT`) {
           this._eventType = evt.target.value;
-          this._offers = Store.getOffers().find(
-              (offer) => offer.type === this._eventType
-          ).offers;
+          this._offers = Store.getOffersByType(this._eventType);
           this.rerender();
         }
       });

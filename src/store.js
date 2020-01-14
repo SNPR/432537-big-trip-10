@@ -16,6 +16,10 @@ export default class Store {
     return Store._offers;
   }
 
+  static getOffersByType(type) {
+    return Store._offers.find((offer) => offer.type === type).offers;
+  }
+
   static setOffers(offers) {
     Store._offers = offers;
   }
