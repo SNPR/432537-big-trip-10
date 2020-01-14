@@ -14,18 +14,18 @@ export default class Point {
 
   toRAW() {
     return {
-      base_price: Number(this.price),
-      date_from: new Date(this.startDate).toISOString(),
-      date_to: new Date(this.endDate).toISOString(),
-      destination: {
+      "base_price": Number(this.price),
+      "date_from": new Date(this.startDate).toISOString(),
+      "date_to": new Date(this.endDate).toISOString(),
+      "destination": {
         description: this.description,
         name: this.city,
         pictures: this.photos
       },
-      id: this.id,
-      is_favorite: this.isFavorite,
-      offers: this.offers,
-      type: this.type
+      "id": this.id,
+      "is_favorite": this.isFavorite,
+      "offers": this.offers,
+      "type": this.type
     };
   }
 

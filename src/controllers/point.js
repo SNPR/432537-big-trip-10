@@ -35,24 +35,24 @@ const parseFormData = (formData) => {
   );
 
   return new PointModel({
-    base_price: formData.get(`event-price`),
-    date_from: new Date(
+    "base_price": formData.get(`event-price`),
+    "date_from": new Date(
         moment(formData.get(`event-start-time`), `DD/MM/YY HH:mm`).valueOf()
     ).toISOString(),
-    date_to: new Date(
+    "date_to": new Date(
         moment(formData.get(`event-end-time`), `DD/MM/YY HH:mm`).valueOf()
     ).toISOString(),
-    destination: {
+    "destination": {
       description: destination.description,
       name: destination.name,
       pictures: destination.pictures
     },
-    is_favorite: formData.get(`event-favorite`) === `on` ? true : false,
-    offers: selectedOffers.map((offer) => ({
+    "is_favorite": formData.get(`event-favorite`) === `on` ? true : false,
+    "offers": selectedOffers.map((offer) => ({
       title: offer.querySelector(`.event__offer-title`).textContent,
       price: Number(offer.querySelector(`.event__offer-price`).textContent)
     })),
-    type: formData.get(`event-type`)
+    "type": formData.get(`event-type`)
   });
 };
 
