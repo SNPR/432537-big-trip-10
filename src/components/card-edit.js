@@ -28,6 +28,7 @@ export default class CardEdit extends AbstractSmartComponent {
     this._submitHandler = null;
     this._favoriteButtonClickHandler = null;
     this._deleteButtonClickHandler = null;
+    this._clickHandler = null;
     this._applyFlatpickr();
   }
 
@@ -400,6 +401,7 @@ ${
     this.setSubmitHandler(this._submitHandler);
     this.setFavoriteButtonClickHandler(this._favoriteButtonClickHandler);
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
+    this.setClickHandler(this._clickHandler);
     this._subscribeOnEvents();
   }
 
@@ -522,6 +524,7 @@ ${
       this.getElement()
         .querySelector(`.event__rollup-btn`)
         .addEventListener(`click`, handler);
+      this._clickHandler = handler;
     }
   }
 }
