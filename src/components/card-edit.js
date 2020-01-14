@@ -327,16 +327,20 @@ ${
   this._city || this._offers.length > 0
     ? `<section class="event__details">
         ${
-  this._offers.length
+  this._offers.length > 0 ||
+          Store.getOffersByType(this._eventType).length > 0
     ? `<section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">
               Offers
             </h3>
 
             <div class="event__available-offers">
-            ${this._offers
+            ${Store.getOffersByType(this._eventType)
               .map((offer) => {
                 const offerId = nanoid();
+                const currentOffer = this._offers.find(
+                    (_offer) => _offer.title === offer.title
+                );
                 return `
                   <div class="event__offer-selector">
                     <input
@@ -344,12 +348,12 @@ ${
                       id="event-offer-${offerId}-1"
                       type="checkbox"
                       name="event-offer-${offerId}"
-                      ${offer.checked && `checked`}
+                      ${currentOffer && `checked`}
                     />
                     <label class="event__offer-label" for="event-offer-${offerId}-1">
                       <span class="event__offer-title">${offer.title}</span>
                       &plus; &euro;&nbsp;<span class="event__offer-price">
-                      ${offer.price}
+                      ${currentOffer ? currentOffer.price : offer.price}
                       </span>
                     </label>
                   </div>
