@@ -18,7 +18,8 @@ export default class FilterController {
     const filters = Object.values(FilterType).map((filterType) => {
       return {
         name: filterType,
-        checked: filterType === this._activeFilterType
+        checked: filterType === this._activeFilterType,
+        disabled: this._pointsModel.getPoints(filterType).length === 0
       };
     });
     const oldComponent = this._filtersComponent;
@@ -38,7 +39,7 @@ export default class FilterController {
   }
 
   _onFilterChange(filterType) {
-    this._pointsModel.setFilter(filterType);
     this._activeFilterType = filterType;
+    this._pointsModel.setFilter(filterType);
   }
 }

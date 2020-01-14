@@ -4,7 +4,12 @@ import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import nanoid from "nanoid";
 import Store from "../store";
-import {EventTypeToPlaceholderText, DefaultData} from "../utils/constants";
+import {
+  EventTypeToPlaceholderText,
+  DefaultData,
+  DEBOUNCE_TIMEOUT
+} from "../utils/constants";
+import debounce from "lodash/debounce";
 
 export default class CardEdit extends AbstractSmartComponent {
   constructor(card) {
@@ -23,6 +28,7 @@ export default class CardEdit extends AbstractSmartComponent {
     this._submitHandler = null;
     this._favoriteButtonClickHandler = null;
     this._deleteButtonClickHandler = null;
+    this._clickHandler = null;
     this._applyFlatpickr();
   }
 
@@ -232,6 +238,7 @@ export default class CardEdit extends AbstractSmartComponent {
               name="event-destination"
               value="${this._city}"
               list="destination-list-1"
+              required
             />
             <datalist id="destination-list-1">
             ${Store.getDestinations()
@@ -321,16 +328,20 @@ ${
   this._city || this._offers.length > 0
     ? `<section class="event__details">
         ${
-  this._offers.length
+  this._offers.length > 0 ||
+          Store.getOffersByType(this._eventType).length > 0
     ? `<section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">
               Offers
             </h3>
 
             <div class="event__available-offers">
-            ${this._offers
+            ${Store.getOffersByType(this._eventType)
               .map((offer) => {
                 const offerId = nanoid();
+                const selectedOffer = this._offers.find(
+                    (_offer) => _offer.title === offer.title
+                );
                 return `
                   <div class="event__offer-selector">
                     <input
@@ -338,12 +349,12 @@ ${
                       id="event-offer-${offerId}-1"
                       type="checkbox"
                       name="event-offer-${offerId}"
-                      ${offer.checked && `checked`}
+                      ${selectedOffer && `checked`}
                     />
                     <label class="event__offer-label" for="event-offer-${offerId}-1">
                       <span class="event__offer-title">${offer.title}</span>
                       &plus; &euro;&nbsp;<span class="event__offer-price">
-                      ${offer.price}
+                      ${selectedOffer ? selectedOffer.price : offer.price}
                       </span>
                     </label>
                   </div>
@@ -395,6 +406,7 @@ ${
     this.setSubmitHandler(this._submitHandler);
     this.setFavoriteButtonClickHandler(this._favoriteButtonClickHandler);
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
+    this.setClickHandler(this._clickHandler);
     this._subscribeOnEvents();
   }
 
@@ -408,7 +420,7 @@ ${
     if (!this._card.isNew) {
       this.getElement()
         .querySelector(`.event__favorite-checkbox`)
-        .addEventListener(`click`, handler);
+        .addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
 
       this._favoriteButtonClickHandler = handler;
     }
@@ -456,9 +468,7 @@ ${
       .addEventListener(`click`, (evt) => {
         if (evt.target.tagName === `INPUT`) {
           this._eventType = evt.target.value;
-          this._offers = Store.getOffers().find(
-              (offer) => offer.type === this._eventType
-          ).offers;
+          this._offers = Store.getOffersByType(this._eventType);
           this.rerender();
         }
       });
@@ -517,6 +527,7 @@ ${
       this.getElement()
         .querySelector(`.event__rollup-btn`)
         .addEventListener(`click`, handler);
+      this._clickHandler = handler;
     }
   }
 }

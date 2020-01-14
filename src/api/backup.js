@@ -20,15 +20,4 @@ export default class Backup {
         JSON.stringify(Object.assign({}, store, {[key]: value}))
     );
   }
-
-  removeItem(key) {
-    const store = this.getAll();
-
-    delete store[key];
-
-    this._storage.setItem(
-        this._storeKey,
-        JSON.stringify(Object.assign({}, store))
-    );
-  }
 }

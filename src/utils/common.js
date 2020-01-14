@@ -5,11 +5,14 @@ const addZero = (value) => (value < 10 ? `0${value}` : value);
 export const parseTime = (UTCTimestamp) => moment(UTCTimestamp).format(`HH:mm`);
 
 export const getTripDuration = (startDateUTCTimestamp, endDateUTCTimestamp) => {
-  const monthName = moment(startDateUTCTimestamp).format(`MMM`);
+  const startMonthName = moment(startDateUTCTimestamp).format(`MMM`);
+  const endMonthName = moment(endDateUTCTimestamp).format(`MMM`);
   const startDay = moment(startDateUTCTimestamp).format(`DD`);
   const endDay = moment(endDateUTCTimestamp).format(`DD`);
 
-  return `${monthName} ${startDay}&nbsp;&mdash;&nbsp;${endDay}`;
+  return `${startMonthName} ${startDay}&nbsp;&mdash;&nbsp;${
+    startMonthName !== endMonthName ? endMonthName + ` ` : ``
+  }${endDay}`;
 };
 
 export const getEventDuration = (

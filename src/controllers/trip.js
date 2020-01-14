@@ -52,7 +52,7 @@ const renderCards = (
 };
 
 export default class TripController {
-  constructor(container, pointsModel, api) {
+  constructor(container, pointsModel, api, filterController) {
     this._container = container;
     this._pointsModel = pointsModel;
     this._eventsSortingComponent = null;
@@ -67,6 +67,7 @@ export default class TripController {
     this._isDefaultSorting = true;
     this._tripDaysComponent = new TripDaysComponent();
     this._api = api;
+    this._filterController = filterController;
     renderElement(
         this._container,
         this._tripDaysComponent,
@@ -249,6 +250,7 @@ export default class TripController {
                 this._isDefaultSorting
             );
             this._toggleNoEventsMessageComponent();
+            this._filterController.render();
           })
           .catch(() => {
             pointController.shake();
@@ -261,6 +263,7 @@ export default class TripController {
           this._pointsModel.removePoint(oldCard.id);
           this._updatePoints();
           this._toggleNoEventsMessageComponent();
+          this._filterController.render();
         })
         .catch(() => {
           pointController.shake();
@@ -277,6 +280,7 @@ export default class TripController {
             pointController.render(pointModel, Mode.DEFAULT);
             this._updatePoints();
             this._reset();
+            this._filterController.render();
           }
         })
         .catch(() => {
@@ -287,6 +291,7 @@ export default class TripController {
 
   _onViewChange() {
     this._showedPointControllers.forEach((it) => it.setDefaultView());
+    this._creatingPoint = null;
   }
 
   _onFilterChange() {

@@ -37,7 +37,7 @@ const fetchHandler = (evt) => {
           return cacheResponse;
         }
         return fetch(request).then((response) => {
-          if (!response || response.status !== 200 || response.type !== `basic`) {
+          if (!response || response.status !== 200) {
             return response;
           }
 

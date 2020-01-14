@@ -1,6 +1,9 @@
 import AbstractComponent from "./abstract-component";
 import {parseTime, getEventDuration} from "../utils/common";
-import {EventTypeToPlaceholderText} from "../utils/constants";
+import {
+  EventTypeToPlaceholderText,
+  MAX_SHOWED_OFFERS_AMOUNT
+} from "../utils/constants";
 
 export default class Card extends AbstractComponent {
   constructor(card) {
@@ -41,6 +44,7 @@ export default class Card extends AbstractComponent {
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
       ${this._card.offers
+        .slice(0, MAX_SHOWED_OFFERS_AMOUNT)
         .map((offer) => {
           return `
             <li class="event__offer">
