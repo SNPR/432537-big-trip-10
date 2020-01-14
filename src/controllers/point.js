@@ -132,6 +132,10 @@ export default class PointController {
           remove(oldCardEditComponent);
         }
         document.addEventListener(`keydown`, this._onEscKeyDown);
+        this._cardEditComponent
+          .getElement()
+          .querySelector(`form`)
+          .classList.add(`trip-events__item`);
         renderElement(
             this._container,
             this._cardEditComponent,
