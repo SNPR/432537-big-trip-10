@@ -402,36 +402,40 @@ ${
   `;
   }
 
+  getData() {
+    const form = this.getElement().querySelector(`.event--edit`);
+
+    return new FormData(form);
+  }
+
+  setData(data) {
+    this._externalData = Object.assign({}, DefaultData, data);
+    this.rerender();
+  }
+
+  removeElement() {
+    if (this._flatpickrStartDate || this._flatpickrEndDate) {
+      this._flatpickrStartDate.destroy();
+      this._flatpickrEndDate.destroy();
+      this._flatpickrStartDate = null;
+      this._flatpickrEndDate = null;
+    }
+
+    super.removeElement();
+  }
+
+  rerender() {
+    super.rerender();
+
+    this._applyFlatpickr();
+  }
+
   recoveryListeners() {
     this.setSubmitHandler(this._submitHandler);
     this.setFavoriteButtonClickHandler(this._favoriteButtonClickHandler);
     this.setDeleteButtonClickHandler(this._deleteButtonClickHandler);
     this.setClickHandler(this._clickHandler);
     this._subscribeOnEvents();
-  }
-
-  setSubmitHandler(handler) {
-    this.getElement().addEventListener(`submit`, handler);
-
-    this._submitHandler = handler;
-  }
-
-  setFavoriteButtonClickHandler(handler) {
-    if (!this._card.isNew) {
-      this.getElement()
-        .querySelector(`.event__favorite-checkbox`)
-        .addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
-
-      this._favoriteButtonClickHandler = handler;
-    }
-  }
-
-  setDeleteButtonClickHandler(handler) {
-    this.getElement()
-      .querySelector(`.event__reset-btn`)
-      .addEventListener(`click`, handler);
-
-    this._deleteButtonClickHandler = handler;
   }
 
   _applyFlatpickr() {
@@ -460,6 +464,7 @@ ${
         Object.assign({}, flatpickrOptions, {defaultDate: this._card.endDate})
     );
   }
+
   _subscribeOnEvents() {
     const element = this.getElement();
 
@@ -494,32 +499,28 @@ ${
       });
   }
 
-  getData() {
-    const form = this.getElement().querySelector(`.event--edit`);
+  setSubmitHandler(handler) {
+    this.getElement().addEventListener(`submit`, handler);
 
-    return new FormData(form);
+    this._submitHandler = handler;
   }
 
-  setData(data) {
-    this._externalData = Object.assign({}, DefaultData, data);
-    this.rerender();
-  }
+  setFavoriteButtonClickHandler(handler) {
+    if (!this._card.isNew) {
+      this.getElement()
+        .querySelector(`.event__favorite-checkbox`)
+        .addEventListener(`click`, debounce(handler, DEBOUNCE_TIMEOUT));
 
-  removeElement() {
-    if (this._flatpickrStartDate || this._flatpickrEndDate) {
-      this._flatpickrStartDate.destroy();
-      this._flatpickrEndDate.destroy();
-      this._flatpickrStartDate = null;
-      this._flatpickrEndDate = null;
+      this._favoriteButtonClickHandler = handler;
     }
-
-    super.removeElement();
   }
 
-  rerender() {
-    super.rerender();
+  setDeleteButtonClickHandler(handler) {
+    this.getElement()
+      .querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, handler);
 
-    this._applyFlatpickr();
+    this._deleteButtonClickHandler = handler;
   }
 
   setClickHandler(handler) {

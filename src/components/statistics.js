@@ -179,6 +179,19 @@ export default class Statistics extends AbstractSmartComponent {
     `;
   }
 
+  rerender() {
+    super.rerender();
+    this._renderCharts();
+  }
+
+  show() {
+    super.show();
+
+    this.rerender();
+  }
+
+  recoveryListeners() {}
+
   _renderCharts() {
     const element = this.getElement();
 
@@ -211,11 +224,6 @@ export default class Statistics extends AbstractSmartComponent {
     );
   }
 
-  rerender() {
-    super.rerender();
-    this._renderCharts();
-  }
-
   _resetCharts() {
     if (this._moneyChart) {
       this._moneyChart.destroy();
@@ -232,12 +240,4 @@ export default class Statistics extends AbstractSmartComponent {
       this._colorsChart = null;
     }
   }
-
-  show() {
-    super.show();
-
-    this.rerender();
-  }
-
-  recoveryListeners() {}
 }

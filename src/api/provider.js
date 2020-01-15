@@ -55,6 +55,10 @@ export default class Provider {
     ]).then((values) => values[2]);
   }
 
+  getSynchronize() {
+    return this._isSynchronized;
+  }
+
   createPoint(point) {
     if (this._isOnLine()) {
       return this._api.createPoint(point).then((newPoint) => {
@@ -124,14 +128,6 @@ export default class Provider {
     return Promise.resolve();
   }
 
-  _isOnLine() {
-    return window.navigator.onLine;
-  }
-
-  getSynchronize() {
-    return this._isSynchronized;
-  }
-
   sync() {
     if (this._isOnLine()) {
       const backupPoints = this._backup.getAll().points;
@@ -149,5 +145,9 @@ export default class Provider {
     }
 
     return Promise.reject(new Error(`Sync data failed`));
+  }
+
+  _isOnLine() {
+    return window.navigator.onLine;
   }
 }

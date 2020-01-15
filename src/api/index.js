@@ -16,16 +16,6 @@ export default class API {
     this._authorization = authorization;
   }
 
-  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
-    headers.append(`Authorization`, this._authorization);
-
-    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
-      .then(checkStatus)
-      .catch((err) => {
-        throw err;
-      });
-  }
-
   getPoints() {
     return this._load({url: `points`})
       .then((response) => response.json())
@@ -77,5 +67,15 @@ export default class API {
       body: JSON.stringify(data),
       headers: new Headers({"Content-Type": `application/json`})
     }).then((response) => response.json());
+  }
+
+  _load({url, method = Method.GET, body = null, headers = new Headers()}) {
+    headers.append(`Authorization`, this._authorization);
+
+    return fetch(`${this._endPoint}/${url}`, {method, body, headers})
+      .then(checkStatus)
+      .catch((err) => {
+        throw err;
+      });
   }
 }

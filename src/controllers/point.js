@@ -68,6 +68,12 @@ class PointController {
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
   }
 
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceCardEditToCard();
+    }
+  }
+
   render(card, mode) {
     const oldCardComponent = this._cardComponent;
     const oldCardEditComponent = this._cardEditComponent;
@@ -163,6 +169,12 @@ class PointController {
     }, SHAKE_ANIMATION_TIMEOUT);
   }
 
+  destroy() {
+    remove(this._cardEditComponent);
+    remove(this._cardComponent);
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
+  }
+
   _replaceCardEditToCard() {
     replace(this._cardComponent, this._cardEditComponent);
     this._mode = Mode.DEFAULT;
@@ -184,18 +196,6 @@ class PointController {
       this._replaceCardEditToCard();
       document.removeEventListener(`keydown`, this._onEscKeyDown);
     }
-  }
-
-  setDefaultView() {
-    if (this._mode !== Mode.DEFAULT) {
-      this._replaceCardEditToCard();
-    }
-  }
-
-  destroy() {
-    remove(this._cardEditComponent);
-    remove(this._cardComponent);
-    document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 }
 

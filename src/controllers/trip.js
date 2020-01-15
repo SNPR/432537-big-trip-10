@@ -90,58 +90,6 @@ export default class TripController {
     this._onViewChange();
   }
 
-  _updatePoints() {
-    this._removePoints();
-    this._showedPointControllers = renderCards(
-        this._pointsModel.getPoints(),
-        this._tripDaysComponent,
-        this._onDataChange,
-        this._onViewChange,
-        this._isDefaultSorting
-    );
-  }
-
-  _toggleNoEventsMessageComponent() {
-    if (this._pointsModel.getPoints().length === 0) {
-      if (!this._noEventsMessageComponent) {
-        this._noEventsMessageComponent = new NoEventsMessageComponent();
-        renderElement(
-            tripEvents,
-            this._noEventsMessageComponent,
-            RenderPosition.BEFOREEND
-        );
-      }
-    } else {
-      if (this._noEventsMessageComponent) {
-        remove(this._noEventsMessageComponent);
-        this._noEventsMessageComponent = null;
-        this.render();
-      }
-    }
-    this._reset();
-  }
-
-  _reset() {
-    this._tripDaysComponent.getElement().innerHTML = ``;
-
-    if (this._tripInfoComponent) {
-      remove(this._tripInfoComponent);
-    }
-    if (this._eventsSortingComponent) {
-      remove(this._eventsSortingComponent);
-    }
-
-    if (this._pointsModel.getPoints().length) {
-      this._eventsSortingComponent = new EventsSortingComponent();
-      this._tripInfoComponent = new TripInfoComponent(
-          this._pointsModel.getPoints()
-      );
-
-      this.render();
-    }
-    this._getFullPrice();
-  }
-
   render() {
     if (this._pointsModel.getPoints().length === 0) {
       this._toggleNoEventsMessageComponent();
@@ -208,6 +156,66 @@ export default class TripController {
       );
     });
 
+    this._getFullPrice();
+  }
+
+  hide() {
+    this._container.classList.add(`visually-hidden`);
+  }
+
+  show() {
+    this._container.classList.remove(`visually-hidden`);
+  }
+
+  _updatePoints() {
+    this._removePoints();
+    this._showedPointControllers = renderCards(
+        this._pointsModel.getPoints(),
+        this._tripDaysComponent,
+        this._onDataChange,
+        this._onViewChange,
+        this._isDefaultSorting
+    );
+  }
+
+  _toggleNoEventsMessageComponent() {
+    if (this._pointsModel.getPoints().length === 0) {
+      if (!this._noEventsMessageComponent) {
+        this._noEventsMessageComponent = new NoEventsMessageComponent();
+        renderElement(
+            tripEvents,
+            this._noEventsMessageComponent,
+            RenderPosition.BEFOREEND
+        );
+      }
+    } else {
+      if (this._noEventsMessageComponent) {
+        remove(this._noEventsMessageComponent);
+        this._noEventsMessageComponent = null;
+        this.render();
+      }
+    }
+    this._reset();
+  }
+
+  _reset() {
+    this._tripDaysComponent.getElement().innerHTML = ``;
+
+    if (this._tripInfoComponent) {
+      remove(this._tripInfoComponent);
+    }
+    if (this._eventsSortingComponent) {
+      remove(this._eventsSortingComponent);
+    }
+
+    if (this._pointsModel.getPoints().length) {
+      this._eventsSortingComponent = new EventsSortingComponent();
+      this._tripInfoComponent = new TripInfoComponent(
+          this._pointsModel.getPoints()
+      );
+
+      this.render();
+    }
     this._getFullPrice();
   }
 
@@ -304,13 +312,5 @@ export default class TripController {
       pointController.destroy()
     );
     this._showedPointControllers = [];
-  }
-
-  hide() {
-    this._container.classList.add(`visually-hidden`);
-  }
-
-  show() {
-    this._container.classList.remove(`visually-hidden`);
   }
 }
