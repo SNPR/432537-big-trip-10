@@ -40,13 +40,9 @@ export default class AppController {
   }
 
   init() {
-    Promise.all([
-      this._apiWithProvider.getDestinations(),
-      this._apiWithProvider.getOffers(),
-      this._apiWithProvider.getPoints()
-    ]).then((values) => {
-      this._pointsModel.setPoints(values[2]);
-      this._tripController.render(values[2]);
+    this._apiWithProvider.getAllData().then((points) => {
+      this._pointsModel.setPoints(points);
+      this._tripController.render(points);
       this._filterController.render();
     });
 

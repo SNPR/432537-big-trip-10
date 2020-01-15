@@ -47,6 +47,14 @@ export default class Provider {
     return Store.setOffers(this._backup.getAll().offers);
   }
 
+  getAllData() {
+    return Promise.all([
+      this.getDestinations(),
+      this.getOffers(),
+      this.getPoints()
+    ]).then((values) => values[2]);
+  }
+
   createPoint(point) {
     if (this._isOnLine()) {
       return this._api.createPoint(point).then((newPoint) => {
