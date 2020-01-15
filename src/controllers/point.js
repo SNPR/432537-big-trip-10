@@ -10,7 +10,7 @@ import {Mode, SHAKE_ANIMATION_TIMEOUT} from "../utils/constants";
 import PointModel from "../models/point";
 import Store from "../store";
 
-export const EmptyPoint = {
+const EmptyPoint = {
   type: `taxi`,
   city: ``,
   startDate: Date.now(),
@@ -35,28 +35,28 @@ const parseFormData = (formData) => {
   );
 
   return new PointModel({
-    "base_price": formData.get(`event-price`),
-    "date_from": new Date(
+    base_price: formData.get(`event-price`),
+    date_from: new Date(
         moment(formData.get(`event-start-time`), `DD/MM/YY HH:mm`).valueOf()
     ).toISOString(),
-    "date_to": new Date(
+    date_to: new Date(
         moment(formData.get(`event-end-time`), `DD/MM/YY HH:mm`).valueOf()
     ).toISOString(),
-    "destination": {
+    destination: {
       description: destination.description,
       name: destination.name,
       pictures: destination.pictures
     },
-    "is_favorite": formData.get(`event-favorite`) === `on` ? true : false,
-    "offers": selectedOffers.map((offer) => ({
+    is_favorite: formData.get(`event-favorite`) === `on` ? true : false,
+    offers: selectedOffers.map((offer) => ({
       title: offer.querySelector(`.event__offer-title`).textContent,
       price: Number(offer.querySelector(`.event__offer-price`).textContent)
     })),
-    "type": formData.get(`event-type`)
+    type: formData.get(`event-type`)
   });
 };
 
-export default class PointController {
+class PointController {
   constructor(container, onDataChange, onViewChange) {
     this._container = container;
     this._onDataChange = onDataChange;
@@ -197,3 +197,5 @@ export default class PointController {
     document.removeEventListener(`keydown`, this._onEscKeyDown);
   }
 }
+
+export {PointController as default, EmptyPoint};
