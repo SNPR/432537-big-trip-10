@@ -65,6 +65,7 @@ export default class TripController {
     this._creatingPoint = null;
     this._noEventsMessageComponent = null;
     this._isDefaultSorting = true;
+    this._currentSortType = SortType.DATE_DOWN;
     this._tripDaysComponent = new TripDaysComponent();
     this._api = api;
     this._filterController = filterController;
@@ -117,45 +118,12 @@ export default class TripController {
         RenderPosition.AFTERBEGIN
     );
 
-    this._eventsSortingComponent.setSortTypeChangeHandler((sortType) => {
-      let sortedCards = [];
+    this._eventsSortingComponent.setSortTypeChangeHandler((sortType) =>
+      this._sortPoints(sortType)
+    );
 
-      switch (sortType) {
-        case SortType.DATE_DOWN:
-          sortedCards = this._pointsModel
-            .getPoints()
-            .slice()
-            .sort((a, b) => a.startDate - b.startDate);
-          this._isDefaultSorting = true;
-          break;
-        case SortType.TIME_DOWN:
-          sortedCards = this._pointsModel
-            .getPoints()
-            .slice()
-            .sort(
-                (a, b) => b.endDate - b.startDate - (a.endDate - a.startDate)
-            );
-          this._isDefaultSorting = false;
-          break;
-        case SortType.PRICE_DOWN:
-          sortedCards = this._pointsModel
-            .getPoints()
-            .slice()
-            .sort((a, b) => b.price - a.price);
-          this._isDefaultSorting = false;
-          break;
-      }
-
-      this._removePoints();
-      this._showedPointControllers = renderCards(
-          sortedCards,
-          this._tripDaysComponent,
-          this._onDataChange,
-          this._onViewChange,
-          this._isDefaultSorting
-      );
-    });
-
+    this._sortPoints(this._currentSortType);
+    this._checkSortType(this._currentSortType);
     this._getFullPrice();
   }
 
@@ -297,12 +265,58 @@ export default class TripController {
     }
   }
 
+  _sortPoints(sortType) {
+    let sortedCards = [];
+
+    switch (sortType) {
+      case SortType.DATE_DOWN:
+        sortedCards = this._pointsModel
+          .getPoints()
+          .slice()
+          .sort((a, b) => a.startDate - b.startDate);
+        this._isDefaultSorting = true;
+        this._currentSortType = sortType;
+        break;
+      case SortType.TIME_DOWN:
+        sortedCards = this._pointsModel
+          .getPoints()
+          .slice()
+          .sort((a, b) => b.endDate - b.startDate - (a.endDate - a.startDate));
+        this._isDefaultSorting = false;
+        this._currentSortType = sortType;
+        break;
+      case SortType.PRICE_DOWN:
+        sortedCards = this._pointsModel
+          .getPoints()
+          .slice()
+          .sort((a, b) => b.price - a.price);
+        this._isDefaultSorting = false;
+        this._currentSortType = sortType;
+        break;
+    }
+
+    this._removePoints();
+    this._showedPointControllers = renderCards(
+        sortedCards,
+        this._tripDaysComponent,
+        this._onDataChange,
+        this._onViewChange,
+        this._isDefaultSorting
+    );
+  }
+
+  _checkSortType(sortType) {
+    document.querySelector(`input[data-sort-type=${sortType}]`).checked = true;
+  }
+
   _onViewChange() {
     this._showedPointControllers.forEach((it) => it.setDefaultView());
     this._creatingPoint = null;
   }
 
   _onFilterChange() {
+    this._isDefaultSorting = true;
+    this._checkSortType(SortType.DATE_DOWN);
     this._updatePoints();
   }
 
