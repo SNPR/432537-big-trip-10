@@ -66,6 +66,7 @@ const generateChartData = (legendName, points) => {
       return [];
   }
 };
+
 const renderChart = (ctx, data, label, legend, isLabelPositonLeft = false) => {
   return new Chart(ctx, {
     type: `horizontalBar`,
