@@ -11,7 +11,7 @@ export const getTripDuration = (startDateUTCTimestamp, endDateUTCTimestamp) => {
   const endDay = moment(endDateUTCTimestamp).format(`DD`);
 
   return `${startMonthName} ${startDay}&nbsp;&mdash;&nbsp;${
-    startMonthName !== endMonthName ? endMonthName + ` ` : ``
+    startMonthName !== endMonthName ? `${endMonthName} ` : ``
   }${endDay}`;
 };
 
@@ -28,8 +28,8 @@ export const getEventDuration = (
   const minuntes = duration.minutes();
 
   return `
-    ${(days > 0 && addZero(days) + `D`) || ``}
-    ${((days > 0 || hours > 0) && addZero(hours) + `H`) || ``}
+    ${(days > 0 && `${addZero(days)}D`) || ``}
+    ${((days > 0 || hours > 0) && `${addZero(hours)}H`) || ``}
     ${addZero(minuntes)}M
   `;
 };
