@@ -9,6 +9,7 @@ import {
 import {Mode, SHAKE_ANIMATION_TIMEOUT} from "../utils/constants";
 import PointModel from "../models/point";
 import Store from "../store";
+import nanoid from "nanoid";
 
 const EmptyPoint = {
   type: `taxi`,
@@ -20,7 +21,7 @@ const EmptyPoint = {
   description: ``,
   price: 0,
   isFavorite: false,
-  id: String(Date.now() + Math.random()),
+  id: nanoid(),
   isNew: true
 };
 
