@@ -23,11 +23,11 @@
     "node": "10"
   },
   "dependencies": {
-    "chart.js": "^2.9.3",
-    "chartjs-plugin-datalabels": "^0.7.0",
-    "flatpickr": "^4.6.3",
-    "lodash": "^4.17.15",
+    "chart.js": "2.9.3",
+    "chartjs-plugin-datalabels": "0.7.0",
+    "flatpickr": "4.6.3",
+    "lodash": "4.17.15",
     "moment": "2.24.0",
-    "nanoid": "^2.1.8"
+    "nanoid": "2.1.8"
   }
 }
