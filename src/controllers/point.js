@@ -116,7 +116,7 @@ class PointController {
       const newCard = PointModel.clone(card);
       newCard.isFavorite = !newCard.isFavorite;
 
-      this._onDataChange(card, newCard, this);
+      this._onDataChange(card, newCard, this, false);
     });
 
     switch (mode) {
@@ -131,6 +131,11 @@ class PointController {
               this._cardComponent,
               RenderPosition.BEFOREEND
           );
+        }
+        break;
+      case Mode.EDIT:
+        if (oldCardEditComponent) {
+          replace(this._cardEditComponent, oldCardEditComponent);
         }
         break;
       case Mode.ADDING:
