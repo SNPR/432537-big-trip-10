@@ -6,7 +6,13 @@ import {
   RenderPosition,
   renderElement
 } from "../utils/render";
-import {Mode, SHAKE_ANIMATION_TIMEOUT} from "../utils/constants";
+import {
+  Mode,
+  SHAKE,
+  SHAKE_ANIMATION_TIMEOUT,
+  Button,
+  Key
+} from "../utils/constants";
 import PointModel from "../models/point";
 import Store from "../store";
 import nanoid from "nanoid";
@@ -99,7 +105,7 @@ class PointController {
       const data = parseFormData(formData);
 
       this._cardEditComponent.setData({
-        saveButtonText: `Saving...`
+        saveButtonText: Button.SAVING
       });
 
       this._onDataChange(card, data, this);
@@ -107,7 +113,7 @@ class PointController {
 
     this._cardEditComponent.setDeleteButtonClickHandler(() => {
       this._cardEditComponent.setData({
-        deleteButtonText: `Deleting...`
+        deleteButtonText: Button.DELETING
       });
       this._onDataChange(card, null, this);
     });
@@ -158,9 +164,9 @@ class PointController {
   }
 
   shake() {
-    this._cardEditComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT /
+    this._cardEditComponent.getElement().style.animation = `${SHAKE} ${SHAKE_ANIMATION_TIMEOUT /
       1000}s`;
-    this._cardComponent.getElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT /
+    this._cardComponent.getElement().style.animation = `${SHAKE} ${SHAKE_ANIMATION_TIMEOUT /
       1000}s`;
 
     setTimeout(() => {
@@ -168,8 +174,8 @@ class PointController {
       this._cardComponent.getElement().style.animation = ``;
 
       this._cardEditComponent.setData({
-        saveButtonText: `Save`,
-        deleteButtonText: `Delete`
+        saveButtonText: Button.SAVE,
+        deleteButtonText: Button.DELETE
       });
     }, SHAKE_ANIMATION_TIMEOUT);
   }
@@ -192,7 +198,7 @@ class PointController {
   }
 
   _onEscKeyDown(evt) {
-    const isEscKey = evt.key === `Escape` || evt.key === `Esc`;
+    const isEscKey = evt.key === Key.ESCAPE || evt.key === Key.ESC;
 
     if (isEscKey) {
       if (this._mode === Mode.ADDING) {

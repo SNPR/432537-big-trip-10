@@ -55,12 +55,20 @@ export const EventTypeToPlaceholderText = {
 export const AUTHORIZATION = `Basic {_P)[i-390sadasdadEW`;
 export const END_POINT = `https://htmlacademy-es-10.appspot.com/big-trip`;
 
+export const Button = {
+  SAVE: `Save`,
+  DELETE: `Delete`,
+  SAVING: `Saving...`,
+  DELETING: `Deleting...`
+};
+
 export const DefaultData = {
-  deleteButtonText: `Delete`,
-  saveButtonText: `Save`
+  deleteButtonText: Button.DELETE,
+  saveButtonText: Button.SAVE
 };
 
 export const SHAKE_ANIMATION_TIMEOUT = 600;
+export const SHAKE = `shake`;
 
 export const BACKUP_PREFIX = `big_trip-localstorage`;
 export const BACKUP_VER = `v1`;
@@ -69,3 +77,8 @@ export const BACKUP_NAME = `${BACKUP_PREFIX}-${BACKUP_VER}`;
 export const DEBOUNCE_TIMEOUT = 500;
 
 export const MAX_SHOWED_OFFERS_AMOUNT = 3;
+
+export const Key = {
+  ESCAPE: `Escape`,
+  ESC: `Esc`
+};
