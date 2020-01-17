@@ -449,6 +449,13 @@ ${
     this.rerender();
   }
 
+  blockForm() {
+    const form = this.getElement().querySelector(`form`);
+
+    form.querySelectorAll(`input`).forEach((input) => (input.disabled = true));
+    form.querySelectorAll(`button`).forEach((button) => (button.disabled = true));
+  }
+
   _applyFlatpickr() {
     if (this._flatpickrStartDate || this._flatpickrEndDate) {
       this._flatpickrStartDate.destroy();

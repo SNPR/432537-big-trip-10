@@ -109,6 +109,7 @@ class PointController {
       });
 
       this._onDataChange(card, data, this);
+      this._cardEditComponent.blockForm();
     });
 
     this._cardEditComponent.setDeleteButtonClickHandler(() => {
