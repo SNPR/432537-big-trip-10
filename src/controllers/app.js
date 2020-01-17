@@ -18,7 +18,7 @@ export default class AppController {
   constructor() {
     this._tripControls = document.querySelector(`.trip-main__trip-controls`);
     this._tripEvents = document.querySelector(`.trip-events`);
-    this._siteMainElement = document.querySelector(`.page-body__page-main`);
+    this._main = document.querySelector(`.page-body__page-main`);
 
     this._api = new API(END_POINT, AUTHORIZATION);
     this._backup = new Backup(BACKUP_NAME, window.localStorage);
@@ -53,7 +53,7 @@ export default class AppController {
     );
 
     renderElement(
-        this._siteMainElement,
+        this._main,
         this._statisticsComponent,
         RenderPosition.BEFOREEND
     );
