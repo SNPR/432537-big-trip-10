@@ -475,6 +475,9 @@ ${
           this._eventType = evt.target.value;
           this._offers = Store.getOffersByType(this._eventType);
           this.rerender();
+          this.getElement()
+            .querySelector(`form`)
+            .classList.add(`trip-events__item`);
         }
       });
 
