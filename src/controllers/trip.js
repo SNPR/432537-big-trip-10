@@ -135,6 +135,14 @@ export default class TripController {
     this._container.classList.remove(`visually-hidden`);
   }
 
+  _removePoints() {
+    this._tripDaysComponent.getElement().innerHTML = ``;
+    this._showedPointControllers.forEach((pointController) =>
+      pointController.destroy()
+    );
+    this._showedPointControllers = [];
+  }
+
   _updatePoints() {
     this._removePoints();
     this._showedPointControllers = renderCards(
@@ -322,13 +330,5 @@ export default class TripController {
     this._isDefaultSorting = true;
     this._checkSortType(SortType.DATE_DOWN);
     this._updatePoints();
-  }
-
-  _removePoints() {
-    this._tripDaysComponent.getElement().innerHTML = ``;
-    this._showedPointControllers.forEach((pointController) =>
-      pointController.destroy()
-    );
-    this._showedPointControllers = [];
   }
 }
