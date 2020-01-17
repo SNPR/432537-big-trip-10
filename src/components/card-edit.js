@@ -438,6 +438,17 @@ ${
     this._subscribeOnEvents();
   }
 
+  reset() {
+    this._eventType = this._card.type;
+    this._city = this._card.city;
+    this._offers = this._card.offers;
+    this._photos = this._card.photos;
+    this._price = this._card.price;
+    this._description = this._card.description;
+
+    this.rerender();
+  }
+
   _applyFlatpickr() {
     if (this._flatpickrStartDate || this._flatpickrEndDate) {
       this._flatpickrStartDate.destroy();

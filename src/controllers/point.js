@@ -187,6 +187,7 @@ class PointController {
   }
 
   _replaceCardEditToCard() {
+    this._cardEditComponent.reset();
     replace(this._cardComponent, this._cardEditComponent);
     this._mode = Mode.DEFAULT;
   }
